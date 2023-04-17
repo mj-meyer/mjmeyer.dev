@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root,
+  html[data-theme="light"] {
+    --color-fill: 225, 219, 255;
+    --color-highlight: 206, 195, 254;
+    --color-text-base: 14, 1, 22;
+    --color-accent: 168, 90, 255;
+    --color-card: 184, 170, 255;
+    --color-card-muted: 168, 151, 255;
+    --color-border: 168, 90, 255;
+  }
+  html[data-theme="dark"] {
+    --color-fill: 22, 1, 34;
+    --color-highlight: 78, 22, 110;
+    --color-text-base: 196, 196, 196;
+    --color-accent: 219, 128, 255;
+    --color-card: 168, 90, 255;
+    --color-card-muted: 141, 39, 255;
+    --color-border: 168, 90, 255;
+  }
+  #sun-svg,
+  html[data-theme="dark"] #moon-svg {
+    display: none;
+  }
+  #moon-svg,
+  html[data-theme="dark"] #sun-svg {
+    display: block;
+  }
+  html {
+    @apply bg-skin-highlight;
+  }
+  body {
+    @apply flex min-h-screen flex-col bg-gradient-to-tl from-skin-fill to-skin-highlight font-lato text-skin-base 
+    selection:bg-skin-accent selection:bg-opacity-70 selection:text-skin-inverted;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-montserrat font-black;
+  }
+  html[data-theme="dark"] .logo.light {
+    display: none;
+  }
+  html[data-theme="light"] .logo.dark {
+    display: none;
+  }
+  section,
+  footer {
+    @apply mx-auto max-w-6xl px-4;
+  }
+  a {
+    @apply outline-2 outline-offset-1 outline-skin-fill 
+    focus-visible:no-underline focus-visible:outline-dashed;
+  }
+  svg {
+    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
+  }
+  svg.icon-tabler {
+    @apply inline-block h-6 w-6 scale-125 fill-transparent 
+    stroke-current stroke-2 opacity-90 group-hover:fill-transparent 
+    sm:scale-110;
+  }
+  .prose {
+    @apply prose-headings:!mb-3 prose-headings:!text-skin-base 
+    prose-h3:italic prose-p:!text-skin-base 
+    prose-a:!text-skin-base prose-a:!decoration-dashed prose-a:underline-offset-8
+    hover:prose-a:text-skin-accent prose-blockquote:!border-l-skin-accent
+    prose-blockquote:border-opacity-50 prose-blockquote:opacity-80
+    prose-figcaption:!text-skin-base prose-figcaption:opacity-70
+    prose-strong:!text-skin-base
+
+    
+    prose-code:rounded prose-code:bg-skin-card 
+    prose-code:bg-opacity-75 prose-code:p-1 prose-code:!text-skin-base 
+    prose-code:before:!content-[''] prose-code:after:!content-['']
+    prose-pre:!text-skin-base prose-ol:!text-skin-base 
+    prose-ul:overflow-x-clip prose-ul:!text-skin-base prose-li:marker:!text-skin-accent
+    prose-table:text-skin-base prose-th:border
+    prose-th:border-skin-line prose-td:border 
+    prose-td:border-skin-line prose-img:mx-auto 
+    prose-img:!mt-2 prose-img:border-2 
+    prose-img:border-skin-line prose-hr:!border-skin-line;
+  }
+  .prose a {
+    @apply hover:!text-skin-accent;
+  }
+  .prose thead th:first-child,
+  tbody td:first-child,
+  tfoot td:first-child {
+    padding-left: 0.5714286em;
+  }
+  .prose h2#table-of-contents {
+    @apply mb-2;
+  }
+  .prose details {
+    @apply inline-block cursor-pointer select-none text-skin-base;
+  }
+  .prose summary {
+    @apply focus-outline;
+  }
+  .prose h2#table-of-contents + p {
+    @apply hidden;
+  }
+
+  /* ===== scrollbar ===== */
+  html {
+    overflow-y: scroll;
+  }
+
+  /* width */
+  ::-webkit-scrollbar {
+    @apply w-3;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    @apply bg-skin-fill;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @apply bg-skin-card;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-skin-card-muted;
+  }
+}
+
+@layer components {
+  .display-none {
+    @apply hidden;
+  }
+  .focus-outline {
+    @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
+  }
+}
