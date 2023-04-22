@@ -26,7 +26,8 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     <section id="hero" class="flex items-center justify-between">
       <div class="hero-text w-1/2 max-sm:w-full">
         <h1 class="relative">
-          <span class="absolute -top-24 -left-8 text-9xl opacity-20"
+          <span
+            class="absolute -left-8 opacity-20 md:-top-16 md:text-8xl lg:-top-24 lg:text-9xl"
             >Hello.</span
           >My Name is MJ Meyer.
         </h1>
@@ -143,10 +144,10 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 <style>
   /* ===== Hero Section ===== */
   #hero {
-    @apply pt-8 pb-6;
+    @apply pb-6 pl-10;
   }
   #hero h1 {
-    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
+    @apply my-4 inline-block text-2xl font-bold sm:my-8 sm:text-4xl md:text-3xl;
   }
   #hero .rss-link {
     @apply mb-6;
