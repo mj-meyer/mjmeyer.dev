@@ -23,11 +23,11 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 <Layout>
   <Header />
   <main id="main-content">
-    <section id="hero" class="flex items-center justify-between">
-      <div class="hero-text w-1/2 max-sm:w-full">
+    <section id="hero" class="flex items-start justify-between">
+      <div class="hero-text w-4/5 max-sm:w-full">
         <h1 class="relative">
           <span
-            class="absolute -left-8 opacity-20 md:-top-16 md:text-8xl lg:-top-24 lg:text-9xl"
+            class="absolute -left-8 -top-10 text-6xl opacity-20 sm:text-6xl md:-top-16 md:text-8xl lg:-top-24 lg:text-9xl"
             >Hello.</span
           >My Name is MJ Meyer.
         </h1>
@@ -57,7 +57,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
           )
         }
       </div>
-      <div class="hero-img w-1/2 max-sm:hidden">
+      <div class="hero-img w-1/5">
         <img
           class="dark"
           src="./profile-dark.png"
@@ -71,27 +71,27 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       </div>
     </section>
 
-    <Hr />
-
-    {
-      featuredPosts.length > 0 && (
-        <>
-          <section id="featured">
-            <h2>Featured</h2>
-            <ul>
-              {featuredPosts.map(({ data }) => (
-                <Card
-                  href={`/posts/${slugify(data)}`}
-                  frontmatter={data}
-                  secHeading={false}
-                />
-              ))}
-            </ul>
-          </section>
-          <Hr />
-        </>
-      )
-    }
+    <>
+      {
+        featuredPosts.length > 0 && (
+          <>
+            <section id="featured">
+              <h2>Featured</h2>
+              <ul>
+                {featuredPosts.map(({ data }) => (
+                  <Card
+                    href={`/posts/${slugify(data)}`}
+                    frontmatter={data}
+                    secHeading={false}
+                  />
+                ))}
+              </ul>
+            </section>
+            <Hr />
+          </>
+        )
+      }
+    </>
 
     <section id="recent-posts">
       <h2>Recent Posts</h2>
@@ -129,10 +129,10 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 <style>
   /* ===== Hero Section ===== */
   #hero {
-    @apply pb-6 pl-10;
+    @apply flex-row-reverse pb-6 pl-4;
   }
   #hero h1 {
-    @apply my-4 inline-block text-2xl font-bold sm:my-8 sm:text-4xl md:text-3xl;
+    @apply my-4 inline-block text-2xl font-bold max-md:text-2xl sm:my-8 md:text-3xl;
   }
   #hero .rss-link {
     @apply mb-6;
@@ -142,6 +142,10 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   }
   #hero p {
     @apply my-2;
+  }
+
+  .hero-img img {
+    @apply -scale-x-100;
   }
   html[data-theme="light"] .hero-img .dark {
     display: none;
@@ -158,13 +162,13 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     @apply mt-4 flex flex-col sm:flex-row sm:items-center;
   }
   .social-links {
-    @apply mr-2 mb-1 whitespace-nowrap sm:mb-0;
+    @apply mb-1 mr-2 whitespace-nowrap sm:mb-0;
   }
 
   /* ===== Featured & Recent Posts Sections ===== */
   #featured,
   #recent-posts {
-    @apply pt-12 pb-6;
+    @apply pb-6 pt-12;
   }
   #featured h2,
   #recent-posts h2 {
