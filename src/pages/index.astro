@@ -25,39 +25,52 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   <main id="main-content">
     <section id="hero" class="flex items-start justify-between">
       <div class="hero-text w-4/5 max-sm:w-full">
-        <h1 class="relative">
+        <h1 class="relative shadow-black drop-shadow-lg">
           <span
-            class="absolute -left-8 -top-10 text-6xl opacity-20 sm:text-6xl md:-top-16 md:text-8xl lg:-top-24 lg:text-9xl"
+            class="absolute -left-8 -top-10 text-6xl opacity-10 sm:text-6xl md:-top-16 md:text-8xl lg:-top-24 lg:text-9xl"
             >Hello.</span
-          >My Name is MJ Meyer.
+          >I'm MJ Meyer, aka the Dadalorian
         </h1>
 
         <p>
-          AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro
-          blog theme. This theme follows best practices and provides
-          accessibility out of the box. Light and dark mode are supported by
-          default. Moreover, additional color schemes can also be configured.
+          In a galaxy plagued by bad software, bugs, atrocious user experiences,
+          and legacy interfaces, I've dedicated the last 14 years to crafting
+          stellar digital experiences using HTML, CSS, and a variety of JS/TS
+          frameworks & libraries, including Angular, Next, Remix, Astro, and
+          Node.js.
         </p>
         <p>
-          Read the blog posts or check
-          <LinkButton
-            className="hover:text-skin-accent underline underline-offset-4 decoration-dashed"
-            href="https://github.com/satnaing/astro-paper#readme"
-          >
-            README
-          </LinkButton> for more info.
+          As a Star Wars-loving, Xbox-jamming, BBQ (braai) aficionado, my
+          mission goes beyond vanquishing the digital dark side. I'm all about
+          having fun, being a devoted husband to my incredible wife, and guiding
+          my two foundlings in "the way" as we navigate our new home
+          (SA🇿🇦➞NZ🇳🇿).
         </p>
-        {
-          // only display if at least one social link is enabled
-          socialCount > 0 && (
-            <div class="social-wrapper">
-              <div class="social-links">Social Links:</div>
-              <Socials />
-            </div>
-          )
-        }
+        <p>
+          This is where I cultivate my <LinkButton
+            className="hover:text-skin-accent uppercase underline underline-offset-4 decoration-dashed"
+            href="/digital-garden"
+          >
+            digital garden
+          </LinkButton>. You can learn more <LinkButton
+            className="hover:text-skin-accent underline uppercase underline-offset-4 decoration-dashed"
+            href="/about"
+          >
+            about
+          </LinkButton> me, see what tools I <LinkButton
+            className="hover:text-skin-accent underline uppercase underline-offset-4 decoration-dashed"
+            href="/uses"
+          >
+            use
+          </LinkButton>, or follow what I'm up to <LinkButton
+            className="hover:text-skin-accent underline uppercase underline-offset-4 decoration-dashed"
+            href="/now"
+          >
+            now.
+          </LinkButton>
+        </p>
       </div>
-      <div class="hero-img w-1/5">
+      <div class="hero-img flex w-1/5 flex-col items-center">
         <img
           class="dark"
           src="./profile-dark.png"
@@ -68,9 +81,17 @@ const socialCount = SOCIALS.filter(social => social.active).length;
           src="./profile-light.png"
           alt="MJ Meyer Profile Image"
         />
+        {
+          // only display if at least one social link is enabled
+          socialCount > 0 && (
+            <div class="social-wrapper">
+              <Socials />
+            </div>
+          )
+        }
       </div>
     </section>
-
+    <Hr className="opacity-20" />
     <>
       {
         featuredPosts.length > 0 && (
@@ -140,8 +161,9 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   #hero .rss-icon {
     @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
   }
+
   #hero p {
-    @apply my-2;
+    @apply my-2 pb-4 pl-8 text-lg;
   }
 
   .hero-img img {
