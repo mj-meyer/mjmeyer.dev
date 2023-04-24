@@ -49,7 +49,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         <p>
           This is where I cultivate my <LinkButton
             className="hover:text-skin-accent uppercase underline underline-offset-4 decoration-dashed"
-            href="/digital-garden"
+            href="/garden"
           >
             digital garden
           </LinkButton>. You can learn more <LinkButton
@@ -91,7 +91,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         }
       </div>
     </section>
-    <Hr className="opacity-20" />
+    <Hr />
     <>
       {
         featuredPosts.length > 0 && (
@@ -101,7 +101,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
               <ul>
                 {featuredPosts.map(({ data }) => (
                   <Card
-                    href={`/posts/${slugify(data)}`}
+                    href={`/${slugify(data)}`}
                     frontmatter={data}
                     secHeading={false}
                   />
@@ -122,7 +122,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
             ({ data }, index) =>
               index < 4 && (
                 <Card
-                  href={`/posts/${slugify(data)}`}
+                  href={`/${slugify(data)}`}
                   frontmatter={data}
                   secHeading={false}
                 />
@@ -131,7 +131,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         }
       </ul>
       <div class="all-posts-btn-wrapper">
-        <LinkButton href="/posts">
+        <LinkButton href="/garden">
           All Posts
           <svg xmlns="http://www.w3.org/2000/svg"
             ><path
