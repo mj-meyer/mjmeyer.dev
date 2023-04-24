@@ -3,34 +3,20 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-AstroPaper is a minimal, responsive and SEO-friendly Astro blog theme. I designed and crafted this based on [my personal blog](https://satnaing.dev/blog).
+<details><summary>The intro blurb on the home page if you haven't read it...</summary>
 
-This theme is aimed to be accessible out of the box. Light and dark mode are supported by
-default and additional color schemes can also be configured.
+> In a galaxy plagued by bad software, bugs, atrocious UX, and legacy UI, I've dedicated the last 14 years to crafting stellar digital experiences using HTML, CSS, and a variety of JS/TS frameworks & libraries, including Angular, Next, Remix, Astro, and Node.js.
 
-This theme is self-documented \_ which means articles/posts in this theme can also be considered as documentations. So, see the documentation for more info.
+> As a Star Wars-loving, Xbox-jamming, BBQ (braai) aficionado, my mission goes beyond vanquishing the digital dark side. I'm all about having fun, being a devoted husband to my incredible wife, and guiding my two foundlings in "the way" as we navigate our new home (SA🇿🇦 ➞ NZ🇳🇿).
 
-<div>
-  <img src="/assets/dev.svg" class="sm:w-1/2 mx-auto" alt="coding dev illustration">
-</div>
+</details>
 
-## Tech Stack
+This is been my career experience so far:
 
-This theme is written in vanilla JavaScript (+ TypeScript for type checking) and a little bit of ReactJS for some interactions. TailwindCSS is used for styling; and Markdown is used for blog contents.
+- CTU Training Solutions | 2008
+- Owner of my own web design agency | _Jan 2009 - Sep 2014_
+- Frontend dev @ InfoSlips - Template Team | _Sep 2014 - Jun 2017_
+- Sr. Frontend dev @ InfoSlips - Product Team | _Jun 2017 - Mar 2020_
+- Sr. Frontend dev @ BoardPro | _Mar 2020 - Current_
 
-## Features
-
-Here are certain features of this site.
-
-- fully responsive and accessible
-- SEO-friendly
-- light & dark mode
-- fuzzy search
-- super fast performance
-- draft posts
-- pagination
-- sitemap & rss feed
-- highly customizable
-
-If you like this theme, you can star/contribute to the [repo](https://github.com/satnaing/astro-paper).  
-Or you can even give any feedback via my [email](mailto:contact@satnaing.dev).
+I'll expand on these in the future. My [LinkedIn](https://www.linkedin.com/in/mj-meyer-500bb520/) has more info in the mean time.

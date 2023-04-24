@@ -36,7 +36,7 @@
     @apply bg-skin-highlight;
   }
   body {
-    @apply flex min-h-screen flex-col bg-gradient-to-tl from-skin-fill to-skin-highlight font-lato text-skin-base 
+    @apply flex min-h-screen flex-col bg-gradient-to-tl from-skin-fill to-skin-highlight font-lato text-lg text-skin-base 
     selection:bg-skin-accent selection:bg-opacity-70 selection:text-skin-inverted;
   }
   h1,
@@ -71,7 +71,7 @@
   }
   .prose {
     @apply prose-headings:!mb-3 prose-headings:!text-skin-heading
-    prose-h3:italic prose-p:!text-skin-base 
+    prose-h3:italic prose-p:text-lg prose-p:!text-skin-base 
     prose-a:!text-skin-base prose-a:!decoration-dashed prose-a:underline-offset-8
     hover:prose-a:text-skin-accent prose-blockquote:!border-l-skin-accent
     prose-blockquote:border-opacity-50 prose-blockquote:opacity-80

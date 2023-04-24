@@ -23,7 +23,10 @@ const next = pageNum < totalPages ? "" : "disabled";
 
 <Layout title={`Posts | ${SITE.title}`}>
   <Header activeNav="posts" />
-  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
+  <Main
+    pageTitle="My Digital Garden"
+    pageDesc="A digital garden is a collection of imperfect notes and ideas that grow slowly over time."
+  >
     <ul>
       {
         posts.map(({ data }) => (
