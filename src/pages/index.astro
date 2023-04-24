@@ -33,18 +33,17 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         </h1>
 
         <p>
-          In a galaxy plagued by bad software, bugs, atrocious user experiences,
-          and legacy interfaces, I've dedicated the last 14 years to crafting
-          stellar digital experiences using HTML, CSS, and a variety of JS/TS
-          frameworks & libraries, including Angular, Next, Remix, Astro, and
-          Node.js.
+          In a galaxy plagued by bad software, bugs, atrocious UX, and legacy
+          UI, I've dedicated the last 14 years to crafting stellar digital
+          experiences using HTML, CSS, and a variety of JS/TS frameworks &
+          libraries, including Angular, Next, Remix, Astro, and Node.js.
         </p>
         <p>
           As a Star Wars-loving, Xbox-jamming, BBQ (braai) aficionado, my
           mission goes beyond vanquishing the digital dark side. I'm all about
           having fun, being a devoted husband to my incredible wife, and guiding
-          my two foundlings in "the way" as we navigate our new home
-          (SA🇿🇦➞NZ🇳🇿).
+          my two foundlings in "the way" as we navigate our new home (SA🇿🇦 ➞
+          NZ🇳🇿).
         </p>
         <p>
           This is where I cultivate my <LinkButton
@@ -151,10 +150,10 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 <style>
   /* ===== Hero Section ===== */
   #hero {
-    @apply flex-row-reverse pb-6 pl-4;
+    @apply flex-row-reverse pb-6 pl-4 pt-10;
   }
   #hero h1 {
-    @apply my-4 inline-block text-2xl font-bold max-md:text-2xl sm:my-8 md:text-3xl;
+    @apply my-4 inline-block font-bold max-md:text-2xl sm:my-8 md:text-3xl xl:text-4xl;
   }
   #hero .rss-link {
     @apply mb-6;
@@ -164,7 +163,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   }
 
   #hero p {
-    @apply my-2 pb-4 pl-8 text-lg;
+    @apply my-2 px-8 pb-4 text-xl font-light;
   }
 
   .hero-img img {
@@ -191,7 +190,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   /* ===== Featured & Recent Posts Sections ===== */
   #featured,
   #recent-posts {
-    @apply px-32 pb-6 pt-12;
+    @apply px-64 pb-6 pt-12 max-xl:px-32 max-md:px-16;
   }
   #featured h2,
   #recent-posts h2 {
