@@ -1,6 +1,6 @@
 ---
 author: MJ Meyer
-pubDatetime: 2023-04-25
+pubDatetime: 2023-05-01
 title: What is a Digital Garden?
 postSlug: ""
 featured: false
