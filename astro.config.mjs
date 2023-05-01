@@ -7,6 +7,8 @@ import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 import tokyoNight from "./shiki-themes/tokyo-night-theme.json";
 
+import vercel from "@astrojs/vercel/static";
+
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
@@ -44,4 +46,8 @@ export default defineConfig({
       exclude: ["@resvg/resvg-js"],
     },
   },
+  output: "server",
+  adapter: vercel({
+    analytics: true,
+  }),
 });
