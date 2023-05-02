@@ -2,10 +2,10 @@ import type { Site, SocialObjects } from "./types";
 
 export const SITE: Site = {
   website: "https://mjmeyer.dev",
-  author: "MJ Meyer",
+  author: "MJ Meyer | Dadalorian",
   desc: "A developer's digital garden - a place to share my thoughts, ideas, projects and random findings across the interwebs.",
   title: "MJ Meyer",
-  ogImage: "astropaper-og.jpg",
+  ogImage: "mjmeyer-og.jpg",
   lightAndDarkMode: true,
   postPerPage: 3,
 };
