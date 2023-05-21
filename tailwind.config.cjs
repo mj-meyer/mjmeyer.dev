@@ -9,12 +9,11 @@ function withOpacity(variableName) {
   };
 }
 
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
-    // Uncomment the following extend
-    // if existing Tailwind color palette will be used
-
     // extend: {
     textColor: {
       skin: {
@@ -23,6 +22,7 @@ module.exports = {
         inverted: withOpacity("--color-fill"),
         heading: withOpacity("--color-heading-base"),
       },
+      gray: colors.gray
     },
     // backgroundImage: {
     //   skin: {
@@ -38,6 +38,13 @@ module.exports = {
         card: withOpacity("--color-card"),
         "card-muted": withOpacity("--color-card-muted"),
       },
+    },
+    stroke: {
+      skin: {
+        base: withOpacity("--color-text-base"),
+        highlight: withOpacity("--color-highlight"),
+        accent: withOpacity("--color-accent"),
+      }
     },
     outlineColor: {
       skin: {

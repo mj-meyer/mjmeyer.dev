@@ -17,8 +17,8 @@
   html[data-theme="dark"] {
     --color-fill: 22, 1, 34;
     --color-highlight: 78, 22, 110;
-    --color-text-base: 196, 196, 196;
-    --color-heading-base: 196, 196, 196;
+    --color-text-base: 205, 191, 217;
+    --color-heading-base: 205, 191, 217;
     --color-accent: 219, 128, 255;
     --color-card: 168, 90, 255;
     --color-card-muted: 141, 39, 255;
@@ -65,9 +65,7 @@
     @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
   }
   svg.icon-tabler {
-    @apply inline-block h-6 w-6 scale-125 fill-transparent 
-    stroke-current stroke-2 opacity-90 group-hover:fill-transparent 
-    sm:scale-110;
+    @apply inline-block h-6 w-6 scale-125 fill-transparent stroke-skin-base stroke-2 opacity-90 hover:stroke-skin-accent group-hover:fill-transparent sm:scale-110;
   }
   .prose {
     @apply prose-headings:!mb-3 prose-headings:!text-skin-heading
