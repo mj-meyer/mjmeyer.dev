@@ -1,6 +1,8 @@
 ---
 author: MJ Meyer
 pubDatetime: 2023-05-01
+updatetime: 2023-05-01
+noteState: "seedling"
 title: What is a Digital Garden?
 postSlug: ""
 featured: false

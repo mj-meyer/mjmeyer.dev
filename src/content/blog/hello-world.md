@@ -1,7 +1,9 @@
 ---
 author: MJ Meyer
 pubDatetime: 2023-04-24
+updatetime: 2023-04-24
 title: Hello world! - Credit where it's due
+noteState: "seedling"
 postSlug: "hello-world"
 tags:
   - tech
