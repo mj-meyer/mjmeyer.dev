@@ -3,7 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
-import Datetime from "@components/Datetime";
+import Meta from "@components/Meta";
 import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 
@@ -13,7 +13,16 @@ export interface Props {
 
 const { post } = Astro.props;
 
-const { title, author, description, ogImage, pubDatetime, tags } = post.data;
+const {
+  title,
+  author,
+  description,
+  ogImage,
+  pubDatetime,
+  updatetime,
+  tags,
+  noteState,
+} = post.data;
 
 const { Content } = await post.render();
 
@@ -37,9 +46,19 @@ const ogUrl = new URL(
       </svg><span>Go back</span>
     </button>
   </div>
-  <main id="main-content">
+  <main id="main-content" class="relative">
     <h1 class="post-title">{title}</h1>
-    <Datetime datetime={pubDatetime} size="lg" className="my-2" />
+    <div
+      class="my-2 border-skin-line border-opacity-30 max-lg:border-y max-lg:pt-2"
+    >
+      <Meta
+        detail
+        updatetime={updatetime}
+        size="lg"
+        pubDatetime={pubDatetime}
+        noteState={noteState}
+      />
+    </div>
     <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
       <Content />
     </article>

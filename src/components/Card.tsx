@@ -1,5 +1,5 @@
-import Datetime from "./Datetime";
 import type { BlogFrontmatter } from "@content/_schemas";
+import Meta from "./Meta";
 
 export interface Props {
   href?: string;
@@ -8,25 +8,25 @@ export interface Props {
 }
 
 export default function Card({ href, frontmatter, secHeading = true }: Props) {
-  const { title, pubDatetime, description } = frontmatter;
+  const { title, updatetime, description, noteState } = frontmatter;
   return (
-    <li class="my-6">
+    <li className="my-6">
       <a
         href={href}
-        class="inline-block text-xl font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+        className="inline-block text-xl font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
       >
         {secHeading ? (
-          <h2 class="text-xl font-medium decoration-dashed hover:underline text-skin-accent">
+          <h2 className="text-xl font-medium text-skin-accent decoration-dashed hover:underline">
             {title}
           </h2>
         ) : (
-          <h3 class="text-xl font-medium decoration-dashed hover:underline text-skin-accent">
+          <h3 className="text-xl font-medium text-skin-accent decoration-dashed hover:underline">
             {title}
           </h3>
         )}
       </a>
-      <Datetime datetime={pubDatetime} />
-      <p>{description}</p>
+      <Meta updatetime={updatetime} noteState={noteState} />
+      <p className="pt-2">{description}</p>
     </li>
   );
 }
