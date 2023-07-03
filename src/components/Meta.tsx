@@ -24,17 +24,17 @@ export default function Meta({
 }: Props) {
   return (
     <div
-      className={`flex gap-4 text-xs opacity-50 lg:gap-0 ${
+      className={`flex gap-2 text-xs opacity-50 ${
         detail
           ? "items-end max-lg:justify-between lg:absolute lg:-left-36 lg:top-16 lg:flex-col lg:text-right "
-          : " items-center space-x-2"
+          : " flex-row items-center"
       }`}
     >
       <div
         className={`flex flex-col ${
           detail
-            ? "items-end border-skin-line pb-2 lg:mb-3 lg:border-b lg:w-full"
-            : "items-start lg:w-36"
+            ? "items-end border-skin-line pb-2 lg:mb-3 lg:w-full lg:border-b"
+            : "items-start "
         }`}
       >
         {detail && <span>Last Tended</span>}
