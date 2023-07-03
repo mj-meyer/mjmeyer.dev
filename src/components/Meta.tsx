@@ -12,7 +12,6 @@ export interface Props {
   updatetime: string | Date;
   pubDatetime?: string | Date;
   noteState: "stream" | "seedling" | "budding" | "evergreen";
-  size?: "sm" | "lg";
 }
 
 export default function Meta({
@@ -20,40 +19,39 @@ export default function Meta({
   updatetime,
   pubDatetime,
   noteState,
-  size = "sm",
 }: Props) {
   return (
     <div
-      className={`flex gap-2 text-xs opacity-50 ${
+      className={`flex gap-2 text-xs ${
         detail
-          ? "items-end max-lg:justify-between lg:absolute lg:-left-36 lg:top-16 lg:flex-col lg:text-right "
-          : " flex-row items-center"
+          ? "items-end max-lg:justify-between lg:absolute lg:-left-32 lg:top-12 lg:flex-col lg:items-start lg:gap-0 lg:text-right"
+          : "flex-row items-center opacity-70"
       }`}
     >
       <div
         className={`flex flex-col ${
           detail
-            ? "items-end border-skin-line pb-2 lg:mb-3 lg:w-full lg:border-b"
+            ? "items-end border-skin-line pb-2  lg:w-full lg:border-b lg:py-4"
             : "items-start "
         }`}
       >
-        {detail && <span>Last Tended</span>}
-        <Datetime datetime={updatetime} size={size} />
+        {detail && <span className="opacity-50">Last Tended</span>}
+        <Datetime datetime={updatetime} />
       </div>
       {!detail && <span className="separator">&nbsp;|&nbsp;</span>}
 
       {detail && pubDatetime && (
         <>
-          <div className="flex flex-col items-end border-skin-line pb-2 lg:mb-3 lg:w-32 lg:border-b">
-            <span>Planted</span>
-            <Datetime datetime={pubDatetime} size={size} />
+          <div className="flex flex-col items-end border-skin-line pb-2 lg:w-full lg:border-b lg:py-4">
+            <span className="opacity-50">Planted</span>
+            <Datetime datetime={pubDatetime} />
           </div>
         </>
       )}
 
       <div
-        className={`space-x-2 border-skin-line text-sm lg:w-full ${
-          detail && "pb-2 lg:border-b"
+        className={`space-x-2 border-skin-line text-sm lg:w-28 ${
+          detail && "pb-2 lg:border-b lg:py-4"
         }`}
       >
         <span>{noteStateSymbol[noteState]}</span>

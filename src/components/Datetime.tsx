@@ -7,7 +7,7 @@ export default function Datetime({ datetime }: Props) {
     <div className={`inline-flex items-center space-x-2`}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className={`inline-block h-6 w-6 scale-90 fill-skin-base max-sm:hidden`}
+        className={`inline-block opacity-50 h-6 w-6 scale-90 fill-skin-base max-sm:hidden`}
         aria-hidden="true"
       >
         <path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path>
