@@ -1,4 +1,5 @@
 import Datetime from "./Datetime";
+import type { CollectionEntry } from "astro:content";
 
 const noteStateSymbol = {
   stream: "🌊",
@@ -11,7 +12,8 @@ export interface Props {
   detail?: boolean;
   updatetime: string | Date;
   pubDatetime?: string | Date;
-  noteState: "stream" | "seedling" | "budding" | "evergreen";
+  noteState?: CollectionEntry<"garden">["data"]["noteState"] | undefined;
+  streamType?: CollectionEntry<"stream">["data"]["streamType"] | undefined;
 }
 
 export default function Meta({
@@ -19,6 +21,7 @@ export default function Meta({
   updatetime,
   pubDatetime,
   noteState,
+  streamType,
 }: Props) {
   return (
     <div
@@ -49,14 +52,27 @@ export default function Meta({
         </>
       )}
 
-      <div
-        className={`space-x-2 border-skin-line text-sm lg:w-28 ${
-          detail && "pb-2 lg:border-b lg:py-4"
-        }`}
-      >
-        <span>{noteStateSymbol[noteState]}</span>
-        <span className="uppercase">{noteState}</span>
-      </div>
+      {noteState && (
+        <div
+          className={`space-x-2 border-skin-line text-sm lg:w-28 ${
+            detail && "pb-2 lg:border-b lg:py-4"
+          }`}
+        >
+          <span>{noteStateSymbol[noteState]}</span>
+          <span className="uppercase">{noteState}</span>
+        </div>
+      )}
+
+      {streamType && (
+        <div
+          className={`space-x-2 border-skin-line text-sm lg:w-28 ${
+            detail && "pb-2 lg:border-b lg:py-4"
+          }`}
+        >
+          {/* <span>{noteStateSymbol[noteState]}</span> */}
+          <span className="uppercase">{streamType}</span>
+        </div>
+      )}
     </div>
   );
 }

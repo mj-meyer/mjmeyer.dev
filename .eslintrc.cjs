@@ -8,6 +8,7 @@ module.exports = {
        "eslint:recommended",
        "plugin:@typescript-eslint/recommended",
        "plugin:astro/recommended",
+       "prettier",
      ],
      parser: "@typescript-eslint/parser",
      plugins: ["@typescript-eslint"],
@@ -32,4 +33,13 @@ module.exports = {
          extends: ["plugin:@typescript-eslint/recommended"],
        },
      ],
+  settings: {
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+        project: './tsconfig.json',
+      },
+    },
+  },
+  ignorePatterns: [".eslintrc.cjs"]
    };

@@ -4,136 +4,201 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
-import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
-import slugify from "@utils/slugify";
 import { SOCIALS } from "@config";
+import type { CollectionEntry } from "astro:content";
 
-const posts = await getCollection("blog");
+const posts = await getCollection("garden");
+const sortedPosts = getSortedPosts(posts) as CollectionEntry<"garden">[];
 
-const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+const streamPosts = await getCollection("stream");
+const sortedStreamPosts = getSortedPosts(
+  streamPosts
+) as CollectionEntry<"stream">[];
 
 const socialCount = SOCIALS.filter(social => social.active).length;
+
+// Dummy curated links
+const curatedLinks = [
+  { title: "My Favorite Development Tools", slug: "favorite-dev-tools" },
+  { title: "Getting Started with Astro", slug: "astro-intro" },
+  { title: "Why I Love Digital Gardening", slug: "digital-gardening-love" },
+  { title: "The Art of Code Refactoring", slug: "code-refactoring-art" },
+  {
+    title: "Building a Personal Brand as a Developer",
+    slug: "dev-personal-brand",
+  },
+];
+
+function getStreamTypeColor(
+  streamType: CollectionEntry<"stream">["data"]["streamType"]
+) {
+  switch (streamType) {
+    case "article":
+      return "bg-blue-200 text-blue-800";
+    case "code":
+      return "bg-green-200 text-green-800";
+    case "video":
+      return "bg-red-200 text-red-800";
+    case "podcast":
+      return "bg-purple-200 text-purple-800";
+    case "book":
+      return "bg-yellow-200 text-yellow-800";
+    default:
+      return "bg-gray-200 text-gray-800";
+  }
+}
 ---
 
 <Layout>
   <Header />
-  <main id="main-content">
-    <section id="hero" class="flex items-start justify-between">
-      <div class="hero-text w-4/5 max-sm:w-full">
-        <h1 class="relative shadow-black drop-shadow-lg">
-          <span
-            class="absolute -left-8 -top-10 text-6xl opacity-10 sm:text-6xl md:-top-16 md:text-8xl lg:-top-24 lg:text-9xl"
-            >Hello.</span
-          >I'm MJ Meyer, aka the Dadalorian
-        </h1>
-
-        <p>
-          In a galaxy plagued by bad software, bugs, atrocious UX, and legacy
-          UI, I've dedicated the last 14 years to crafting stellar digital
-          experiences using HTML, CSS, and a variety of JS/TS frameworks &
-          libraries, including Angular, Next, Remix, Astro, and Node.js.
-        </p>
-        <p>
-          As a Star Wars-loving, Xbox-jamming, BBQ (braai) aficionado, my
-          mission goes beyond vanquishing the digital dark side. I'm all about
-          having fun, being a devoted husband to my incredible wife, and guiding
-          my two foundlings in "the way" as we navigate our new home (SA🇿🇦 ➞
-          NZ🇳🇿).
-        </p>
-        <p>
-          This is where I cultivate my <LinkButton
-            className="hover:text-skin-accent uppercase underline underline-offset-4 decoration-dashed"
-            href="/garden"
-          >
-            digital garden
-          </LinkButton>. You can learn more <LinkButton
-            className="hover:text-skin-accent underline uppercase underline-offset-4 decoration-dashed"
-            href="/about"
-          >
-            about
-          </LinkButton> me, see what tools I <LinkButton
-            className="hover:text-skin-accent underline uppercase underline-offset-4 decoration-dashed"
-            href="/uses"
-          >
-            use
-          </LinkButton>, or follow what I'm up to <LinkButton
-            className="hover:text-skin-accent underline uppercase underline-offset-4 decoration-dashed"
-            href="/now"
-          >
-            now.
-          </LinkButton>
-        </p>
-      </div>
-      <div class="hero-img flex w-1/5 flex-col items-center">
-        <img
-          class="dark"
-          src="./profile-dark.png"
-          alt="MJ Meyer Profile Image"
-        />
-        <img
-          class="light"
-          src="./profile-light.png"
-          alt="MJ Meyer Profile Image"
-        />
-        {
-          // only display if at least one social link is enabled
-          socialCount > 0 && (
-            <div class="social-wrapper">
-              <Socials />
-            </div>
-          )
-        }
+  <main class="px-4 py-12 sm:px-8 md:px-16 lg:px-32">
+    <section id="hero" class="mb-16 pt-8">
+      <div
+        class="flex flex-col-reverse md:flex-row items-start gap-8 justify-between"
+      >
+        <div class="md:w-3/5 mt-8 md:mt-0">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 relative">
+            <span
+              class="absolute -left-4 -top-10 text-6xl opacity-10 sm:text-7xl sm:-top-12 md:-top-16 md:text-8xl lg:-top-24 lg:text-9xl"
+              >Hello.</span
+            >
+            I'm MJ Meyer, aka the Dadalorian
+          </h1>
+          <p class="text-lg mb-4">
+            In a galaxy plagued by bad software, bugs, atrocious UX, and legacy
+            UI, I've dedicated the last 14 years to crafting stellar digital
+            experiences using HTML, CSS, and a variety of JS/TS frameworks &
+            libraries, including Angular, Next, Remix, Astro, and Node.js.
+          </p>
+          <p class="text-lg mb-4">
+            As a Star Wars-loving, Xbox-jamming, BBQ (braai) aficionado, my
+            mission goes beyond vanquishing the digital dark side. I'm all about
+            having fun, being a devoted husband to my incredible wife, and
+            guiding my two foundlings in "the way" as we navigate our new home
+            (SA🇿🇦 ➞ NZ🇳🇿).
+          </p>
+          <p class="text-lg">
+            This is where I cultivate my <LinkButton
+              href="/garden"
+              className="text-skin-accent underline underline-offset-4 decoration-dashed"
+              >digital garden</LinkButton
+            >. You can learn more <LinkButton
+              href="/about"
+              className="text-skin-accent underline underline-offset-4 decoration-dashed"
+              >about</LinkButton
+            > me, see what tools I <LinkButton
+              href="/uses"
+              className="text-skin-accent underline underline-offset-4 decoration-dashed"
+              >use</LinkButton
+            >, or follow what I'm up to <LinkButton
+              href="/now"
+              className="text-skin-accent underline underline-offset-4 decoration-dashed"
+              >now</LinkButton
+            >.
+          </p>
+        </div>
+        <div class="md:w-2/5 flex flex-col gap-4 items-center">
+          <img
+            class="block dark:hidden"
+            src="./profile-light.png"
+            alt="MJ Meyer Profile Image"
+          />
+          <img
+            class="dark:block hidden"
+            src="./profile-dark.png"
+            alt="MJ Meyer Profile Image"
+          />
+          {socialCount > 0 && <Socials centered />}
+        </div>
       </div>
     </section>
-    <Hr />
-    <>
-      <!-- Hiding for now - Need more posts and a better structure -->
-      {
-        false && featuredPosts.length > 0 && (
-          <>
-            <section id="featured">
-              <h2>Featured</h2>
-              <ul>
-                {featuredPosts.map(({ data }) => (
+
+    <section id="content" class="flex">
+      <div id="curated-links" class="mb-16">
+        <h2 class="text-2xl font-semibold mb-4">Curated Favorites</h2>
+        <ul class="space-y-2">
+          {
+            curatedLinks.map(link => (
+              <li>
+                <a
+                  href={`/garden/${link.slug}`}
+                  class="text-lg text-skin-accent hover:underline"
+                >
+                  {link.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="recent">
+        <section id="recent-garden" class="mb-16">
+          <h2 class="text-2xl font-semibold mb-4">
+            Recently Updated in the Garden
+          </h2>
+          <ul class="space-y-4">
+            {
+              sortedPosts
+                .slice(0, 3)
+                .map(({ data, slug }) => (
                   <Card
-                    href={`/${slugify(data)}`}
+                    href={`/garden/${slug}`}
                     frontmatter={data}
                     secHeading={false}
                   />
-                ))}
-              </ul>
-            </section>
-            <Hr />
-          </>
-        )
-      }
-    </>
+                ))
+            }
+          </ul>
+          <div class="mt-4">
+            <LinkButton href="/garden">
+              View All Garden Posts
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1">
+                <path
+                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+                ></path>
+              </svg>
+            </LinkButton>
+          </div>
+        </section>
+      </div>
+    </section>
 
-    <section id="recent-posts">
-      <h2>Recently Updated</h2>
-      <ul>
+    <section id="stream" class="mb-16">
+      <h2 class="text-2xl font-semibold mb-4">The Stream</h2>
+      <ul class="space-y-4">
         {
-          sortedPosts.map(
-            ({ data }, index) =>
-              index < 4 && (
-                <Card
-                  href={`/${slugify(data)}`}
-                  frontmatter={data}
-                  secHeading={false}
-                />
-              )
-          )
+          sortedStreamPosts.slice(0, 5).map(({ data, slug }) => (
+            <li class="bg-skin-card p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <span
+                  class={`text-xs font-semibold px-2 py-1 rounded ${getStreamTypeColor(data.streamType)}`}
+                >
+                  {data.streamType}
+                </span>
+                <time class="text-sm ml-2">
+                  {new Date(data.publishDatetime).toLocaleDateString()}
+                </time>
+              </div>
+              <a
+                href={`/stream/${slug}`}
+                class="text-lg font-medium text-skin-accent hover:underline"
+              >
+                {data.title}
+              </a>
+              <p class="text-sm mt-1">{data.description}</p>
+            </li>
+          ))
         }
       </ul>
-      <div class="all-posts-btn-wrapper">
-        <LinkButton href="/garden">
-          All Posts
-          <svg xmlns="http://www.w3.org/2000/svg"
-            ><path
+      <div class="mt-4">
+        <LinkButton href="/stream">
+          View All Stream Posts
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1">
+            <path
               d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
             ></path>
           </svg>
@@ -141,61 +206,5 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       </div>
     </section>
   </main>
-
   <Footer />
 </Layout>
-
-<!-- <TailwindIndicator /> -->
-<style>
-  /* ===== Hero Section ===== */
-  #hero {
-    @apply flex-row-reverse py-20 pl-4;
-  }
-  #hero h1 {
-    @apply my-4 inline-block font-bold max-md:text-2xl sm:my-8 md:text-3xl xl:text-4xl;
-  }
-  #hero .rss-link {
-    @apply mb-4;
-  }
-  #hero .rss-icon {
-    @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
-  }
-
-  #hero p {
-    @apply my-2 px-8 pb-4 text-xl font-light;
-  }
-
-  .hero-img img {
-    @apply -scale-x-100;
-  }
-  html[data-theme="light"] .hero-img .dark {
-    display: none;
-  }
-
-  html[data-theme="dark"] .hero-img .light {
-    display: none;
-  }
-  .hero-img img {
-    -webkit-filter: drop-shadow(0px 0px 34px rgb(22 1 34 / 0.1));
-    filter: drop-shadow(0px 0px 34px rgb(22 1 34 / 0.1));
-  }
-  .her .social-wrapper {
-    @apply mt-4 flex flex-col sm:flex-row sm:items-center;
-  }
-  .social-links {
-    @apply mb-1 mr-2 whitespace-nowrap sm:mb-0;
-  }
-
-  /* ===== Featured & Recent Posts Sections ===== */
-  #featured,
-  #recent-posts {
-    @apply px-64 pb-6 pt-12 max-xl:px-32 max-md:px-16;
-  }
-  #featured h2,
-  #recent-posts h2 {
-    @apply text-center text-2xl font-semibold tracking-wide;
-  }
-  .all-posts-btn-wrapper {
-    @apply my-8 text-center;
-  }
-</style>

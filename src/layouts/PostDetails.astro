@@ -5,34 +5,38 @@ import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
 import Meta from "@components/Meta";
 import type { CollectionEntry } from "astro:content";
-import { slugifyStr } from "@utils/slugify";
 
 export interface Props {
-  post: CollectionEntry<"blog">;
+  post: CollectionEntry<"garden" | "stream" | "page" | "now">;
 }
 
 const { post } = Astro.props;
 
 const {
   title,
-  author,
   description,
   ogImage,
-  pubDatetime,
-  updatetime,
+  publishDatetime,
+  updateDatetime,
   tags,
-  noteState,
 } = post.data;
+
+// Collection-specific data
+const noteState = 'noteState' in post.data ? post.data.noteState : undefined;
+const streamType = 'streamType' in post.data ? post.data.streamType : undefined;
+// const pageOrder = 'order' in post.data ? post.data.order : undefined;
+// const nowMonth = 'month' in post.data ? post.data.month : undefined;
+// const nowYear = 'year' in post.data ? post.data.year : undefined;
 
 const { Content } = await post.render();
 
 const ogUrl = new URL(
-  ogImage ? ogImage : `${slugifyStr(title)}.svg`,
+  ogImage ? ogImage : `${post.slug}.svg`,
   Astro.url.origin
 ).href;
 ---
 
-<Layout title={title} author={author} description={description} ogImage={ogUrl}>
+<Layout title={title} description={description} ogImage={ogUrl}>
   <Header />
   <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
     <button
@@ -53,18 +57,20 @@ const ogUrl = new URL(
     >
       <Meta
         detail
-        updatetime={updatetime}
-        pubDatetime={pubDatetime}
+        updatetime={updateDatetime}
+        pubDatetime={publishDatetime}
         noteState={noteState}
+        streamType={streamType}
       />
     </div>
     <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
       <Content />
     </article>
-
-    <ul class="tags-container">
-      {tags.map(tag => <Tag name={tag} />)}
-    </ul>
+    {tags && tags.length > 0 && (
+      <ul class="tags-container">
+        {tags.map(tag => <Tag name={tag} />)}
+      </ul>
+    )}
   </main>
   <Footer />
 </Layout>

@@ -8,7 +8,6 @@ import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
 import getUniqueTags from "@utils/getUniqueTags";
 import getPostsByTag from "@utils/getPostsByTag";
-import slugify from "@utils/slugify";
 import { SITE } from "@config";
 
 export interface Props {
@@ -44,8 +43,8 @@ const tagPosts = getPostsByTag(posts, tag);
   >
     <ul>
       {
-        tagPosts.map(({ data }) => (
-          <Card href={`/${slugify(data)}`} frontmatter={data} />
+      tagPosts.map(({ data, slug }) => (
+          <Card href={`/${slug}`} frontmatter={data} />
         ))
       }
     </ul>
