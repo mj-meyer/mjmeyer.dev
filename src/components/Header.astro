@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 import { LOGO_IMAGE, SITE } from "@config";
 import LinkButton from "./LinkButton.astro";
 
@@ -58,10 +58,7 @@ const { activeNav } = Astro.props;
             <div id="third-line"></div>
           </div>
         </button>
-        <ul
-          id="menu-items"
-          class="font-montserrat font-black hidden md:flex"
-        >
+        <ul id="menu-items" class="font-montserrat font-black hidden md:flex">
           <li>
             <a href="/garden" class={activeNav === "posts" ? "active" : ""}>
               Garden

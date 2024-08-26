@@ -4,11 +4,11 @@ import PostDetails from "@layouts/PostDetails.astro";
 
 export async function getStaticPaths() {
   const nowPosts = await getCollection("now");
-  
+
   return nowPosts.map(post => ({
-    params: { 
-      year: post.data.year.toString(), 
-      month: post.data.month.toString().padStart(2, '0')
+    params: {
+      year: post.data.year.toString(),
+      month: post.data.month.toString().padStart(2, "0"),
     },
     props: { post },
   }));

@@ -9,6 +9,7 @@ outgoingLinks:
   - test-stream-note
   - test-note-for-garden
 ---
+
 # Test for now page
 
 this is the now page thingy note.

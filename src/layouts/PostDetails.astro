@@ -12,28 +12,20 @@ export interface Props {
 
 const { post } = Astro.props;
 
-const {
-  title,
-  description,
-  ogImage,
-  publishDatetime,
-  updateDatetime,
-  tags,
-} = post.data;
+const { title, description, ogImage, publishDatetime, updateDatetime, tags } =
+  post.data;
 
 // Collection-specific data
-const noteState = 'noteState' in post.data ? post.data.noteState : undefined;
-const streamType = 'streamType' in post.data ? post.data.streamType : undefined;
+const noteState = "noteState" in post.data ? post.data.noteState : undefined;
+const streamType = "streamType" in post.data ? post.data.streamType : undefined;
 // const pageOrder = 'order' in post.data ? post.data.order : undefined;
 // const nowMonth = 'month' in post.data ? post.data.month : undefined;
 // const nowYear = 'year' in post.data ? post.data.year : undefined;
 
 const { Content } = await post.render();
 
-const ogUrl = new URL(
-  ogImage ? ogImage : `${post.slug}.svg`,
-  Astro.url.origin
-).href;
+const ogUrl = new URL(ogImage ? ogImage : `${post.slug}.svg`, Astro.url.origin)
+  .href;
 ---
 
 <Layout title={title} description={description} ogImage={ogUrl}>
@@ -66,11 +58,15 @@ const ogUrl = new URL(
     <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
       <Content />
     </article>
-    {tags && tags.length > 0 && (
-      <ul class="tags-container">
-        {tags.map(tag => <Tag name={tag} />)}
-      </ul>
-    )}
+    {
+      tags && tags.length > 0 && (
+        <ul class="tags-container">
+          {tags.map(tag => (
+            <Tag name={tag} />
+          ))}
+        </ul>
+      )
+    }
   </main>
   <Footer />
 </Layout>

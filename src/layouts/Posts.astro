@@ -28,7 +28,7 @@ const next = pageNum < totalPages ? "" : "disabled";
   >
     <ul>
       {
-      posts.map(({ data, slug }) => (
+        posts.map(({ data, slug }) => (
           <Card href={`/${slug}`} frontmatter={data} />
         ))
       }
