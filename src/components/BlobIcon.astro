@@ -1,0 +1,72 @@
+---
+import {
+  Sprout,
+  Flower,
+  TreePine,
+  Newspaper,
+  SquareTerminal,
+  Youtube,
+  Podcast,
+  BookOpenText,
+  GraduationCap,
+  Drill,
+  BadgeDollarSign,
+  Twitter,
+  FileQuestion,
+} from "lucide-react";
+import blobs from "@assets/blobs";
+
+type NoteStateSymbolType = keyof typeof noteStateSymbol;
+
+export interface Props {
+  type: NoteStateSymbolType;
+  className?: string;
+}
+
+const { type, className = "" } = Astro.props;
+
+const noteStateSymbol = {
+  seedling: Sprout,
+  budding: Flower,
+  evergreen: TreePine,
+  article: Newspaper,
+  code: SquareTerminal,
+  video: Youtube,
+  podcast: Podcast,
+  book: BookOpenText,
+  course: GraduationCap,
+  tool: Drill,
+  service: BadgeDollarSign,
+  twitter: Twitter,
+  other: FileQuestion,
+};
+
+const iconIndex = Object.keys(noteStateSymbol).indexOf(type);
+const blobIndex = iconIndex % 4;
+const blobKey = `blob${blobIndex + 1}` as keyof typeof blobs;
+const rotation = (iconIndex * 30) % 360;
+
+const Icon = noteStateSymbol[type];
+const customIconClasses: Partial<Record<NoteStateSymbolType, string>> = {
+  code: "-ml-1",
+  evergreen: "-mt-2",
+};
+
+const iconClass = customIconClasses[type] || "";
+---
+
+<div class={`relative inline-block ${className}`}>
+  <div
+    class="absolute inset-0 text-skin-accent dark:text-skin-accent dark:opacity-70 opacity-20"
+    style={`transform: rotate(${rotation}deg);`}
+  >
+    <Fragment set:html={blobs[blobKey]} />
+  </div>
+  <div
+    class="relative z-10 flex items-center justify-center w-full h-full text-purple-700"
+  >
+    <Icon
+      className={`size-2/5 text-skin-accent dark:text-skin-dark ${iconClass}`}
+    />
+  </div>
+</div>

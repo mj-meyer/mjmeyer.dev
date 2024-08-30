@@ -34,6 +34,8 @@
   }
   html {
     @apply bg-skin-highlight;
+    --color-text-dark: 22, 1, 34;
+    --color-text-light: 225, 219, 255;
   }
   body {
     @apply flex min-h-screen flex-col bg-gradient-to-tl from-skin-fill to-skin-highlight font-lato text-lg text-skin-base 
@@ -62,12 +64,19 @@
     focus-visible:no-underline focus-visible:outline-dashed;
   }
   svg {
-    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
+    @apply inline-block h-6 w-6;
   }
   svg.icon-tabler {
-    @apply inline-block h-8 w-8 scale-150 fill-transparent stroke-skin-base stroke-[1.5px] opacity-90 hover:stroke-skin-accent group-hover:fill-transparent sm:scale-150;
+    @apply inline-block size-7 scale-150 fill-transparent stroke-skin-base stroke-1 opacity-90 hover:stroke-skin-accent group-hover:fill-transparent sm:scale-150;
     shape-rendering: geometricPrecision;
     stroke-linecap: round;
+  }
+  svg.x-icon {
+    /* @apply size-6 mr-2 stroke-[1.5px]; */
+  }
+  svg.blob-bg {
+    width: 100%;
+    height: 100%;
   }
   .prose {
     @apply prose-headings:!mb-3 prose-headings:!text-skin-heading

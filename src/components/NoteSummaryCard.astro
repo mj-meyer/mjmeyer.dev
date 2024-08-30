@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BlobIcon from "./BlobIcon.astro";
+
+export interface Props {
+  href?: string;
+  frontmatter: CollectionEntry<"garden" | "stream">["data"];
+  secHeading?: boolean;
+  cardType?: "stream" | "garden";
+}
+
+type GardenFrontmatter = CollectionEntry<"garden">["data"];
+type StreamFrontmatter = CollectionEntry<"stream">["data"];
+
+const { href, frontmatter, cardType } = Astro.props;
+
+const { title, updateDatetime } = frontmatter;
+
+const noteType =
+  cardType === "garden"
+    ? (frontmatter as GardenFrontmatter).noteState
+    : (frontmatter as StreamFrontmatter).streamType;
+
+const updateTimeStamp = updateDatetime.toLocaleDateString([], {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+<li>
+  <a
+    href={href}
+    class="text-skin-accent flex gap-2 items-center relative group"
+  >
+    <span class="text-skin-base pt-2">
+      <BlobIcon type={noteType} className="size-12" />
+    </span>
+    <span class="flex flex-col">
+      <span class="group-hover:underline underline-offset-4">{title}</span>
+      <span class="text-skin-base/50 text-sm group-hover:no-underline">
+        {updateTimeStamp}
+      </span>
+    </span>
+  </a>
+</li>

@@ -4,11 +4,11 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
-import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import { SOCIALS } from "@config";
 import type { CollectionEntry } from "astro:content";
+import NoteSummaryCard from "@components/NoteSummaryCard.astro";
 
 const posts = await getCollection("garden");
 const sortedPosts = getSortedPosts(posts) as CollectionEntry<"garden">[];
@@ -31,25 +31,6 @@ const curatedLinks = [
     slug: "dev-personal-brand",
   },
 ];
-
-function getStreamTypeColor(
-  streamType: CollectionEntry<"stream">["data"]["streamType"]
-) {
-  switch (streamType) {
-    case "article":
-      return "bg-blue-200 text-blue-800";
-    case "code":
-      return "bg-green-200 text-green-800";
-    case "video":
-      return "bg-red-200 text-red-800";
-    case "podcast":
-      return "bg-purple-200 text-purple-800";
-    case "book":
-      return "bg-yellow-200 text-yellow-800";
-    default:
-      return "bg-gray-200 text-gray-800";
-  }
-}
 ---
 
 <Layout>
@@ -59,21 +40,25 @@ function getStreamTypeColor(
       <div
         class="flex flex-col-reverse md:flex-row items-start gap-8 justify-between"
       >
-        <div class="md:w-3/5 mt-8 md:mt-0">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 relative">
+        <div class="md:w-3/5 mt-8 md:mt-0 flex flex-col gap-8">
+          <h1
+            class="text-4xl flex flex-col md:text-5xl lg:text-6xl font-bold mb-4 relative text-balance"
+          >
             <span
               class="absolute -left-4 -top-10 text-6xl opacity-10 sm:text-7xl sm:-top-12 md:-top-16 md:text-8xl lg:-top-24 lg:text-9xl"
               >Hello.</span
             >
-            I'm MJ Meyer, aka the Dadalorian
+            I'm MJ Meyer <span class="text-2xl opacity-80 uppercase">
+              AKA the Dadalorian
+            </span>
           </h1>
-          <p class="text-lg mb-4">
+          <p class="text-lg">
             In a galaxy plagued by bad software, bugs, atrocious UX, and legacy
             UI, I've dedicated the last 14 years to crafting stellar digital
             experiences using HTML, CSS, and a variety of JS/TS frameworks &
             libraries, including Angular, Next, Remix, Astro, and Node.js.
           </p>
-          <p class="text-lg mb-4">
+          <p class="text-lg">
             As a Star Wars-loving, Xbox-jamming, BBQ (braai) aficionado, my
             mission goes beyond vanquishing the digital dark side. I'm all about
             having fun, being a devoted husband to my incredible wife, and
@@ -100,7 +85,7 @@ function getStreamTypeColor(
             >.
           </p>
         </div>
-        <div class="md:w-2/5 flex flex-col gap-4 items-center">
+        <div class="md:w-2/5 -mt-16 -mr-8 flex flex-col gap-8 items-center">
           <img
             class="block dark:hidden"
             src="./profile-light.png"
@@ -111,20 +96,23 @@ function getStreamTypeColor(
             src="./profile-dark.png"
             alt="MJ Meyer Profile Image"
           />
-          {socialCount > 0 && <Socials centered />}
+          <div class="text-left flex justify-start flex-col items-center gap-4">
+            <span class="text-sm">Connect with me:</span>
+            {socialCount > 0 && <Socials centered />}
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="content" class="flex gap-8 w-full flex-col pt-16 sm:flex-row">
+    <section id="content" class="flex gap-16 w-full flex-col pt-16 sm:flex-row">
       <div
         id="curated-links"
         class="flex flex-col mb-16 w-3/5 gap-6 sm-max:w-full"
       >
-        <h2 class="text-2xl font-semibold relative">
+        <h2 class="text-4xl font-semibold relative">
           <span class="absolute -left-4 -top-10 opacity-10 text-6xl"
             >Curated</span
-          >Favorites
+          >Favorite Notes
         </h2>
         <p>
           These are some of my favorite notes and things I like to ponder about.
@@ -132,7 +120,7 @@ function getStreamTypeColor(
           about and the rest of the digital garden will be crafted around these
           notes.
         </p>
-        <ul class="space-y-2">
+        <ul class="space-y-4 pt-4 pl-6">
           {
             curatedLinks.map(link => (
               <li>
@@ -148,78 +136,91 @@ function getStreamTypeColor(
         </ul>
       </div>
 
-      <div class="recent w-2/5">
-        <div id="recent-garden" class="mb-16">
+      <div class="recent w-2/5 text-base">
+        <div id="recent-garden" class="mb-16 flex flex-col gap-6">
           <h2 class="text-2xl font-semibold relative">
             <span class="absolute -left-4 -top-10 opacity-10 text-6xl"
               >Recent</span
-            >Garden
+            >Digital Garden
           </h2>
           <p>
             Occasionally I add, replant or give my notes some digital sprinkles
             to help them grow.
           </p>
-          <ul class="space-y-4">
+          <ul class="pl-2 space-y-2 pt-4">
             {
               sortedPosts
                 .slice(0, 3)
-                .map(({ data, slug }) => (
-                  <Card
-                    href={`/garden/${slug}`}
-                    frontmatter={data}
-                    secHeading={false}
+                .map(({ data, slug, collection }) => (
+                  <NoteSummaryCard
+                    href={slug}
+                    frontmatter={data as CollectionEntry<"garden">["data"]}
+                    cardType={collection as "garden"}
                   />
                 ))
             }
           </ul>
-          <div class="mt-4">
-            <LinkButton href="/garden">
-              View All Garden Posts
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1">
+          <LinkButton
+            className="flex border-spacing-x-28 rounded-r-2xl border-b border-skin-accent/40 items-center text-sm font-normal justify-end"
+            href="/garden"
+          >
+            <span class="bg-skin-accent/20 py-1 px-2 rounded-r-2xl"
+              >All Garden Notes
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 ml-1 fill-skin-base group-hover:fill-skin-accent"
+              >
                 <path
                   d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
                 ></path>
               </svg>
-            </LinkButton>
-          </div>
+            </span>
+          </LinkButton>
         </div>
-        <div id="stream" class="mb-16">
-          <h2 class="text-2xl font-semibold mb-4">The Stream</h2>
-          <ul class="space-y-4">
+        <div id="stream" class="mb-16 gap-4 flex flex-col text-base">
+          <h2 class="text-2xl font-semibold relative">
+            <span class="absolute -left-4 -top-10 opacity-10 text-6xl"
+              >Recent</span
+            >Stream of Thoughts
+          </h2>
+          <p>
+            My own personal feed of links, quotes, videos or other miscellaneous
+            finds across the interwebs
+          </p>
+          <p>
+            As this is my stream of finds, expect a lack of context or raw
+            thoughts
+          </p>
+          <ul class="pl-2 space-y-2 pt-4">
             {
-              sortedStreamPosts.slice(0, 5).map(({ data, slug }) => (
-                <li class="bg-skin-card p-4 rounded-lg">
-                  <div class="flex items-center mb-2">
-                    <span
-                      class={`text-xs font-semibold px-2 py-1 rounded ${getStreamTypeColor(data.streamType)}`}
-                    >
-                      {data.streamType}
-                    </span>
-                    <time class="text-sm ml-2">
-                      {new Date(data.publishDatetime).toLocaleDateString()}
-                    </time>
-                  </div>
-                  <a
-                    href={`/stream/${slug}`}
-                    class="text-lg font-medium text-skin-accent hover:underline"
-                  >
-                    {data.title}
-                  </a>
-                  <p class="text-sm mt-1">{data.description}</p>
-                </li>
-              ))
+              sortedStreamPosts
+                .slice(0, 3)
+                .map(({ data, slug, collection }) => (
+                  <NoteSummaryCard
+                    href={slug}
+                    frontmatter={data as CollectionEntry<"stream">["data"]}
+                    cardType={collection}
+                  />
+                ))
             }
           </ul>
-          <div class="mt-4">
-            <LinkButton href="/stream">
-              View All Stream Posts
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1">
+
+          <LinkButton
+            className="flex rounded-r-2xl border-b border-skin-accent/40 items-center text-sm font-normal justify-end"
+            href="/stream"
+          >
+            <span class="bg-skin-accent/20 py-1 px-2 rounded-r-2xl"
+              >All Stream Notes
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 ml-1 fill-skin-base group-hover:fill-skin-accent"
+              >
                 <path
                   d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
                 ></path>
               </svg>
-            </LinkButton>
-          </div>
+            </span>
+          </LinkButton>
         </div>
       </div>
     </section>
