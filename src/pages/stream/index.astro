@@ -10,7 +10,7 @@ import Main from "@layouts/Main.astro";
 import Card from "@components/Card";
 import LinkButton from "@components/LinkButton.astro";
 
-const posts = await getCollection("garden");
+const posts = await getCollection("stream");
 
 const sortedPosts = getSortedPosts(posts);
 
@@ -18,26 +18,26 @@ const totalPages = getPageNumbers(sortedPosts.length);
 
 const paginatedPosts = sortedPosts.slice(0, SITE.postPerPage);
 
-const noteStates = [...new Set(posts.map(post => post.data.noteState))];
+const noteStates = [...new Set(posts.map(post => post.data.streamType))];
 ---
 
 <Notes
   posts={paginatedPosts}
   pageNum={1}
   totalPages={totalPages.length}
-  collectionType="garden"
-  allFilters={Array.from(noteStates)}
+  collectionType="stream"
+  allFilters={noteStates}
 >
-  <Header activeNav="garden" />
+  <Header activeNav="stream" />
   <Main
-    pageTitle="My Digital Garden"
-    pageDesc="A digital garden is a collection of imperfect notes and ideas that grow slowly over time."
+    pageTitle="Digital Stream of Resources"
+    pageDesc="Content I've collected from around the interwebs that aligns with my interests and supports my learning journey, making it easier to revisit and share with others."
   >
     <ul>
       {
         noteStates.map(filter => (
           <li>
-            <LinkButton href={`/garden/${filter}`} className="select-none">
+            <LinkButton href={`/stream/${filter}`} className="select-none">
               {filter}
             </LinkButton>
           </li>

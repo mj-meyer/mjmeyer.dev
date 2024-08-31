@@ -10,11 +10,11 @@ import Main from "@layouts/Main.astro";
 import Card from "@components/Card";
 
 export interface Props {
-  post: CollectionEntry<"garden">;
+  post: CollectionEntry<"stream">;
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection("garden", ({ data }) => !data.draft);
+  const posts = await getCollection("stream", ({ data }) => !data.draft);
 
   const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
     params: { slug: String(pageNum) },
@@ -25,7 +25,7 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 
-const posts = await getCollection("garden");
+const posts = await getCollection("stream");
 
 const sortedPosts = getSortedPosts(posts);
 
@@ -45,12 +45,12 @@ const paginatedPosts = sortedPosts.slice(startPost, lastPost);
   posts={paginatedPosts}
   pageNum={currentPage}
   totalPages={totalPages.length}
-  collectionType="garden"
+  collectionType="stream"
 >
-  <Header activeNav="garden" />
+  <Header activeNav="stream" />
   <Main
-    pageTitle="My Digital Garden"
-    pageDesc="A digital garden is a collection of imperfect notes and ideas that grow slowly over time."
+    pageTitle="Digital Stream of Resources"
+    pageDesc="Content I've collected from around the interwebs that aligns with my interests and supports my learning journey, making it easier to revisit and share with others."
   >
     <ul>
       {

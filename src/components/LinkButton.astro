@@ -23,7 +23,7 @@ const {
   target={target}
   href={disabled ? "#" : href}
   tabindex={disabled ? "-1" : "0"}
-  class={`group ${className}`}
+  class={`group ${className} ${disabled ? "disabled" : ""}`}
   aria-label={ariaLabel}
   title={title}
   aria-disabled={disabled}
@@ -34,5 +34,8 @@ const {
 <style>
   a {
     @apply hover:text-skin-accent;
+  }
+  a.disabled {
+    @apply cursor-default pointer-events-none opacity-40;
   }
 </style>
