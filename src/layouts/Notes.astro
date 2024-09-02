@@ -8,11 +8,6 @@ import Card from "@components/Card";
 import LinkButton from "@components/LinkButton.astro";
 import type { CollectionEntry } from "astro:content";
 
-type filterTypes = (
-  | CollectionEntry<"garden">["data"]["noteState"]
-  | CollectionEntry<"stream">["data"]["streamType"]
-)[];
-
 export interface Props {
   pageNum: number;
   totalPages: number;

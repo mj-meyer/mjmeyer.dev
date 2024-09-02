@@ -57,7 +57,7 @@ const iconClass = customIconClasses[type] || "";
 
 <div class={`relative inline-block ${className}`}>
   <div
-    class="absolute inset-0 text-skin-accent dark:text-skin-accent dark:opacity-70 opacity-20"
+    class="absolute inset-0 text-skin-card dark:text-skin-card"
     style={`transform: rotate(${rotation}deg);`}
   >
     <Fragment set:html={blobs[blobKey]} />
@@ -66,7 +66,7 @@ const iconClass = customIconClasses[type] || "";
     class="relative z-10 flex items-center justify-center w-full h-full text-purple-700"
   >
     <Icon
-      className={`size-2/5 text-skin-accent dark:text-skin-dark ${iconClass}`}
+      className={`size-2/5 text-skin-light dark:text-skin-dark ${iconClass}`}
     />
   </div>
 </div>

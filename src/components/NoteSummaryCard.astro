@@ -7,12 +7,13 @@ export interface Props {
   frontmatter: CollectionEntry<"garden" | "stream">["data"];
   secHeading?: boolean;
   cardType?: "stream" | "garden";
+  expanded?: boolean;
 }
 
 type GardenFrontmatter = CollectionEntry<"garden">["data"];
 type StreamFrontmatter = CollectionEntry<"stream">["data"];
 
-const { href, frontmatter, cardType } = Astro.props;
+const { href, frontmatter, cardType, expanded } = Astro.props;
 
 const { title, updateDatetime } = frontmatter;
 
@@ -28,19 +29,45 @@ const updateTimeStamp = updateDatetime.toLocaleDateString([], {
 });
 ---
 
-<li>
-  <a
-    href={href}
-    class="text-skin-accent flex gap-2 items-center relative group"
-  >
-    <span class="text-skin-base pt-2">
-      <BlobIcon type={noteType} className="size-12" />
-    </span>
-    <span class="flex flex-col">
-      <span class="group-hover:underline underline-offset-4">{title}</span>
-      <span class="text-skin-base/50 text-sm group-hover:no-underline">
-        {updateTimeStamp}
-      </span>
-    </span>
-  </a>
-</li>
+{
+  !expanded ? (
+    <li>
+      <a
+        href={href}
+        class="text-skin-accent hover:bg-skin-accent/5 border-dashed border-2 py-3 px-4 rounded-xl border-skin-card flex gap-2 items-center relative group"
+      >
+        <span class="text-skin-base absolute -left-7 -top-6 -rotate-[25deg] opacity-100">
+          <BlobIcon type={noteType} className="size-12" />
+        </span>
+        <span class="flex flex-col">
+          <span>{title}</span>
+          <span class="text-skin-base/50 text-sm group-hover:no-underline">
+            {updateTimeStamp}
+          </span>
+        </span>
+      </a>
+    </li>
+  ) : (
+    <li>
+      <a
+        href={href}
+        class="text-skin-accent z-20 hover:bg-skin-accent/5 p-8 rounded-3xl border-dashed border-skin-card border-2 flex relative group"
+      >
+        <span class="text-skin-base z-30 opacity-100 absolute -left-24 -top-12 -rotate-[25deg]">
+          <BlobIcon type={noteType} className="size-32" />
+        </span>
+        <span class="flex flex-col">
+          <span class="font-montserrat font-medium text-2xl">{title}</span>
+          <span class="text-skin-heading text-sm group-hover:no-underline pl-1 mb-2">
+            {updateTimeStamp}
+          </span>
+          <span class="text-lg text-skin-heading pl-3">
+            {frontmatter.description} a really long description that should be
+            truncated but not really cause I haven't implemented it yet i'm just
+            trying out to see what really long text would look like.
+          </span>
+        </span>
+      </a>
+    </li>
+  )
+}

@@ -3,8 +3,8 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
-import Meta from "@components/Meta";
 import type { CollectionEntry } from "astro:content";
+import BlobIcon from "@components/BlobIcon.astro";
 
 export interface Props {
   post: CollectionEntry<"garden" | "stream" | "page" | "now">;
@@ -12,8 +12,15 @@ export interface Props {
 
 const { post } = Astro.props;
 
-const { title, description, ogImage, publishDatetime, updateDatetime, tags } =
-  post.data;
+const {
+  title,
+  description,
+  ogImage,
+  updateDatetime,
+  tags,
+  incomingLinks,
+  outgoingLinks,
+} = post.data as CollectionEntry<"garden" | "stream">["data"];
 
 // Collection-specific data
 const noteState = "noteState" in post.data ? post.data.noteState : undefined;
@@ -26,57 +33,112 @@ const { Content } = await post.render();
 
 const ogUrl = new URL(ogImage ? ogImage : `${post.slug}.svg`, Astro.url.origin)
   .href;
+
+const noteType = noteState ? post.data.noteState : post.data.streamType;
+const updateYear = updateDatetime.toLocaleDateString([], {
+  year: "numeric",
+});
+
+const updateMonth = updateDatetime.toLocaleDateString([], {
+  month: "short",
+});
+
+const updateDay = updateDatetime.toLocaleDateString([], {
+  day: "numeric",
+});
 ---
 
 <Layout title={title} description={description} ogImage={ogUrl}>
-  <Header />
-  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
-    <button
-      class="focus-outline mb-2 mt-8 flex items-center hover:opacity-75"
-      onclick="history.back()"
-    >
-      <svg class="fill-skin-base" xmlns="http://www.w3.org/2000/svg"
-        ><path
-          d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
-        ></path>
-      </svg><span>Go back</span>
-    </button>
+  <div class="heading-section">
+    <Header />
+    <!-- <button -->
+    <!--   class="focus-outline mb-2 mt-8 flex items-center hover:opacity-75" -->
+    <!--   onclick="history.back()" -->
+    <!-- > -->
+    <!--   <svg class="fill-skin-base" xmlns="http://www.w3.org/2000/svg" -->
+    <!--     ><path -->
+    <!--       d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" -->
+    <!--     ></path> -->
+    <!--   </svg><span>Go back</span> -->
+    <!-- </button> -->
   </div>
   <main id="main-content" class="relative">
-    <h1 class="post-title">{title}</h1>
-    <div
-      class="my-2 border-skin-line border-opacity-30 max-lg:border-y max-lg:pt-2"
-    >
-      <Meta
-        detail
-        updatetime={updateDatetime}
-        pubDatetime={publishDatetime}
-        noteState={noteState}
-        streamType={streamType}
-      />
+    <aside class="relative flex flex-col items-center">
+      <span class="">
+        <BlobIcon type={noteType} className="size-32" />
+      </span>
+      <div
+        class="flex flex-col gap-2 font-montserrat text-center items-center bg-skin-card/30 pt-24 pb-3 px-2 -top-12 relative w-3/5 leading-none"
+      >
+        <div
+          class="uppercase absolute top-14 left-1/2 transform -translate-x-1/2 bg-skin-card px-4 py-1 whitespace-nowrap"
+        >
+          {noteType}
+        </div>
+        <span
+          class="text-4xl font-black text-skin-card leading-none tracking-wider"
+        >
+          {updateDay}
+        </span>
+        <span
+          class="uppercase font-medium text-skin-base tracking-widest border-b border-skin-card pb-2"
+        >
+          {updateMonth}
+        </span>
+        <span class="tracking-wider text-skin-base">{updateYear}</span>
+      </div>
+      <!-- <Meta -->
+      <!--   detail -->
+      <!--   updatetime={updateDatetime} -->
+      <!--   pubDatetime={publishDatetime} -->
+      <!--   noteState={noteState} -->
+      <!--   streamType={streamType} -->
+      <!-- /> -->
+    </aside>
+
+    <!-- <div -->
+    <!--   class="my-2 bg-skin-card border-skin-line relative border-opacity-30 max-lg:border-y max-lg:pt-2" -->
+    <!-- > -->
+    <!-- </div> -->
+    <div class="">
+      <h1 class="post-title">{title}</h1>
+      <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
+        <Content />
+      </article>
+      {
+        tags && tags.length > 0 && (
+          <ul class="tags-container">
+            {tags.map((tag: string) => (
+              <Tag name={tag} />
+            ))}
+          </ul>
+        )
+      }
     </div>
-    <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
-      <Content />
-    </article>
-    {
-      tags && tags.length > 0 && (
-        <ul class="tags-container">
-          {tags.map((tag: string) => (
-            <Tag name={tag} />
-          ))}
-        </ul>
-      )
-    }
   </main>
   <Footer />
 </Layout>
 
 <style>
   main {
-    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+    @apply mx-auto relative z-20 w-full max-w-5xl px-4 pt-16 pb-12 flex gap-8 overflow-hidden;
+  }
+  main:before {
+    @apply border-l-2 border-t-2 border-dashed border-skin-card/40 rounded-tl-3xl;
+    content: " ";
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 2rem;
+    left: 5rem;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    margin-right: -5rem;
   }
   .post-title {
-    @apply text-2xl font-semibold text-skin-accent;
+    @apply text-4xl font-extrabold text-skin-accent;
   }
   .tags-container {
     @apply my-8;

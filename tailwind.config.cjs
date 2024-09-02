@@ -24,6 +24,8 @@ module.exports = {
         heading: withOpacity("--color-heading-base"),
         dark: withOpacity("--color-text-dark"),
         light: withOpacity("--color-text-light"),
+        card: withOpacity("--color-card"),
+
       },
       gray: colors.gray
     },
@@ -59,6 +61,7 @@ module.exports = {
         line: withOpacity("--color-border"),
         fill: withOpacity("--color-text-base"),
         accent: withOpacity("--color-accent"),
+        card: withOpacity("--color-card"),
       },
     },
     fill: {
@@ -71,6 +74,7 @@ module.exports = {
     fontFamily: {
       lato: ["Lato", "sans-serif"],
       montserrat: ["Montserrat", "sans-serif"],
+      montserratAlt: ["Montserrat Alternates", "sans-serif"],
     },
     // },
     extend:{

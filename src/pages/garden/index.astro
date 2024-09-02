@@ -3,22 +3,17 @@ import { SITE } from "@config";
 import Notes from "@layouts/Notes.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import getPageNumbers from "@utils/getPageNumbers";
-
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import Header from "@components/Header.astro";
 import Main from "@layouts/Main.astro";
 import Card from "@components/Card";
-import LinkButton from "@components/LinkButton.astro";
+import NoteSummaryCard from "@components/NoteSummaryCard.astro";
 
 const posts = await getCollection("garden");
-
 const sortedPosts = getSortedPosts(posts);
-
 const totalPages = getPageNumbers(sortedPosts.length);
-
 const paginatedPosts = sortedPosts.slice(0, SITE.postPerPage);
-
-const noteStates = [...new Set(posts.map(post => post.data.noteState))];
+const noteStates = ["seedling", "budding", "evergreen"] as const;
 ---
 
 <Notes
@@ -26,29 +21,41 @@ const noteStates = [...new Set(posts.map(post => post.data.noteState))];
   pageNum={1}
   totalPages={totalPages.length}
   collectionType="garden"
-  allFilters={Array.from(noteStates)}
 >
   <Header activeNav="garden" />
   <Main
     pageTitle="My Digital Garden"
     pageDesc="A digital garden is a collection of imperfect notes and ideas that grow slowly over time."
   >
-    <ul>
+    <div
+      class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 mb-6"
+    >
+      <a
+        href="/garden"
+        class="px-6 h-8 flex border items-center rounded-3xl bg-skin-card border-skin-fill/30 text-skin-inverted"
+      >
+        All
+      </a>
       {
-        noteStates.map(filter => (
-          <li>
-            <LinkButton href={`/garden/${filter}`} className="select-none">
-              {filter}
-            </LinkButton>
-          </li>
+        noteStates.map(type => (
+          <a
+            href={`/garden/${type}`}
+            class="px-4 h-8 flex border items-center rounded-3xl bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60"
+          >
+            {type}
+          </a>
         ))
       }
-    </ul>
-
-    <ul>
+    </div>
+    <ul class="flex flex-col gap-16">
       {
         paginatedPosts.map(({ data, slug }) => (
-          <Card href={`/${slug}`} frontmatter={data} />
+          <NoteSummaryCard
+            href={slug}
+            frontmatter={data as CollectionEntry<"garden">["data"]}
+            cardType={"garden"}
+            expanded
+          />
         ))
       }
     </ul>

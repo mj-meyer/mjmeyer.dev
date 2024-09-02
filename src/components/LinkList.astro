@@ -1,0 +1,42 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+type Props = {
+  links: string[];
+  type: "incoming" | "outgoing";
+  allPosts: CollectionEntry<"garden" | "stream">[];
+};
+
+const { links, type, allPosts } = Astro.props;
+
+const validLinks = links.filter(link =>
+  allPosts.some(post => post.slug === link)
+);
+
+const linkDetails = validLinks.map(link => {
+  const post = allPosts.find(post => post.slug === link);
+  return {
+    slug: link,
+    title: post?.data.title || link,
+  };
+});
+---
+
+{
+  linkDetails.length > 0 && (
+    <div class="my-8">
+      <h2 class="text-2xl font-bold mb-4 text-skin-accent">
+        {type === "incoming" ? "Incoming Links" : "Outgoing Links"}
+      </h2>
+      <ul class="list-disc list-inside">
+        {linkDetails.map(({ slug, title }) => (
+          <li class="mb-2">
+            <a href={`/${slug}`} class="text-skin-accent hover:underline">
+              {title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}

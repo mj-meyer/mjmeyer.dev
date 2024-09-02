@@ -99,6 +99,10 @@
     prose-img:!mt-2 prose-img:border-2 
     prose-img:border-skin-line prose-hr:!border-skin-line;
   }
+  /* since we're using the title frontmatter, hide it. */
+  .prose h1 {
+    display: none;
+  }
   .prose a {
     @apply hover:!text-skin-accent;
   }

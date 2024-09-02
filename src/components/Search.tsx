@@ -6,7 +6,7 @@ import type { CollectionEntry } from "astro:content";
 export type SearchItem = {
   title: string;
   description: string;
-  data: CollectionEntry<"garden">["data"];
+  data: CollectionEntry<"garden" | "stream">["data"];
   slug: string;
 };
 

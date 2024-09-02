@@ -97,7 +97,10 @@ const curatedLinks = [
             alt="MJ Meyer Profile Image"
           />
           <div class="text-left flex justify-start flex-col items-center gap-4">
-            <span class="text-sm opacity-40">Connect with me:</span>
+            <span
+              class="text-sm opacity-60 font-montserrat font-semibold uppercase text-skin-heading"
+              >Connect with me:</span
+            >
             {socialCount > 0 && <Socials centered />}
           </div>
         </div>
@@ -147,7 +150,7 @@ const curatedLinks = [
             Occasionally I add, replant or give my notes some digital sprinkles
             to help them grow.
           </p>
-          <ul class="pl-2 space-y-2 pt-4">
+          <ul class="pl-2 space-y-6 pt-2">
             {
               sortedPosts
                 .slice(0, 3)
@@ -184,11 +187,11 @@ const curatedLinks = [
             >Resource Stream
           </h2>
           <p>
-            Resources, tools, and other interesting things I find on the web.
-            These aren't just random finds. They're resources that'll likely
-            contribute to my future notes.
+            Content I've collected from around the interwebs that aligns with my
+            interests and supports my learning journey, making it easier to
+            revisit and share with others.
           </p>
-          <ul class="pl-2 space-y-2 pt-2">
+          <ul class="pl-2 space-y-6 pt-2">
             {
               sortedStreamPosts
                 .slice(0, 3)

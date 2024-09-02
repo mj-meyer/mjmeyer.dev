@@ -4,11 +4,11 @@ import Notes from "@layouts/Notes.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import getPageNumbers from "@utils/getPageNumbers";
 
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import Header from "@components/Header.astro";
 import Main from "@layouts/Main.astro";
 import Card from "@components/Card";
-import LinkButton from "@components/LinkButton.astro";
+import NoteSummaryCard from "@components/NoteSummaryCard.astro";
 
 const posts = await getCollection("stream");
 
@@ -18,7 +18,7 @@ const totalPages = getPageNumbers(sortedPosts.length);
 
 const paginatedPosts = sortedPosts.slice(0, SITE.postPerPage);
 
-const noteStates = [...new Set(posts.map(post => post.data.streamType))];
+const streamTypes = [...new Set(posts.map(post => post.data.streamType))];
 ---
 
 <Notes
@@ -26,29 +26,41 @@ const noteStates = [...new Set(posts.map(post => post.data.streamType))];
   pageNum={1}
   totalPages={totalPages.length}
   collectionType="stream"
-  allFilters={noteStates}
 >
   <Header activeNav="stream" />
   <Main
     pageTitle="Digital Stream of Resources"
     pageDesc="Content I've collected from around the interwebs that aligns with my interests and supports my learning journey, making it easier to revisit and share with others."
   >
-    <ul>
+    <div
+      class="flex justify-center uppercase font-montserrat text-sm space-x-2 mb-6 font-medium"
+    >
+      <a
+        href="/stream"
+        class={`px-6 flex border items-center h-8 font-montserrat uppercase rounded-3xl bg-skin-card border-skin-fill/30 text-skin-inverted`}
+        >All</a
+      >
       {
-        noteStates.map(filter => (
-          <li>
-            <LinkButton href={`/stream/${filter}`} className="select-none">
-              {filter}
-            </LinkButton>
-          </li>
+        streamTypes.map(type => (
+          <a
+            href={`/stream/${type}`}
+            class={`px-4 h-8 flex border items-center rounded-3xl bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60`}
+          >
+            {type}
+          </a>
         ))
       }
-    </ul>
+    </div>
 
-    <ul>
+    <ul class="flex flex-col gap-16">
       {
         paginatedPosts.map(({ data, slug }) => (
-          <Card href={`/${slug}`} frontmatter={data} />
+          <NoteSummaryCard
+            href={slug}
+            frontmatter={data as CollectionEntry<"stream">["data"]}
+            cardType={"stream"}
+            expanded
+          />
         ))
       }
     </ul>

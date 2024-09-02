@@ -8,54 +8,100 @@ import { SITE } from "@config";
 import Header from "@components/Header.astro";
 import Main from "@layouts/Main.astro";
 import Card from "@components/Card";
+import NoteSummaryCard from "@components/NoteSummaryCard.astro";
 
 export interface Props {
   post: CollectionEntry<"garden">;
 }
 
+type NoteType = CollectionEntry<"garden">["data"]["noteState"];
+
 export async function getStaticPaths() {
   const posts = await getCollection("garden", ({ data }) => !data.draft);
-
-  const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
+  const sortedPosts = getSortedPosts(posts);
+  const noteTypes = ["seedling", "budding", "evergreen"];
+  const pagePaths = getPageNumbers(sortedPosts.length).map(pageNum => ({
     params: { slug: String(pageNum) },
   }));
-
-  return [...pagePaths];
+  const filterPaths = noteTypes.map(noteType => ({
+    params: { slug: noteType },
+  }));
+  return [...pagePaths, ...filterPaths];
 }
 
 const { slug } = Astro.params;
-
-const posts = await getCollection("garden");
-
-const sortedPosts = getSortedPosts(posts);
-
+const posts = (await getCollection("garden")) as CollectionEntry<"garden">[];
+const sortedPosts = getSortedPosts(posts) as CollectionEntry<"garden">[];
 const totalPages = getPageNumbers(sortedPosts.length);
+const noteTypes = ["seedling", "budding", "evergreen"] as const;
 
-const currentPage =
-  slug && !isNaN(Number(slug)) && totalPages.includes(Number(slug))
-    ? Number(slug)
-    : 0;
-const lastPost = currentPage * SITE.postPerPage;
-const startPost = lastPost - SITE.postPerPage;
+let currentPage = 1;
+let filteredPosts = sortedPosts;
+let paginatedPosts = sortedPosts;
 
-const paginatedPosts = sortedPosts.slice(startPost, lastPost);
+if (noteTypes.includes(slug as NoteType) && isNaN(Number(slug))) {
+  // Filter by note type without pagination
+  filteredPosts = sortedPosts.filter(post => post.data.noteState === slug);
+  paginatedPosts = filteredPosts;
+  currentPage = 1;
+} else {
+  // Paginate
+  currentPage =
+    slug && !isNaN(Number(slug)) && totalPages.includes(Number(slug))
+      ? Number(slug)
+      : 1;
+  const lastPost = currentPage * SITE.postPerPage;
+  const startPost = lastPost - SITE.postPerPage;
+  paginatedPosts = sortedPosts.slice(startPost, lastPost);
+}
+
+const pageTitle = noteTypes.includes(slug as NoteType)
+  ? `${slug} Notes`
+  : "My Digital Garden";
+
+const pageDesc = noteTypes.includes(slug as NoteType)
+  ? `Filtered view of ${slug} notes from my digital garden.`
+  : "A digital garden is a collection of imperfect notes and ideas that grow slowly over time.";
 ---
 
 <Notes
   posts={paginatedPosts}
   pageNum={currentPage}
-  totalPages={totalPages.length}
+  totalPages={noteTypes.includes(slug as NoteType)
+    ? 1
+    : Math.ceil(sortedPosts.length / SITE.postPerPage)}
   collectionType="garden"
 >
   <Header activeNav="garden" />
-  <Main
-    pageTitle="My Digital Garden"
-    pageDesc="A digital garden is a collection of imperfect notes and ideas that grow slowly over time."
-  >
-    <ul>
+  <Main pageTitle={pageTitle} pageDesc={pageDesc}>
+    <div
+      class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 mb-6"
+    >
+      <a
+        href="/garden"
+        class={`px-6 h-8 flex border items-center rounded-3xl bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60`}
+        >All</a
+      >
+      {
+        noteTypes.map(type => (
+          <a
+            href={`/garden/${type}`}
+            class={`px-4 h-8 flex border items-center rounded-3xl ${slug === type ? "bg-skin-card border-skin-fill/30 text-skin-inverted" : "bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60"}`}
+          >
+            {type}
+          </a>
+        ))
+      }
+    </div>
+    <ul class="flex flex-col gap-16">
       {
         paginatedPosts.map(({ data, slug }) => (
-          <Card href={`/${slug}`} frontmatter={data} />
+          <NoteSummaryCard
+            href={`/${slug}`}
+            frontmatter={data as CollectionEntry<"garden">["data"]}
+            cardType={"garden"}
+            expanded
+          />
         ))
       }
     </ul>
