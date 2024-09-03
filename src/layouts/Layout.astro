@@ -85,14 +85,16 @@ const socialImageURL = new URL(
         <WaveSeparator noMargin />
       </div>
 
-      <slot name="header" />
+      <div class="">
+        <slot name="header" />
+      </div>
     </div>
     <div class="absolute top-80 left-0 w-full z-10">
       <WaveSeparator rotate />
     </div>
 
     {hasWaveSeparator && <WaveSeparator />}
-    <div class="z-50 relative">
+    <div class="z-50 relative flex-1 flex flex-col">
       <slot />
     </div>
   </body>

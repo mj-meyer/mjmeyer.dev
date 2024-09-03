@@ -5,7 +5,8 @@ import PostDetails from "@layouts/PostDetails.astro";
 import getPageNumbers from "@utils/getPageNumbers";
 
 export interface Props {
-  post: CollectionEntry<"garden">;
+  post: CollectionEntry<"garden" | "stream">;
+  collection: "garden" | "stream";
 }
 
 export async function getStaticPaths() {
@@ -15,7 +16,7 @@ export async function getStaticPaths() {
 
   const postResult = posts.map(post => ({
     params: { slug: post.slug },
-    props: { post },
+    props: { post, collection: post.collection },
   }));
 
   const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
@@ -25,7 +26,7 @@ export async function getStaticPaths() {
   return [...postResult, ...pagePaths];
 }
 
-const { post } = Astro.props;
+const { post, collection } = Astro.props;
 ---
 
-<PostDetails post={post} />
+<PostDetails post={post} collection={collection} />

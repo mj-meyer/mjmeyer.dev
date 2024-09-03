@@ -7,7 +7,6 @@ import getPageNumbers from "@utils/getPageNumbers";
 import { SITE } from "@config";
 import Header from "@components/Header.astro";
 import Main from "@layouts/Main.astro";
-import Card from "@components/Card";
 import NoteSummaryCard from "@components/NoteSummaryCard.astro";
 
 export interface Props {
@@ -72,7 +71,6 @@ const pageDesc = noteTypes.includes(slug as NoteType)
     : Math.ceil(sortedPosts.length / SITE.postPerPage)}
   collectionType="garden"
 >
-  <Header activeNav="garden" />
   <Main pageTitle={pageTitle} pageDesc={pageDesc}>
     <div
       class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 mb-6"

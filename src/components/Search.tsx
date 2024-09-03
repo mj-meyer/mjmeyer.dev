@@ -57,8 +57,6 @@ export default function SearchBar({ searchList }: Props) {
     const inputResult = inputVal.length > 1 ? fuse.search(inputVal) : [];
     setSearchResults(inputResult);
 
-    console.log("searchResults", searchResults);
-
     // Update search string in URL
     if (inputVal.length > 0) {
       const searchParams = new URLSearchParams(window.location.search);

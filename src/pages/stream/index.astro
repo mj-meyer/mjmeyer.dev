@@ -7,7 +7,6 @@ import getPageNumbers from "@utils/getPageNumbers";
 import { getCollection, type CollectionEntry } from "astro:content";
 import Header from "@components/Header.astro";
 import Main from "@layouts/Main.astro";
-import Card from "@components/Card";
 import NoteSummaryCard from "@components/NoteSummaryCard.astro";
 
 const posts = await getCollection("stream");
@@ -27,7 +26,6 @@ const streamTypes = [...new Set(posts.map(post => post.data.streamType))];
   totalPages={totalPages.length}
   collectionType="stream"
 >
-  <Header activeNav="stream" />
   <Main
     pageTitle="Digital Stream of Resources"
     pageDesc="Content I've collected from around the interwebs that aligns with my interests and supports my learning journey, making it easier to revisit and share with others."

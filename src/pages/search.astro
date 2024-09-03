@@ -21,8 +21,11 @@ const searchList = posts.map(({ data, slug }) => ({
 }));
 ---
 
-<Layout title={`Search | ${SITE.title}`}>
-  <Header activeNav="search" />
+<Layout title={`Search | ${SITE.title}`} hasWaveSeparator={false}>
+  <Fragment slot="header">
+    <Header activeNav="search" />
+  </Fragment>
+
   <Main pageTitle="Search" pageDesc="Search any article ...">
     <SearchBar client:load searchList={searchList} />
   </Main>

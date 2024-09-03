@@ -10,9 +10,10 @@ import { getCollection } from "astro:content";
 
 export interface Props {
   post: CollectionEntry<"garden" | "stream" | "page" | "now">;
+  collection: "garden" | "stream";
 }
 
-const { post } = Astro.props;
+const { post, collection } = Astro.props;
 
 const {
   title,
@@ -55,10 +56,16 @@ const dateType =
     : "Published";
 ---
 
-<Layout title={title} description={description} ogImage={ogUrl}>
-  <div class="heading-section">
-    <Header />
-  </div>
+<Layout
+  title={title}
+  description={description}
+  ogImage={ogUrl}
+  hasWaveSeparator={false}
+>
+  <Fragment slot="header">
+    <Header activeNav={collection} />
+  </Fragment>
+
   <main id="main-content" class="relative">
     <aside class="relative flex flex-col items-center -top-16">
       <span class="relative z-30">

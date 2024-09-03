@@ -11,12 +11,14 @@ import getPostsByTag from "@utils/getPostsByTag";
 import { SITE } from "@config";
 
 export interface Props {
-  post: CollectionEntry<"blog">;
+  post: CollectionEntry<"garden" | "stream">;
   tag: string;
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const gardenNotes = await getCollection("garden", ({ data }) => !data.draft);
+  const streamNotes = await getCollection("stream", ({ data }) => !data.draft);
+  const posts = [...gardenNotes, ...streamNotes];
 
   const tags = getUniqueTags(posts);
 
@@ -30,13 +32,18 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.props;
 
-const posts = await getCollection("blog", ({ data }) => !data.draft);
+const gardenNotes = await getCollection("garden", ({ data }) => !data.draft);
+const streamNotes = await getCollection("stream", ({ data }) => !data.draft);
+const posts = [...gardenNotes, ...streamNotes];
 
 const tagPosts = getPostsByTag(posts, tag);
 ---
 
-<Layout title={`Tag:${tag} | ${SITE.title}`}>
-  <Header activeNav="tags" />
+<Layout title={`Tag:${tag} | ${SITE.title}`} hasWaveSeparator={false}>
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
+
   <Main
     pageTitle={`Tag:${tag}`}
     pageDesc={`All the articles with the tag "${tag}".`}

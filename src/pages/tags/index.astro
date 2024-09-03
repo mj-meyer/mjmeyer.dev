@@ -8,13 +8,17 @@ import Tag from "@components/Tag.astro";
 import getUniqueTags from "@utils/getUniqueTags";
 import { SITE } from "@config";
 
-const posts = await getCollection("blog");
+const gardenNotes = await getCollection("garden", ({ data }) => !data.draft);
+const streamNotes = await getCollection("stream", ({ data }) => !data.draft);
+const posts = [...gardenNotes, ...streamNotes];
 
 let tags = getUniqueTags(posts);
 ---
 
-<Layout title={`Tags | ${SITE.title}`}>
-  <Header activeNav="tags" />
+<Layout title={`Tags | ${SITE.title}`} hasWaveSeparator={false}>
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
   <Main pageTitle="Tags" pageDesc="All the tags used in posts.">
     <ul>
       {tags.map(tag => <Tag name={tag} size="lg" />)}
