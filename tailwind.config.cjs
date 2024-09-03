@@ -25,7 +25,8 @@ module.exports = {
         dark: withOpacity("--color-text-dark"),
         light: withOpacity("--color-text-light"),
         card: withOpacity("--color-card"),
-
+        hightlight: withOpacity("--color-highlight"),
+        fill: withOpacity("--color-fill"),
       },
       gray: colors.gray
     },

@@ -1,6 +1,7 @@
 ---
 import { SITE } from "@config";
 import "@styles/base.css";
+import WaveSeparator from "@components/WaveSeparator.astro";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -8,12 +9,14 @@ export interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  hasWaveSeparator?: boolean;
 }
 
 const {
   title = SITE.title,
   description = SITE.desc,
   ogImage = SITE.ogImage,
+  hasWaveSeparator = true,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -75,6 +78,22 @@ const socialImageURL = new URL(
     <script is:inline src="/toggle-theme.js"></script>
   </head>
   <body>
-    <slot />
+    <div
+      class={`header bg-gradient-to-br to-skin-fill from-skin-fill via-40% via-skin-highlight w-full relative ${hasWaveSeparator ? "pb-20" : "pb-4"}`}
+    >
+      <div class="-top-12 flex w-full absolute z-10">
+        <WaveSeparator noMargin />
+      </div>
+
+      <slot name="header" />
+    </div>
+    <div class="absolute top-80 left-0 w-full z-10">
+      <WaveSeparator rotate />
+    </div>
+
+    {hasWaveSeparator && <WaveSeparator />}
+    <div class="z-50 relative">
+      <slot />
+    </div>
   </body>
 </html>

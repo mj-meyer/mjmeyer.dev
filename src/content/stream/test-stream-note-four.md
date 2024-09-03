@@ -1,5 +1,5 @@
 ---
-title: Test Stream Note That is Awesome Video
+title: Stream note one
 publishDatetime: 2024-08-25T11:18:32Z
 updateDatetime: 2024-08-25T11:18:32Z
 description: Really cool stream note that's a video what do you think?
@@ -15,7 +15,7 @@ outgoingLinks:
   - test-for-now-page
 ---
 
-# Test for Stream
+# Stream note one test
 
 This is a test for the stream note. I'm not sure which one I should pick. Maybe it should be a video one or it could be a Twitter one.
 

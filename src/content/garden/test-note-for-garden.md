@@ -10,6 +10,7 @@ publish: true
 incomingLinks:
   - test-for-now-page
   - test-stream-note
+  - test-note-for-garden-two
 outgoingLinks:
   - untitled-5
   - test-stream-note

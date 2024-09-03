@@ -1,11 +1,17 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import NoteSummaryCard from "./NoteSummaryCard.astro";
+// Import commented out for now
+// import LinkPreview from "./LinkPreview.astro";
 
 type Props = {
   links: string[];
   type: "incoming" | "outgoing";
   allPosts: CollectionEntry<"garden" | "stream">[];
 };
+
+type GardenType = CollectionEntry<"garden">;
+type StreamType = CollectionEntry<"stream">;
 
 const { links, type, allPosts } = Astro.props;
 
@@ -14,29 +20,116 @@ const validLinks = links.filter(link =>
 );
 
 const linkDetails = validLinks.map(link => {
-  const post = allPosts.find(post => post.slug === link);
-  return {
-    slug: link,
-    title: post?.data.title || link,
-  };
+  const post = allPosts.find(post => post.slug === link) as
+    | GardenType
+    | StreamType;
+  return post;
 });
+
+const [gardenLinks, streamLinks] = linkDetails.reduce(
+  (acc, { collection, ...rest }) => {
+    if (collection === "garden") {
+      acc[0].push(rest);
+    } else {
+      acc[1].push(rest);
+    }
+    return acc;
+  },
+  [[] as GardenType[], [] as StreamType[]]
+);
 ---
 
+<div class="w-1/2 flex flex-col gap-4">
+  <h2
+    class="text-center underline-offset-8 text-skin-heading uppercase font-montserrat font-light"
+  >
+    {type === "incoming" ? "Notes linking here" : "References in this note"}
+  </h2>
+  {
+    gardenLinks.length > 0 && (
+      <div>
+        <h3 class="text-4xl uppercase font-extrabold text-right mt-4 -mb-9 text-skin-accent opacity-20">
+          Garden notes
+        </h3>
+        <ul class="list-disc list-inside">
+          {gardenLinks.map(({ slug, data }) => (
+            <NoteSummaryCard
+              href={slug}
+              frontmatter={data as CollectionEntry<"garden" | "stream">["data"]}
+              cardType={"garden"}
+            />
+          ))}
+        </ul>
+      </div>
+    )
+  }
+  {
+    streamLinks.length > 0 && (
+      <div>
+        <h3 class="text-2xl uppercase font-extrabold text-right mt-4 -mb-9 text-skin-accent opacity-20">
+          Stream Notes
+        </h3>
+        <ul class="list-disc list-inside">
+          {streamLinks.map(({ slug, data }) => (
+            <NoteSummaryCard
+              href={slug}
+              frontmatter={data as CollectionEntry<"stream">["data"]}
+              cardType={"stream"}
+            />
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</div>
+
 {
-  linkDetails.length > 0 && (
-    <div class="my-8">
-      <h2 class="text-2xl font-bold mb-4 text-skin-accent">
-        {type === "incoming" ? "Incoming Links" : "Outgoing Links"}
-      </h2>
-      <ul class="list-disc list-inside">
-        {linkDetails.map(({ slug, title }) => (
-          <li class="mb-2">
-            <a href={`/${slug}`} class="text-skin-accent hover:underline">
-              {title}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
+  /* 
+  Preview container and script commented out for future use
+  <div id="preview-container" class="fixed top-0 left-0 pointer-events-none">
+    {linkDetails.map(({ post }, index) => (
+      post && (
+        <div 
+          id={`preview-${index}`}
+          class="fixed invisible opacity-0 transition-all duration-300 ease-in-out bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 p-4 w-64 pointer-events-auto"
+        >
+          <LinkPreview post={post} />
+        </div>
+      )
+    ))}
+  </div>
+
+  <script>
+    function showPreview(previewElement, linkElement) {
+      const rect = linkElement.getBoundingClientRect();
+      previewElement.style.top = `${rect.bottom + window.scrollY}px`;
+      previewElement.style.left = `${rect.left}px`;
+      
+      // Adjust if it would overflow the right side of the screen
+      const previewRect = previewElement.getBoundingClientRect();
+      if (previewRect.right > window.innerWidth) {
+        previewElement.style.left = 'auto';
+        previewElement.style.right = '0';
+      }
+      
+      previewElement.classList.remove('invisible', 'opacity-0');
+      previewElement.classList.add('visible', 'opacity-100');
+    }
+
+    function hidePreview(previewElement) {
+      previewElement.classList.remove('visible', 'opacity-100');
+      previewElement.classList.add('invisible', 'opacity-0');
+    }
+
+    document.querySelectorAll('.link-with-preview').forEach(link => {
+      const previewId = link.getAttribute('data-preview-id');
+      const preview = document.getElementById(previewId);
+      
+      if (preview) {
+        link.addEventListener('mouseenter', () => showPreview(preview, link));
+        link.addEventListener('mouseleave', () => hidePreview(preview));
+      }
+    });
+  </script>
+*/
 }

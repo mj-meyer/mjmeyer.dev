@@ -22,7 +22,9 @@ const noteStates = ["seedling", "budding", "evergreen"] as const;
   totalPages={totalPages.length}
   collectionType="garden"
 >
-  <Header activeNav="garden" />
+  <Fragment slot="header">
+    <Header activeNav="garden" />
+  </Fragment>
   <Main
     pageTitle="My Digital Garden"
     pageDesc="A digital garden is a collection of imperfect notes and ideas that grow slowly over time."

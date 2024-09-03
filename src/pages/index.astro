@@ -9,6 +9,7 @@ import getSortedPosts from "@utils/getSortedPosts";
 import { SOCIALS } from "@config";
 import type { CollectionEntry } from "astro:content";
 import NoteSummaryCard from "@components/NoteSummaryCard.astro";
+import WaveSeparator from "@components/WaveSeparator.astro";
 
 const posts = await getCollection("garden");
 const sortedPosts = getSortedPosts(posts) as CollectionEntry<"garden">[];
@@ -34,9 +35,10 @@ const curatedLinks = [
 ---
 
 <Layout>
-  <Header />
-  <main class="px-4 py-12 sm:px-8 md:px-16 lg:px-32">
-    <section id="hero" class="mb-16 pt-8">
+  <Fragment slot="header">
+    <Header />
+
+    <section id="hero" class="mb-16 pt-44 z-50 relative">
       <div
         class="flex flex-col-reverse md:flex-row items-start gap-8 justify-between"
       >
@@ -106,7 +108,10 @@ const curatedLinks = [
         </div>
       </div>
     </section>
-
+  </Fragment>
+  <main
+    class="px-4 pb-12 sm:px-8 md:px-16 lg:px-32 bg-gradient-to-b to-skin-highlight/20 from-skin-fill"
+  >
     <section id="content" class="flex gap-16 w-full flex-col pt-16 sm:flex-row">
       <div
         id="curated-links"

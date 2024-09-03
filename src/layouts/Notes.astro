@@ -1,12 +1,12 @@
 ---
 import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
-import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
 import LinkButton from "@components/LinkButton.astro";
 import type { CollectionEntry } from "astro:content";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
 
 export interface Props {
   pageNum: number;
@@ -21,13 +21,21 @@ const prev = pageNum > 1 ? "" : "disabled";
 const next = pageNum < totalPages ? "" : "disabled";
 ---
 
-<Layout title={`Posts | ${SITE.title}`}>
+<Layout title={`Posts | ${SITE.title}`} hasWaveSeparator={false}>
+  <Fragment slot="header">
+    <Header activeNav={collectionType} />
+    <!-- <section class="mx-auto w-full max-w-3xl mb-4 pt-4 z-50 relative"> -->
+    <!--   <Breadcrumbs /> -->
+    <!--   <h1>My Digital Garden</h1> -->
+    <!--   <p> -->
+    <!--     A digital garden is a collection of imperfect notes and ideas that grow -->
+    <!--     slowly over time. -->
+    <!--   </p> -->
+    <!-- </section> -->
+  </Fragment>
+
   <slot>
-    <Header />
-    <Main
-      pageTitle="My Digital Garden"
-      pageDesc="A digital garden is a collection of imperfect notes and ideas that grow slowly over time."
-    >
+    <main id="main-content">
       <ul>
         {
           posts.map(({ data, slug }) => (
@@ -35,7 +43,7 @@ const next = pageNum < totalPages ? "" : "disabled";
           ))
         }
       </ul>
-    </Main>
+    </main>
   </slot>
 
   {
@@ -78,5 +86,14 @@ const next = pageNum < totalPages ? "" : "disabled";
 <style>
   .pagination-wrapper {
     @apply mb-8 mt-auto flex gap-8 justify-center;
+  }
+  #main-content {
+    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+  }
+  #main-content h1 {
+    @apply text-2xl font-semibold font-montserrat uppercase sm:text-3xl;
+  }
+  #main-content p {
+    @apply mt-2 mb-6 italic;
   }
 </style>

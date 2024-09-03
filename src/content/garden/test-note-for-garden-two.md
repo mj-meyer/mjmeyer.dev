@@ -1,5 +1,5 @@
 ---
-title: Test For Garden
+title: Test For Garden Two
 publishDatetime: 2024-08-25T11:18:32Z
 updateDatetime: 2024-08-25T11:18:32Z
 description: This is just a test note for testing
@@ -13,6 +13,7 @@ incomingLinks:
 outgoingLinks:
   - untitled-5
   - test-stream-note
+  - test-note-for-garden
 ---
 
 # Test for Garden

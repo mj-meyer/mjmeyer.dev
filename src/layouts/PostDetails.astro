@@ -5,6 +5,8 @@ import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
 import type { CollectionEntry } from "astro:content";
 import BlobIcon from "@components/BlobIcon.astro";
+import LinkList from "@components/LinkList.astro";
+import { getCollection } from "astro:content";
 
 export interface Props {
   post: CollectionEntry<"garden" | "stream" | "page" | "now">;
@@ -16,18 +18,14 @@ const {
   title,
   description,
   ogImage,
+  publishDatetime,
   updateDatetime,
   tags,
   incomingLinks,
   outgoingLinks,
 } = post.data as CollectionEntry<"garden" | "stream">["data"];
 
-// Collection-specific data
 const noteState = "noteState" in post.data ? post.data.noteState : undefined;
-const streamType = "streamType" in post.data ? post.data.streamType : undefined;
-// const pageOrder = 'order' in post.data ? post.data.order : undefined;
-// const nowMonth = 'month' in post.data ? post.data.month : undefined;
-// const nowYear = 'year' in post.data ? post.data.year : undefined;
 
 const { Content } = await post.render();
 
@@ -46,74 +44,78 @@ const updateMonth = updateDatetime.toLocaleDateString([], {
 const updateDay = updateDatetime.toLocaleDateString([], {
   day: "numeric",
 });
+
+// Fetch all posts for link validation
+const allGardenNotes = await getCollection("garden");
+const allStreams = await getCollection("stream");
+const allContent = [...allGardenNotes, ...allStreams];
+const dateType =
+  new Date(updateDatetime) > new Date(publishDatetime)
+    ? "Updated"
+    : "Published";
 ---
 
 <Layout title={title} description={description} ogImage={ogUrl}>
   <div class="heading-section">
     <Header />
-    <!-- <button -->
-    <!--   class="focus-outline mb-2 mt-8 flex items-center hover:opacity-75" -->
-    <!--   onclick="history.back()" -->
-    <!-- > -->
-    <!--   <svg class="fill-skin-base" xmlns="http://www.w3.org/2000/svg" -->
-    <!--     ><path -->
-    <!--       d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" -->
-    <!--     ></path> -->
-    <!--   </svg><span>Go back</span> -->
-    <!-- </button> -->
   </div>
   <main id="main-content" class="relative">
-    <aside class="relative flex flex-col items-center">
-      <span class="">
+    <aside class="relative flex flex-col items-center -top-16">
+      <span class="relative z-30">
         <BlobIcon type={noteType} className="size-32" />
       </span>
       <div
-        class="flex flex-col gap-2 font-montserrat text-center items-center bg-skin-card/30 pt-24 pb-3 px-2 -top-12 relative w-3/5 leading-none"
+        class="flex flex-col gap-2 font-montserrat dark:text-skin-inverted text-skin-inverted dark:[text-shadow:_0_1px_10px_rgb(255_255_255_/_10%)] [text-shadow:_0_1px_10px_rgb(0_0_0_/_10%)] text-center items-center dark:bg-[#5d2689] bg-[#cbc1ff] pt-24 pb-5 px-2 -top-12 relative w-3/5 leading-none"
       >
         <div
-          class="uppercase absolute top-14 left-1/2 transform -translate-x-1/2 bg-skin-card px-4 py-1 whitespace-nowrap"
+          class="uppercase absolute top-14 left-1/2 transform -translate-x-1/2 bg-skin-card text-skin-inverted font-bold px-4 py-1 whitespace-nowrap"
         >
           {noteType}
         </div>
-        <span
-          class="text-4xl font-black text-skin-card leading-none tracking-wider"
-        >
+        <span class="text-4xl font-black leading-none tracking-wider">
           {updateDay}
         </span>
         <span
-          class="uppercase font-medium text-skin-base tracking-widest border-b border-skin-card pb-2"
+          class="uppercase font-medium tracking-widest border-b border-skin-card dark:border-skin-card/60 pb-2"
         >
           {updateMonth}
         </span>
-        <span class="tracking-wider text-skin-base">{updateYear}</span>
+        <span class="tracking-wider font-semibold">{updateYear}</span>
+        <div
+          class="uppercase text-xs absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-skin-card text-skin-inverted font-medium px-2 py-1 whitespace-nowrap"
+        >
+          <!-- if publish date and update date, show date type like published or updated -->
+          {dateType}
+        </div>
       </div>
-      <!-- <Meta -->
-      <!--   detail -->
-      <!--   updatetime={updateDatetime} -->
-      <!--   pubDatetime={publishDatetime} -->
-      <!--   noteState={noteState} -->
-      <!--   streamType={streamType} -->
-      <!-- /> -->
     </aside>
 
-    <!-- <div -->
-    <!--   class="my-2 bg-skin-card border-skin-line relative border-opacity-30 max-lg:border-y max-lg:pt-2" -->
-    <!-- > -->
-    <!-- </div> -->
     <div class="">
       <h1 class="post-title">{title}</h1>
       <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
         <Content />
+        {
+          tags && tags.length > 0 && (
+            <ul class="tags-container">
+              {tags.map((tag: string) => (
+                <Tag name={tag} />
+              ))}
+            </ul>
+          )
+        }
       </article>
-      {
-        tags && tags.length > 0 && (
-          <ul class="tags-container">
-            {tags.map((tag: string) => (
-              <Tag name={tag} />
-            ))}
-          </ul>
-        )
-      }
+      <div class="mt-8 flex gap-12">
+        <LinkList
+          links={incomingLinks || []}
+          type="incoming"
+          allPosts={allContent}
+        />
+        <LinkList
+          links={outgoingLinks || []}
+          type="outgoing"
+          allPosts={allContent}
+        />
+      </div>
     </div>
   </main>
   <Footer />
@@ -121,7 +123,7 @@ const updateDay = updateDatetime.toLocaleDateString([], {
 
 <style>
   main {
-    @apply mx-auto relative z-20 w-full max-w-5xl px-4 pt-16 pb-12 flex gap-8 overflow-hidden;
+    @apply mx-auto relative z-20 w-full max-w-5xl px-4 pt-16 pb-12  flex gap-8 overflow-hidden;
   }
   main:before {
     @apply border-l-2 border-t-2 border-dashed border-skin-card/40 rounded-tl-3xl;
@@ -135,12 +137,16 @@ const updateDay = updateDatetime.toLocaleDateString([], {
     right: 0;
     bottom: 0;
     z-index: -1;
-    margin-right: -5rem;
   }
+
+  #article {
+    @apply border-b-2 border-dashed border-skin-card/40;
+  }
+
   .post-title {
     @apply text-4xl font-extrabold text-skin-accent;
   }
   .tags-container {
-    @apply my-8;
+    @apply mt-8 ml-0 p-0;
   }
 </style>
