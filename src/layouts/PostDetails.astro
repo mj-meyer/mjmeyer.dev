@@ -34,6 +34,16 @@ const ogUrl = new URL(ogImage ? ogImage : `${post.slug}.svg`, Astro.url.origin)
   .href;
 
 const noteType = noteState ? post.data.noteState : post.data.streamType;
+const fullUpdateDate = updateDatetime.toLocaleDateString([], {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+const fullPublishDate = publishDatetime.toLocaleDateString([], {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
 const updateYear = updateDatetime.toLocaleDateString([], {
   year: "numeric",
 });
@@ -67,39 +77,38 @@ const dateType =
   </Fragment>
 
   <main id="main-content" class="relative">
-    <aside class="relative flex flex-col items-center -top-16">
-      <span class="relative z-30">
-        <BlobIcon type={noteType} className="size-32" />
-      </span>
+    <div class="w-full">
       <div
-        class="flex flex-col gap-2 font-montserrat dark:text-skin-inverted text-skin-inverted dark:[text-shadow:_0_1px_10px_rgb(255_255_255_/_10%)] [text-shadow:_0_1px_10px_rgb(0_0_0_/_10%)] text-center items-center dark:bg-[#5d2689] bg-[#cbc1ff] pt-24 pb-5 px-2 -top-12 relative w-3/5 leading-none"
+        class="relative pt-16 border-t-2 border-dashed border-skin-card flex"
       >
         <div
-          class="uppercase absolute top-14 left-1/2 transform -translate-x-1/2 bg-skin-card text-skin-inverted font-bold px-4 py-1 whitespace-nowrap"
+          class="uppercase absolute -top-11 left-1/2 transform -translate-x-1/2 flex items-center w-full justify-center"
         >
-          {noteType}
+          <span class="z-30 translate-x-4 contrast-125 -rotate-[25deg]">
+            <BlobIcon type={noteType} className="size-12 scale-150" />
+          </span>
+          <span
+            class="relative flex items-center pl-6 flex-col border border-skin-card bg-skin-card/60 py-1 px-3"
+          >
+            {noteType}
+          </span>
+          <div class="flex flex-col border-skin-card border py-1 px-3">
+            <span class="">
+              {fullUpdateDate}
+            </span>
+          </div>
         </div>
-        <span class="text-4xl font-black leading-none tracking-wider">
-          {updateDay}
-        </span>
-        <span
-          class="uppercase font-medium tracking-widest border-b border-skin-card dark:border-skin-card/60 pb-2"
-        >
-          {updateMonth}
-        </span>
-        <span class="tracking-wider font-semibold">{updateYear}</span>
-        <div
-          class="uppercase text-xs absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-skin-card text-skin-inverted font-medium px-2 py-1 whitespace-nowrap"
-        >
-          <!-- if publish date and update date, show date type like published or updated -->
-          {dateType}
-        </div>
-      </div>
-    </aside>
 
-    <div class="">
-      <h1 class="post-title">{title}</h1>
-      <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
+        <h1 class="post-title px-8">
+          {title} this is a really really long title to see what happens when the
+          title wraps and I'm not sure if I can type without seeing.
+        </h1>
+      </div>
+      <article
+        id="article"
+        role="article"
+        class="prose mx-auto mt-8 pt-8 max-w-3xl"
+      >
         <Content />
         {
           tags && tags.length > 0 && (
@@ -111,7 +120,7 @@ const dateType =
           )
         }
       </article>
-      <div class="mt-8 flex gap-12">
+      <div class="mt-28 flex gap-12">
         <LinkList
           links={incomingLinks || []}
           type="incoming"
@@ -130,20 +139,11 @@ const dateType =
 
 <style>
   main {
-    @apply mx-auto relative z-20 w-full max-w-5xl px-4 pt-16 pb-12  flex gap-8 overflow-hidden;
+    @apply mx-auto relative z-20 w-full max-w-5xl px-4 pt-24 pb-12  flex gap-8;
   }
-  main:before {
-    @apply border-l-2 border-t-2 border-dashed border-skin-card/40 rounded-tl-3xl;
-    content: " ";
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 100%;
-    top: 2rem;
-    left: 5rem;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
+
+  aside {
+    display: none;
   }
 
   #article {

@@ -6,8 +6,10 @@ import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 import tokyoNight from "./shiki-themes/tokyo-night-theme.json";
-
 import vercel from "@astrojs/vercel/static";
+
+import mdx from "@astrojs/mdx";
+import embeds from "astro-embed/integration";
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,6 +22,8 @@ export default defineConfig({
     }),
     react(),
     sitemap(),
+    embeds(),
+    mdx(),
   ],
   markdown: {
     remarkPlugins: [
