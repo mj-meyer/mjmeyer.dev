@@ -79,10 +79,16 @@ const dateType =
   <main id="main-content" class="relative">
     <div class="w-full">
       <div
-        class="relative pt-16 border-t-2 border-dashed border-skin-card flex"
+        class="relative flex-col pb-16 px-8 border-b-2 border-dashed border-skin-card flex gap-8"
       >
+        <h1 class="text-5xl text-left font-extrabold text-skin-accent w-full">
+          {title}
+        </h1>
+        <div class="description text-3xl">
+          {description}
+        </div>
         <div
-          class="uppercase absolute -top-11 left-1/2 transform -translate-x-1/2 flex items-center w-full justify-center"
+          class="uppercase absolute -bottom-11 left-1/2 transform -translate-x-1/2 flex items-center w-full justify-center"
         >
           <span class="z-30 translate-x-4 contrast-125 -rotate-[25deg]">
             <BlobIcon type={noteType} className="size-12 scale-150" />
@@ -98,16 +104,11 @@ const dateType =
             </span>
           </div>
         </div>
-
-        <h1 class="post-title px-8">
-          {title} this is a really really long title to see what happens when the
-          title wraps and I'm not sure if I can type without seeing.
-        </h1>
       </div>
       <article
         id="article"
         role="article"
-        class="prose mx-auto mt-8 pt-8 max-w-3xl"
+        class="prose mx-auto text-2xl mt-8 pt-4 max-w-3xl prose-p:text-2xl prose-p:font-normal"
       >
         <Content />
         {
@@ -151,7 +152,7 @@ const dateType =
   }
 
   .post-title {
-    @apply text-4xl font-extrabold text-skin-accent;
+    @apply text-5xl text-center font-extrabold text-skin-accent w-full;
   }
   .tags-container {
     @apply mt-8 ml-0 p-0;

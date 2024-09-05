@@ -129,6 +129,8 @@ function example() {
 
 Here's a sentence with a footnote. [^1]
 
+here's another test ^[hello there how about this information, what does it look like?]
+
 [^1]: This is the footnote.
 
 ## Definition Lists

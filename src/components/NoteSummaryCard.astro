@@ -31,17 +31,22 @@ const updateTimeStamp = updateDatetime.toLocaleDateString([], {
 
 {
   !expanded ? (
-    <li>
+    <li class="list-none">
       <a
         href={href}
-        class="text-skin-accent hover:bg-skin-accent/5 border-dashed border-2 py-3 px-4 rounded-xl border-skin-card flex gap-2 items-center relative group"
+        class="text-skin-accent hover:bg-skin-accent/5 border-dashed border-2 py-6 px-4 rounded-xl border-skin-card flex gap-2 items-center relative group"
       >
-        <span class="text-skin-base absolute -left-7 -top-6 -rotate-[25deg] opacity-100">
-          <BlobIcon type={noteType} className="size-12" />
+        <span class="text-skin-base flex items-center absolute -left-7 -top-[1.6rem] opacity-100">
+          <span class="relative z-40 flex -rotate-[25deg]">
+            <BlobIcon type={noteType} className="size-12" />
+          </span>
+          <span class="relative z-10 text-skin-base bg-skin-highlight uppercase items-center rounded-lg text-sm flex -ml-4 pl-6 pr-3 py-1">
+            {noteType}
+          </span>
         </span>
         <span class="flex flex-col">
           <span>{title}</span>
-          <span class="text-skin-base/50 text-sm group-hover:no-underline">
+          <span class="absolute uppercase bg-skin-highlight px-4 py-1 -bottom-3.5 right-2 text-skin-base rounded-lg text-sm group-hover:no-underline">
             {updateTimeStamp}
           </span>
         </span>
@@ -53,18 +58,23 @@ const updateTimeStamp = updateDatetime.toLocaleDateString([], {
         href={href}
         class="text-skin-accent z-20 hover:bg-skin-accent/5 p-8 rounded-3xl border-dashed border-skin-card border-2 flex relative group"
       >
-        <span class="text-skin-base z-30 opacity-100 absolute -left-24 -top-12 -rotate-[25deg]">
-          <BlobIcon type={noteType} className="size-32" />
-        </span>
-        <span class="flex flex-col">
-          <span class="font-montserrat font-medium text-2xl">{title}</span>
-          <span class="text-skin-heading text-sm group-hover:no-underline pl-1 mb-2">
-            {updateTimeStamp}
+        <span class="text-skin-base flex items-center absolute -left-7 -top-[1.6rem] opacity-100">
+          <span class="relative z-40 flex -rotate-[25deg]">
+            <BlobIcon type={noteType} className="size-12 scale-[2.5]" />
           </span>
+          <span class="relative z-10 text-skin-base bg-skin-highlight uppercase items-center rounded-lg text-lg flex pl-14 pr-8 py-1 tracking-wider">
+            {noteType}
+          </span>
+        </span>
+        <span class="flex flex-col gap-4 pt-2">
+          <span class="font-montserrat font-medium text-2xl">{title}</span>
           <span class="text-lg text-skin-heading pl-3">
             {frontmatter.description} a really long description that should be
             truncated but not really cause I haven't implemented it yet i'm just
             trying out to see what really long text would look like.
+          </span>
+          <span class="absolute uppercase bg-skin-highlight px-4 py-1 -bottom-3.5 right-2 text-skin-base rounded-lg text-sm group-hover:no-underline">
+            {updateTimeStamp}
           </span>
         </span>
       </a>

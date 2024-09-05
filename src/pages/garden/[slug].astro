@@ -73,7 +73,7 @@ const pageDesc = noteTypes.includes(slug as NoteType)
 >
   <Main pageTitle={pageTitle} pageDesc={pageDesc}>
     <div
-      class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 mb-6"
+      class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 my-16"
     >
       <a
         href="/garden"
@@ -91,7 +91,7 @@ const pageDesc = noteTypes.includes(slug as NoteType)
         ))
       }
     </div>
-    <ul class="flex flex-col gap-16">
+    <ul class="flex flex-col gap-24">
       {
         paginatedPosts.map(({ data, slug }) => (
           <NoteSummaryCard

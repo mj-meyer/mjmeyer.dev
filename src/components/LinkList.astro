@@ -39,19 +39,16 @@ const [gardenLinks, streamLinks] = linkDetails.reduce(
 );
 ---
 
-<div class="w-1/2 flex flex-col gap-4">
+<div class="w-1/2 flex flex-col gap-8">
   <h2
-    class="text-center underline-offset-8 text-skin-heading uppercase font-montserrat font-light"
+    class="text-left text-2xl underline-offset-8 text-skin-heading uppercase font-montserrat font-black"
   >
     {type === "incoming" ? "Notes linking here" : "References in this note"}
   </h2>
   {
     gardenLinks.length > 0 && (
       <div>
-        <h3 class="text-4xl uppercase font-extrabold text-right mt-4 -mb-9 text-skin-accent opacity-20">
-          Garden notes
-        </h3>
-        <ul class="list-disc list-inside">
+        <ul>
           {gardenLinks.map(({ slug, data }) => (
             <NoteSummaryCard
               href={slug}
@@ -66,10 +63,7 @@ const [gardenLinks, streamLinks] = linkDetails.reduce(
   {
     streamLinks.length > 0 && (
       <div>
-        <h3 class="text-2xl uppercase font-extrabold text-right mt-4 -mb-9 text-skin-accent opacity-20">
-          Stream Notes
-        </h3>
-        <ul class="list-disc list-inside">
+        <ul>
           {streamLinks.map(({ slug, data }) => (
             <NoteSummaryCard
               href={slug}

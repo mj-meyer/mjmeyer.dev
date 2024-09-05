@@ -117,8 +117,9 @@ const curatedLinks = [
         id="curated-links"
         class="flex flex-col mb-16 w-3/5 gap-6 sm-max:w-full"
       >
-        <h2 class="text-4xl font-semibold relative">
-          <span class="absolute -left-4 -top-10 opacity-10 text-6xl"
+        <h2 class="text-4xl z-10 font-bold relative">
+          <span
+            class="absolute font-extrabold -left-4 -top-10 opacity-60 -z-10 text-skin-hightlight text-6xl"
             >Curated</span
           >Favorite Notes
         </h2>
@@ -144,10 +145,11 @@ const curatedLinks = [
         </ul>
       </div>
 
-      <div class="recent w-2/5 text-base">
-        <div id="recent-garden" class="mb-16 flex flex-col gap-6">
-          <h2 class="text-2xl font-semibold relative">
-            <span class="absolute -left-4 -top-10 opacity-10 text-6xl"
+      <div class="recent w-2/5 text-base flex flex-col gap-8">
+        <div id="recent-garden" class="mb-16 flex flex-col gap-4">
+          <h2 class="text-2xl font-bold relative z-10">
+            <span
+              class="absolute font-extrabold -left-4 -top-10 opacity-60 -z-10 text-skin-hightlight text-6xl"
               >Recent</span
             >Digital Garden
           </h2>
@@ -155,7 +157,7 @@ const curatedLinks = [
             Occasionally I add, replant or give my notes some digital sprinkles
             to help them grow.
           </p>
-          <ul class="pl-2 space-y-6 pt-2">
+          <ul class="my-8 space-y-12 pt-2">
             {
               sortedPosts
                 .slice(0, 3)
@@ -169,14 +171,15 @@ const curatedLinks = [
             }
           </ul>
           <LinkButton
-            className="flex border-spacing-x-28 rounded-r-2xl border-b border-skin-accent/40 items-center text-sm font-normal justify-end"
+            className="flex border-b border-skin-card items-center text-sm font-bold uppercase justify-center"
             href="/garden"
           >
-            <span class="bg-skin-accent/20 py-1 px-2 rounded-r-2xl"
+            <span
+              class="bg-skin-card py-1 flex group-hover:text-skin-fill items-center -mb-4 pl-6 pr-4 rounded-2xl"
               >All Garden Notes
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 ml-1 fill-skin-base group-hover:fill-skin-accent"
+                class="h-6 w-6 ml-1 fill-skin-base group-hover:fill-skin-fill"
               >
                 <path
                   d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
@@ -186,8 +189,9 @@ const curatedLinks = [
           </LinkButton>
         </div>
         <div id="stream" class="mb-16 gap-4 flex flex-col text-base">
-          <h2 class="text-2xl font-semibold relative">
-            <span class="absolute -left-4 -top-10 opacity-10 text-6xl"
+          <h2 class="text-2xl z-10 font-bold relative">
+            <span
+              class="absolute font-extrabold -left-4 -top-10 opacity-60 -z-10 text-skin-hightlight text-6xl"
               >Recent</span
             >Resource Stream
           </h2>
@@ -196,7 +200,7 @@ const curatedLinks = [
             interests and supports my learning journey, making it easier to
             revisit and share with others.
           </p>
-          <ul class="pl-2 space-y-6 pt-2">
+          <ul class="my-8 space-y-12 pt-2">
             {
               sortedStreamPosts
                 .slice(0, 3)
@@ -211,14 +215,15 @@ const curatedLinks = [
           </ul>
 
           <LinkButton
-            className="flex rounded-r-2xl border-b border-skin-accent/40 items-center text-sm font-normal justify-end"
+            className="flex border-b border-skin-card items-center text-sm font-bold uppercase justify-center"
             href="/stream"
           >
-            <span class="bg-skin-accent/20 py-1 px-2 rounded-r-2xl"
+            <span
+              class="bg-skin-card group-hover:text-skin-fill py-1 flex items-center -mb-4 pl-6 pr-4 rounded-2xl"
               >All Stream Notes
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 ml-1 fill-skin-base group-hover:fill-skin-accent"
+                class="h-6 w-6 ml-1 fill-skin-base group-hover:fill-skin-fill"
               >
                 <path
                   d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"

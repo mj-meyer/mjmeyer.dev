@@ -30,7 +30,7 @@ const noteStates = ["seedling", "budding", "evergreen"] as const;
     pageDesc="A digital garden is a collection of imperfect notes and ideas that grow slowly over time."
   >
     <div
-      class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 mb-6"
+      class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 my-16"
     >
       <a
         href="/garden"
@@ -49,7 +49,7 @@ const noteStates = ["seedling", "budding", "evergreen"] as const;
         ))
       }
     </div>
-    <ul class="flex flex-col gap-16">
+    <ul class="flex flex-col gap-24">
       {
         paginatedPosts.map(({ data, slug }) => (
           <NoteSummaryCard
