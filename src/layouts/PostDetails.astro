@@ -77,9 +77,9 @@ const dateType =
   </Fragment>
 
   <main id="main-content" class="relative">
-    <div class="w-full">
+    <div class="max-w-3xl mx-auto">
       <div
-        class="relative flex-col pb-16 px-8 border-b-2 border-dashed border-skin-card flex gap-8"
+        class="relative flex-col pb-12 border-b-2 border-dashed border-skin-card flex gap-8"
       >
         <h1 class="text-5xl text-left font-extrabold text-skin-accent w-full">
           {title}
@@ -88,7 +88,7 @@ const dateType =
           {description}
         </div>
         <div
-          class="uppercase absolute -bottom-11 left-1/2 transform -translate-x-1/2 flex items-center w-full justify-center"
+          class="uppercase absolute -bottom-11 right-0 flex items-center w-full justify-end"
         >
           <span class="z-30 translate-x-4 contrast-125 -rotate-[25deg]">
             <BlobIcon type={noteType} className="size-12 scale-150" />
@@ -105,21 +105,22 @@ const dateType =
           </div>
         </div>
       </div>
+      {
+        tags && tags.length > 0 && (
+          <ul class="tags-container">
+            {tags.map((tag: string) => (
+              <Tag name={tag} />
+            ))}
+          </ul>
+        )
+      }
+
       <article
         id="article"
         role="article"
-        class="prose mx-auto text-2xl mt-8 pt-4 max-w-3xl prose-p:text-2xl prose-p:font-normal"
+        class="prose mx-auto text-2xl mt-8 pt-4 max-w-3xl prose-p:text-2xl prose-p:font-light"
       >
         <Content />
-        {
-          tags && tags.length > 0 && (
-            <ul class="tags-container">
-              {tags.map((tag: string) => (
-                <Tag name={tag} />
-              ))}
-            </ul>
-          )
-        }
       </article>
       <div class="mt-28 flex gap-12">
         <LinkList
@@ -148,13 +149,13 @@ const dateType =
   }
 
   #article {
-    @apply border-b-2 border-dashed border-skin-card/40;
+    @apply border-b-2 pb-16 border-dashed border-skin-card/40;
   }
 
   .post-title {
     @apply text-5xl text-center font-extrabold text-skin-accent w-full;
   }
   .tags-container {
-    @apply mt-8 ml-0 p-0;
+    @apply mt-2 ml-0 p-0 w-3/5;
   }
 </style>
