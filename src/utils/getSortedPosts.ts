@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 
-type PostsType = CollectionEntry<"garden" | "stream">[];
+type PostsType = CollectionEntry<"garden" | "stream" | "now">[];
 
 const getSortedPosts = (posts: PostsType): PostsType =>
   posts

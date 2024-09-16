@@ -1,0 +1,129 @@
+---
+import getSortedPosts from "@utils/getSortedPosts";
+import { getCollection } from "astro:content";
+import Header from "@components/Header.astro";
+import DetailLayout from "@layouts/DetailLayout.astro";
+
+const posts = await getCollection("now");
+const sortedPosts = getSortedPosts(posts);
+
+const firstSixPosts = sortedPosts.slice(0, 3);
+const restOfPosts = sortedPosts.slice(3);
+
+// Process the first six posts to get their rendered content
+const renderedFirstSixPosts = await Promise.all(
+  firstSixPosts.map(async post => {
+    const { Content } = await post.render();
+    const publishDate = post.data.publishDatetime;
+    const date = new Date(publishDate);
+    const monthName = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
+
+    return { ...post, Content, monthName, year };
+  })
+);
+
+// Process the rest of the posts to extract month and year
+const processedRestOfPosts = [
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+  ...restOfPosts,
+].map(post => {
+  const publishDate = post.data.publishDatetime;
+  const date = new Date(publishDate);
+  const monthName = date.toLocaleString("default", { month: "long" });
+  const monthNumeric = date.toLocaleString("default", { month: "numeric" });
+  const year = date.getFullYear();
+  return { ...post, monthName, monthNumeric, year };
+});
+---
+
+<DetailLayout>
+  <Fragment slot="header">
+    <Header activeNav="about" />
+  </Fragment>
+
+  <main id="main-content">
+    <h1
+      class="text-4xl flex z-20 flex-col md:text-5xl lg:text-8xl font-black mb-4 relative text-balance"
+    >
+      <span
+        class="absolute -z-10 text-skin-hightlight -left-24 -top-10 text-6xl opacity-40 sm:text-7xl sm:-top-12 md:-top-16 md:text-8xl lg:-top-16 lg:text-9xl"
+        >what's up</span
+      >
+      Now
+    </h1>
+    <p>page description test what do you think?</p>
+
+    <hr class="border-b border-skin-accent/20 my-12" />
+
+    <!-- Render the first 6 posts fully -->
+    <div class="flex flex-col gap-28 w-full pt-24">
+      {
+        renderedFirstSixPosts.map(({ monthName, year, Content }) => (
+          <div class="w-full max-w-full pb-16 prose prose-p:text-2xl prose-p:leading-10 prose-p:font-light border-b-2 border-skin-accent/30 border-dashed">
+            <h2 class="text-4xl flex flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance">
+              <span class="absolute -z-10 text-skin-hightlight -left-12 -top-10 text-5xl opacity-40 sm:text-7xl sm:-top-12 md:-top-16 md:text-8xl lg:-top-16 lg:text-8xl">
+                {year}
+              </span>
+              {monthName}
+            </h2>
+
+            <Content />
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Render a list of titles with links for the remaining posts -->
+    {
+      processedRestOfPosts.length > 0 && (
+        <ul class="post-list grid text-center grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-12">
+          {processedRestOfPosts.map(({ monthName, year }) => (
+            <li>
+              <a
+                class="hover:text-skin-accent pb-1 hover:border-b-2 border-skin-accent border-dashed"
+                href={`/${year}/${monthName}`}
+              >{`${monthName} ${year}`}</a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </main>
+</DetailLayout>
+
+<style>
+  #main-content {
+    @apply mx-auto w-full max-w-3xl px-4 py-28 h-full flex-1;
+  }
+  #main-content p {
+    @apply mt-2 mb-6 italic text-4xl font-light;
+  }
+  .post-list {
+    @apply mt-12;
+  }
+  .post-list li {
+    @apply mb-4;
+  }
+  .post-list a {
+    /* @apply text-blue-600 hover:underline; */
+  }
+</style>

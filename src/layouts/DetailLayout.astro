@@ -1,0 +1,34 @@
+---
+import { SITE } from "@config";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import LinkButton from "@components/LinkButton.astro";
+import type { CollectionEntry } from "astro:content";
+
+// export interface Props {
+//   posts: CollectionEntry<"garden" | "stream">[];
+//   collectionType: "garden" | "stream";
+// }
+
+// const { pageNum, totalPages, posts, collectionType } = Astro.props;
+
+// const prev = pageNum > 1 ? "" : "disabled";
+// const next = pageNum < totalPages ? "" : "disabled";
+---
+
+<Layout title={`Posts | ${SITE.title}`} hasWaveSeparator={false}>
+  <Fragment slot="header">
+    <Header activeNav={"about"} />
+  </Fragment>
+
+  <slot />
+
+  <Footer />
+</Layout>
+
+<style>
+  .pagination-wrapper {
+    @apply mb-8 mt-auto flex gap-8 justify-center;
+  }
+</style>
