@@ -8,6 +8,8 @@ import { SITE } from "@config";
 import Header from "@components/Header.astro";
 import Main from "@layouts/Main.astro";
 import NoteSummaryCard from "@components/NoteSummaryCard.astro";
+import DetailLayout from "@layouts/DetailLayout.astro";
+import Pagination from "@components/Pagination.astro";
 
 export interface Props {
   post: CollectionEntry<"stream">;
@@ -37,6 +39,7 @@ const streamTypes = [...new Set(posts.map(post => post.data.streamType))];
 let currentPage = 1;
 let filteredPosts = sortedPosts;
 let paginatedPosts = sortedPosts;
+let totalPageCount = 1;
 
 if (streamTypes.includes(slug as StreamType) && isNaN(Number(slug))) {
   // Filter by stream type without pagination
@@ -52,6 +55,7 @@ if (streamTypes.includes(slug as StreamType) && isNaN(Number(slug))) {
   const lastPost = currentPage * SITE.postPerPage;
   const startPost = lastPost - SITE.postPerPage;
   paginatedPosts = sortedPosts.slice(startPost, lastPost);
+  totalPageCount = totalPages.length;
 }
 
 const pageTitle = streamTypes.includes(slug as StreamType)
@@ -63,45 +67,62 @@ const pageDesc = streamTypes.includes(slug as StreamType)
   : "Content I've collected from around the interwebs that aligns with my interests and supports my learning journey, making it easier to revisit and share with others.";
 ---
 
-<Notes
-  posts={paginatedPosts}
-  pageNum={currentPage}
-  totalPages={streamTypes.includes(slug as StreamType)
-    ? 1
-    : Math.ceil(sortedPosts.length / SITE.postPerPage)}
-  collectionType="stream"
->
-  <Main pageTitle={pageTitle} pageDesc={pageDesc}>
-    <div
-      class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 mb-6"
+<DetailLayout>
+  <Fragment slot="header">
+    <Header activeNav="stream" />
+  </Fragment>
+  <Fragment slot="pageTitle">
+    <h1
+      class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
     >
-      <a
-        href="/stream"
-        class={`px-6 h-8 flex border items-center rounded-3xl bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60`}
-        >All</a
+      <span
+        class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
+        >Notes</span
       >
-      {
-        streamTypes.map(type => (
-          <a
-            href={`/stream/${type}`}
-            class={`px-4 h-8 flex border items-center rounded-3xl ${slug === type ? "bg-skin-card border-skin-fill/30 text-skin-inverted" : "bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60"}`}
-          >
-            {type}
-          </a>
-        ))
-      }
-    </div>
-    <ul class="flex flex-col gap-16">
-      {
-        paginatedPosts.map(({ data, slug }) => (
-          <NoteSummaryCard
-            href={`/${slug}`}
-            frontmatter={data as CollectionEntry<"stream">["data"]}
-            cardType={"stream"}
-            expanded
-          />
-        ))
-      }
-    </ul>
-  </Main>
-</Notes>
+      Resource Stream
+    </h1>
+    <p>
+      Content I've collected from around the interwebs that aligns with my
+      interests and supports my learning journey, making it easier to revisit
+      and share with others.
+    </p>
+  </Fragment>
+  <div
+    class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 mb-6"
+  >
+    <a
+      href="/stream"
+      class={`px-6 h-8 flex border items-center rounded-3xl bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60`}
+      >All</a
+    >
+    {
+      streamTypes.map(type => (
+        <a
+          href={`/stream/${type}`}
+          class={`px-4 h-8 flex border items-center rounded-3xl ${slug === type ? "bg-skin-card border-skin-fill/30 text-skin-inverted" : "bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60"}`}
+        >
+          {type}
+        </a>
+      ))
+    }
+  </div>
+  <ul class="flex flex-col gap-16">
+    {
+      paginatedPosts.map(({ data, slug }) => (
+        <NoteSummaryCard
+          href={`/${slug}`}
+          frontmatter={data as CollectionEntry<"stream">["data"]}
+          cardType={"stream"}
+          expanded
+        />
+      ))
+    }
+  </ul>
+  <Fragment slot="pagination">
+    <Pagination
+      pageNum={currentPage}
+      totalPages={totalPageCount}
+      collectionType={"stream"}
+    />
+  </Fragment>
+</DetailLayout>
