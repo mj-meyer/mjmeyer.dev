@@ -1,13 +1,12 @@
 ---
 import { SITE } from "@config";
-import Notes from "@layouts/Notes.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import getPageNumbers from "@utils/getPageNumbers";
 import { getCollection, type CollectionEntry } from "astro:content";
 import Header from "@components/Header.astro";
-import Main from "@layouts/Main.astro";
-import Card from "@components/Card";
 import NoteSummaryCard from "@components/NoteSummaryCard.astro";
+import DetailLayout from "@layouts/DetailLayout.astro";
+import Pagination from "@components/Pagination.astro";
 
 const posts = await getCollection("garden");
 const sortedPosts = getSortedPosts(posts);
@@ -16,50 +15,64 @@ const paginatedPosts = sortedPosts.slice(0, SITE.postPerPage);
 const noteStates = ["seedling", "budding", "evergreen"] as const;
 ---
 
-<Notes
-  posts={paginatedPosts}
-  pageNum={1}
-  totalPages={totalPages.length}
-  collectionType="garden"
->
+<DetailLayout>
   <Fragment slot="header">
     <Header activeNav="garden" />
   </Fragment>
-  <Main
-    pageTitle="My Digital Garden"
-    pageDesc="A digital garden is a collection of imperfect notes and ideas that grow slowly over time."
-  >
-    <div
-      class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 my-16"
+  <Fragment slot="pageTitle">
+    <h1
+      class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
     >
-      <a
-        href="/garden"
-        class="px-6 h-8 flex border items-center rounded-3xl bg-skin-card border-skin-fill/30 text-skin-inverted"
+      <span
+        class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
+        >Notes</span
       >
-        All
-      </a>
-      {
-        noteStates.map(type => (
-          <a
-            href={`/garden/${type}`}
-            class="px-4 h-8 flex border items-center rounded-3xl bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60"
-          >
-            {type}
-          </a>
-        ))
-      }
-    </div>
-    <ul class="flex flex-col gap-24">
-      {
-        paginatedPosts.map(({ data, slug }) => (
-          <NoteSummaryCard
-            href={slug}
-            frontmatter={data as CollectionEntry<"garden">["data"]}
-            cardType={"garden"}
-            expanded
-          />
-        ))
-      }
-    </ul>
-  </Main>
-</Notes>
+      Digital Garden
+    </h1>
+    <p>
+      A digital garden is a collection of imperfect notes and ideas that grow
+      slowly over time.
+    </p>
+  </Fragment>
+
+  <div
+    class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 my-16"
+  >
+    <a
+      href="/garden"
+      class="px-6 h-8 flex border items-center rounded-3xl bg-skin-card border-skin-fill/30 text-skin-inverted"
+    >
+      All
+    </a>
+    {
+      noteStates.map(type => (
+        <a
+          href={`/garden/${type}`}
+          class="px-4 h-8 flex border items-center rounded-3xl bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60"
+        >
+          {type}
+        </a>
+      ))
+    }
+  </div>
+  <ul class="flex flex-col gap-24">
+    {
+      paginatedPosts.map(({ data, slug }) => (
+        <NoteSummaryCard
+          href={slug}
+          frontmatter={data as CollectionEntry<"garden">["data"]}
+          cardType={"garden"}
+          expanded
+        />
+      ))
+    }
+  </ul>
+
+  <Fragment slot="pagination">
+    <Pagination
+      pageNum={1}
+      totalPages={totalPages.length}
+      collectionType={"garden"}
+    />
+  </Fragment>
+</DetailLayout>

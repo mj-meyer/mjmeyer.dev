@@ -83,7 +83,7 @@ const socialImageURL = new URL(
     <div
       class={`header bg-gradient-to-br to-skin-fill from-skin-fill via-40% via-skin-highlight w-full relative ${hasWaveSeparator ? "pb-20 max-sm:pb-10" : "pb-4"}`}
     >
-      <div class="-top-12 flex w-full absolute z-10">
+      <div class="-top-12 max-md:-top-8 flex w-full absolute z-10">
         <WaveSeparator noMargin />
       </div>
 
@@ -91,7 +91,7 @@ const socialImageURL = new URL(
         <slot name="header" />
       </div>
     </div>
-    <div class="absolute top-80 left-0 w-full z-10">
+    <div class="absolute top-80 max-lg:top-72 max-sm:top-56 left-0 w-full z-10">
       <WaveSeparator rotate />
     </div>
 

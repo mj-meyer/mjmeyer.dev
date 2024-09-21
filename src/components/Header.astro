@@ -13,7 +13,7 @@ export interface Props {
 const { activeNav } = Astro.props;
 ---
 
-<header class="z-40 relative pt-16">
+<header class="z-40 relative pt-16 max-md:pt-5 max-sm:pt-0">
   <a id="skip-to-content" href="#maincontent">Skip to content</a>
   <div class="nav-container">
     <div class="top-nav-wrap">
@@ -141,41 +141,41 @@ const { activeNav } = Astro.props;
     height: 4.9rem;
     z-index: 30;
     /* TODO: fix height on all resolutions */
-    @apply bg-skin-fill max-sm:h-16;
+    @apply bg-skin-fill max-sm:h-20 max-md:h-28 max-md:top-12 max-sm:top-6;
   }
   #skip-to-content {
     @apply absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4;
   }
   .nav-container {
-    @apply mx-auto flex max-w-6xl flex-col items-center justify-between sm:flex-row;
+    @apply mx-auto flex max-w-6xl flex-col items-center justify-between md:flex-row;
   }
   .top-nav-wrap {
-    @apply relative flex w-full items-start justify-between p-4 max-sm:flex-col sm:items-center sm:py-8;
+    @apply relative flex w-full items-start justify-between p-4 max-md:flex-col md:items-center md:py-8;
   }
   .logo {
-    @apply py-1 text-xl z-50 font-semibold max-sm:w-3/4 sm:static sm:text-2xl;
+    @apply text-xl z-50 font-semibold lg:pl-6 xl:pl-0 max-md:w-3/4 max-sm:w-4/6 md:text-2xl;
   }
   .hamburger-menu {
-    @apply absolute top-8 self-end p-2 sm:hidden;
+    @apply absolute top-8 sm:top-16 self-end items-center p-2 md:hidden;
   }
   .hamburger-menu svg {
     @apply h-6 w-6 scale-125 fill-skin-base;
   }
 
   nav {
-    @apply flex w-full z-50 flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
+    @apply flex w-full z-50 flex-col items-center md:ml-2 md:flex-row md:justify-end md:space-x-4 md:py-0;
   }
   nav ul {
-    @apply mt-4 grid-cols-2 sm:flex grid-rows-4 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-x-8 sm:gap-y-0;
+    @apply mt-16 grid-cols-2 md:flex grid-rows-4 gap-x-2 gap-y-2 md:ml-0 md:mt-0 md:w-auto md:gap-x-8 md:gap-y-0;
   }
   nav ul li {
     @apply col-span-2 flex items-center justify-center;
   }
   nav ul li a {
-    @apply w-full px-4 py-3 z-20 text-center text-xl font-medium uppercase text-skin-heading hover:text-skin-accent sm:my-0 sm:px-4 sm:py-1  decoration-violet-500/10 decoration-solid decoration-4 underline-offset-0;
+    @apply w-full px-4 py-3 z-20 text-center text-xl font-medium uppercase text-skin-heading hover:text-skin-accent md:my-0 md:px-4 md:py-1  decoration-violet-500/10 decoration-solid decoration-4 underline-offset-0;
   }
   nav ul li a span {
-    @apply absolute -bottom-3 -z-10 bg-skin-card/40 px-3 py-1 whitespace-nowrap left-8 text-left text-xs opacity-80 max-sm:hidden;
+    @apply absolute -bottom-3 -z-10 bg-skin-card/40 px-3 py-1 whitespace-nowrap left-8 text-left text-xs opacity-80 max-md:hidden;
   }
   nav ul li:nth-child(4) a {
     @apply w-auto;
@@ -201,10 +201,10 @@ const { activeNav } = Astro.props;
     @apply h-6 w-6 fill-skin-base hover:fill-skin-accent;
   }
   #theme-btn {
-    @apply p-3 sm:p-1;
+    @apply p-3 md:p-1;
   }
   #theme-btn svg {
-    @apply scale-125 hover:rotate-12 sm:scale-100;
+    @apply scale-125 hover:rotate-12 md:scale-100;
   }
 
   .icon-container {

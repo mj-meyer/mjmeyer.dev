@@ -8,7 +8,7 @@ const { noMargin = false, rotate = false } = Astro.props;
 ---
 
 <div
-  class={`${noMargin ? "wave-container-no-margin" : "wave-container"} ${rotate ? "rotate-180" : ""} bg-[transparent] text-skin-fill pointer-events-none backdrop-blur-md z-10 relative`}
+  class={`${noMargin ? "wave-container-no-margin squashed-svg" : "wave-container"} ${rotate ? "rotate-180 squashed-svg" : ""} bg-[transparent] text-skin-fill pointer-events-none backdrop-blur-md z-10 relative`}
 >
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -34,6 +34,11 @@ const { noMargin = false, rotate = false } = Astro.props;
     position: relative;
     width: 100%;
     height: 160px; /* Adjust as needed */
+  }
+
+  .wave-container.squashed-svg,
+  .squashed-svg {
+    @apply max-sm:h-[60px] max-md:h-[90px];
   }
 
   .wave {
