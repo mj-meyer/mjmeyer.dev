@@ -88,7 +88,7 @@ const pageDesc = streamTypes.includes(slug as StreamType)
     </p>
   </Fragment>
   <div
-    class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 mb-6"
+    class="flex flex-wrap justify-center font-medium font-montserrat uppercase text-sm gap-4 my-16"
   >
     <a
       href="/stream"
@@ -106,7 +106,7 @@ const pageDesc = streamTypes.includes(slug as StreamType)
       ))
     }
   </div>
-  <ul class="flex flex-col gap-16">
+  <ul class="flex flex-col gap-24 max-lg:px-8">
     {
       paginatedPosts.map(({ data, slug }) => (
         <NoteSummaryCard

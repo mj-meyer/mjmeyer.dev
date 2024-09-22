@@ -41,7 +41,7 @@ const streamTypes = [...new Set(posts.map(post => post.data.streamType))];
     </p>
   </Fragment>
   <div
-    class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 my-16"
+    class="flex flex-wrap justify-center font-medium font-montserrat uppercase text-sm gap-4 my-16"
   >
     <a
       href="/stream"
@@ -60,7 +60,7 @@ const streamTypes = [...new Set(posts.map(post => post.data.streamType))];
     }
   </div>
 
-  <ul class="flex flex-col gap-24">
+  <ul class="flex flex-col gap-24 max-lg:px-8">
     {
       paginatedPosts.map(({ data, slug }) => (
         <NoteSummaryCard

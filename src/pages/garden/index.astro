@@ -37,7 +37,7 @@ const noteStates = ["seedling", "budding", "evergreen"] as const;
   </Fragment>
 
   <div
-    class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 my-16"
+    class="flex flex-wrap gap-4 justify-center font-medium font-montserrat uppercase text-sm my-16"
   >
     <a
       href="/garden"
@@ -56,7 +56,7 @@ const noteStates = ["seedling", "budding", "evergreen"] as const;
       ))
     }
   </div>
-  <ul class="flex flex-col gap-24">
+  <ul class="flex flex-col gap-24 max-lg:px-8">
     {
       paginatedPosts.map(({ data, slug }) => (
         <NoteSummaryCard

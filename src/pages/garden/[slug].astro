@@ -79,13 +79,14 @@ const pageDesc = noteTypes.includes(slug as NoteType)
       >
       Digital Garden
     </h1>
+    <p class="pb-2">My own thoughts, notes and ideas.</p>
     <p>
-      My own thoughts, notes and ideas that have recently grown, changed, or
-      formed new connections with each other.
+      Typically, you don't walk through a garden chronologically, but this does
+      help find some more recent work.
     </p>
   </Fragment>
   <div
-    class="flex justify-center font-medium font-montserrat uppercase text-sm space-x-2 my-16"
+    class="flex flex-wrap justify-center font-medium font-montserrat uppercase text-sm gap-4 my-16"
   >
     <a
       href="/garden"
@@ -103,7 +104,7 @@ const pageDesc = noteTypes.includes(slug as NoteType)
       ))
     }
   </div>
-  <ul class="flex flex-col gap-24">
+  <ul class="flex flex-col gap-24 max-lg:px-8">
     {
       paginatedPosts.map(({ data, slug }) => (
         <NoteSummaryCard
