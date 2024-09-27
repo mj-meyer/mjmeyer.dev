@@ -1,12 +1,10 @@
 ---
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import Notes from "@layouts/Notes.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import getPageNumbers from "@utils/getPageNumbers";
 import { SITE } from "@config";
 import Header from "@components/Header.astro";
-import Main from "@layouts/Main.astro";
 import NoteSummaryCard from "@components/NoteSummaryCard.astro";
 import DetailLayout from "@layouts/DetailLayout.astro";
 import Pagination from "@components/Pagination.astro";

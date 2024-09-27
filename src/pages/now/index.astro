@@ -1,56 +1,45 @@
 ---
-import getSortedPosts from "@utils/getSortedPosts";
 import { getCollection } from "astro:content";
 import Header from "@components/Header.astro";
 import DetailLayout from "@layouts/DetailLayout.astro";
 
 const posts = await getCollection("now");
-const sortedPosts = getSortedPosts(posts);
 
-const firstSixPosts = sortedPosts.slice(0, 3);
+function getDateFromSlug(slug: string) {
+  const [year, month, day] = slug.split("-");
+  return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+}
+
+function formatDate(date: Date) {
+  return {
+    monthName: date.toLocaleString("default", { month: "long" }),
+    monthNumeric: (date.getMonth() + 1).toString().padStart(2, "0"),
+    year: date.getFullYear(),
+  };
+}
+
+const sortedPosts = posts.sort(
+  (a, b) =>
+    getDateFromSlug(b.slug).getTime() - getDateFromSlug(a.slug).getTime()
+);
+
+const firstThreePosts = sortedPosts.slice(0, 3);
 const restOfPosts = sortedPosts.slice(3);
 
-// Process the first six posts to get their rendered content
-const renderedFirstSixPosts = await Promise.all(
-  firstSixPosts.map(async post => {
+// Process the first three posts to get their rendered content
+const renderedFirstThreePosts = await Promise.all(
+  firstThreePosts.map(async post => {
     const { Content } = await post.render();
-    const publishDate = post.data.publishDatetime;
-    const date = new Date(publishDate);
-    const monthName = date.toLocaleString("default", { month: "long" });
-    const year = date.getFullYear();
-
+    const date = getDateFromSlug(post.slug);
+    const { monthName, year } = formatDate(date);
     return { ...post, Content, monthName, year };
   })
 );
 
 // Process the rest of the posts to extract month and year
-const processedRestOfPosts = [
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-  ...restOfPosts,
-].map(post => {
-  const publishDate = post.data.publishDatetime;
-  const date = new Date(publishDate);
-  const monthName = date.toLocaleString("default", { month: "long" });
-  const monthNumeric = date.toLocaleString("default", { month: "numeric" });
-  const year = date.getFullYear();
+const processedRestOfPosts = restOfPosts.map(post => {
+  const date = getDateFromSlug(post.slug);
+  const { monthName, monthNumeric, year } = formatDate(date);
   return { ...post, monthName, monthNumeric, year };
 });
 ---
@@ -65,17 +54,18 @@ const processedRestOfPosts = [
     >
       <span
         class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-16 lg:text-9xl"
-        >what's up</span
       >
+        what's up
+      </span>
       Now
     </h1>
     <p>page description test what do you think?</p>
   </Fragment>
 
-  <!-- Render the first 6 posts fully -->
+  <!-- Render the first 3 posts fully -->
   <div class="flex flex-col gap-28 w-full pt-24 max-md:gap-16 max-md:pt-8">
     {
-      renderedFirstSixPosts.map(({ monthName, year, Content }) => (
+      renderedFirstThreePosts.map(({ monthName, year, Content }) => (
         <div class="w-full max-w-full pb-16 prose prose-p:text-2xl prose-p:leading-10 prose-p:font-light max-md:prose-p:text-xl border-b-2 border-skin-accent/30 border-dashed">
           <h2 class="text-4xl flex flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance">
             <span class="absolute -z-10 text-skin-hightlight -left-4 -top-7 text-5xl opacity-40 md:-left-12  md:-top-16 md:text-8xl lg:-top-16 lg:text-8xl">
@@ -83,7 +73,6 @@ const processedRestOfPosts = [
             </span>
             {monthName}
           </h2>
-
           <Content />
         </div>
       ))
@@ -94,11 +83,11 @@ const processedRestOfPosts = [
   {
     processedRestOfPosts.length > 0 && (
       <ul class="post-list grid text-center grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-12">
-        {processedRestOfPosts.map(({ monthName, year }) => (
+        {processedRestOfPosts.map(({ monthName, monthNumeric, year }) => (
           <li>
             <a
               class="hover:text-skin-accent pb-1 hover:border-b-2 border-skin-accent border-dashed"
-              href={`/${year}/${monthName}`}
+              href={`/now/${year}/${monthNumeric}`}
             >{`${monthName} ${year}`}</a>
           </li>
         ))}

@@ -1,0 +1,82 @@
+---
+import LinkButton from "./LinkButton.astro";
+
+export interface Props {
+  prevPost: { slug: string } | null;
+  nextPost: { slug: string } | null;
+}
+
+const { prevPost, nextPost } = Astro.props;
+
+function formatSlugToUrl(slug: string) {
+  const [year, month] = slug.split("-");
+  return `/now/${year}/${month.toLowerCase()}`;
+}
+
+function formatSlugToDisplay(slug: string) {
+  const [year, month] = slug.split("-");
+  const date = new Date(year, parseInt(month) - 1);
+  return date.toLocaleDateString("en-US", { year: "numeric", month: "short" });
+}
+
+const prevUrl = prevPost ? formatSlugToUrl(prevPost.slug) : null;
+const nextUrl = nextPost ? formatSlugToUrl(nextPost.slug) : null;
+const prevDisplay = prevPost ? formatSlugToDisplay(prevPost.slug) : null;
+const nextDisplay = nextPost ? formatSlugToDisplay(nextPost.slug) : null;
+
+// Only show pagination if there's a next or previous post
+const showPagination = prevUrl || nextUrl;
+---
+
+{
+  showPagination && (
+    <nav class="pagination-wrapper" aria-label="Now Navigation">
+      {prevUrl && (
+        <LinkButton
+          href={prevUrl}
+          className="select-none"
+          ariaLabel={`Go to ${prevDisplay}`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M12.707 17.293 8.414 13H18v-2H8.414l4.293-4.293-1.414-1.414L4.586 12l6.707 6.707z"
+            />
+          </svg>
+          {prevDisplay}
+        </LinkButton>
+      )}
+      {nextUrl && (
+        <LinkButton
+          href={nextUrl}
+          className="select-none"
+          ariaLabel={`Go to ${nextDisplay}`}
+        >
+          {nextDisplay}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+            />
+          </svg>
+        </LinkButton>
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .pagination-wrapper {
+    @apply mb-8 mt-auto flex gap-8 justify-center;
+  }
+</style>

@@ -48,13 +48,17 @@ const streamCollection = defineCollection({
   }),
 });
 
-// const nowCollection = defineCollection({
-//   type: "content",
-//   schema: baseSchema.extend({
-//     month: z.number().min(1).max(12),
-//     year: z.number().min(2000),
-//   }),
-// });
+const nowCollection = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    publishDatetime: z.date(),
+    updateDatetime: z.date(),
+    description: z.string(),
+    draft: z.boolean().optional(),
+    ogImage: z.string().optional(),
+  }),
+});
 
 const pageCollection = defineCollection({
   type: "content",
@@ -67,6 +71,6 @@ const pageCollection = defineCollection({
 export const collections = {
   garden: gardenCollection,
   stream: streamCollection,
-  // now: nowCollection,
+  now: nowCollection,
   page: pageCollection,
 };

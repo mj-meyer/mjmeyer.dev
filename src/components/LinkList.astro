@@ -1,8 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import NoteSummaryCard from "./NoteSummaryCard.astro";
-// Import commented out for now
-// import LinkPreview from "./LinkPreview.astro";
 
 type Props = {
   links: string[];
@@ -29,9 +27,9 @@ const linkDetails = validLinks.map(link => {
 const [gardenLinks, streamLinks] = linkDetails.reduce(
   (acc, { collection, ...rest }) => {
     if (collection === "garden") {
-      acc[0].push(rest);
+      acc[0].push(rest as GardenType);
     } else {
-      acc[1].push(rest);
+      acc[1].push(rest as StreamType);
     }
     return acc;
   },
@@ -76,54 +74,3 @@ const [gardenLinks, streamLinks] = linkDetails.reduce(
     )
   }
 </div>
-
-{
-  /* 
-  Preview container and script commented out for future use
-  <div id="preview-container" class="fixed top-0 left-0 pointer-events-none">
-    {linkDetails.map(({ post }, index) => (
-      post && (
-        <div 
-          id={`preview-${index}`}
-          class="fixed invisible opacity-0 transition-all duration-300 ease-in-out bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 p-4 w-64 pointer-events-auto"
-        >
-          <LinkPreview post={post} />
-        </div>
-      )
-    ))}
-  </div>
-
-  <script>
-    function showPreview(previewElement, linkElement) {
-      const rect = linkElement.getBoundingClientRect();
-      previewElement.style.top = `${rect.bottom + window.scrollY}px`;
-      previewElement.style.left = `${rect.left}px`;
-      
-      // Adjust if it would overflow the right side of the screen
-      const previewRect = previewElement.getBoundingClientRect();
-      if (previewRect.right > window.innerWidth) {
-        previewElement.style.left = 'auto';
-        previewElement.style.right = '0';
-      }
-      
-      previewElement.classList.remove('invisible', 'opacity-0');
-      previewElement.classList.add('visible', 'opacity-100');
-    }
-
-    function hidePreview(previewElement) {
-      previewElement.classList.remove('visible', 'opacity-100');
-      previewElement.classList.add('invisible', 'opacity-0');
-    }
-
-    document.querySelectorAll('.link-with-preview').forEach(link => {
-      const previewId = link.getAttribute('data-preview-id');
-      const preview = document.getElementById(previewId);
-      
-      if (preview) {
-        link.addEventListener('mouseenter', () => showPreview(preview, link));
-        link.addEventListener('mouseleave', () => hidePreview(preview));
-      }
-    });
-  </script>
-*/
-}

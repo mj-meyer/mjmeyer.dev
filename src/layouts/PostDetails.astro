@@ -10,7 +10,7 @@ import { getCollection } from "astro:content";
 
 export interface Props {
   post: CollectionEntry<"garden" | "stream" | "page" | "now">;
-  collection: "garden" | "stream";
+  collection: "garden" | "stream" | "now";
 }
 
 const { post, collection } = Astro.props;
@@ -33,37 +33,39 @@ const { Content } = await post.render();
 const ogUrl = new URL(ogImage ? ogImage : `${post.slug}.svg`, Astro.url.origin)
   .href;
 
-const noteType = noteState ? post.data.noteState : post.data.streamType;
+const noteType = noteState
+  ? (post.data as any).noteState
+  : (post.data as any).streamType;
 const fullUpdateDate = updateDatetime.toLocaleDateString([], {
   year: "numeric",
   month: "short",
   day: "numeric",
 });
-const fullPublishDate = publishDatetime.toLocaleDateString([], {
-  year: "numeric",
-  month: "short",
-  day: "numeric",
-});
-const updateYear = updateDatetime.toLocaleDateString([], {
-  year: "numeric",
-});
+// const fullPublishDate = publishDatetime.toLocaleDateString([], {
+//   year: "numeric",
+//   month: "short",
+//   day: "numeric",
+// });
+// const updateYear = updateDatetime.toLocaleDateString([], {
+//   year: "numeric",
+// });
 
-const updateMonth = updateDatetime.toLocaleDateString([], {
-  month: "short",
-});
+// const updateMonth = updateDatetime.toLocaleDateString([], {
+//   month: "short",
+// });
 
-const updateDay = updateDatetime.toLocaleDateString([], {
-  day: "numeric",
-});
+// const updateDay = updateDatetime.toLocaleDateString([], {
+//   day: "numeric",
+// });
 
 // Fetch all posts for link validation
 const allGardenNotes = await getCollection("garden");
 const allStreams = await getCollection("stream");
 const allContent = [...allGardenNotes, ...allStreams];
-const dateType =
-  new Date(updateDatetime) > new Date(publishDatetime)
-    ? "Updated"
-    : "Published";
+// const dateType =
+//   new Date(updateDatetime) > new Date(publishDatetime)
+//     ? "Updated"
+//     : "Published";
 ---
 
 <Layout
@@ -73,7 +75,7 @@ const dateType =
   hasWaveSeparator={false}
 >
   <Fragment slot="header">
-    <Header activeNav={collection} />
+    {collection === "now" ? <Header /> : <Header activeNav={collection} />}
   </Fragment>
 
   <main id="main-content" class="relative">
