@@ -1,0 +1,116 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import Header from "@components/Header.astro";
+import getUniqueTags from "@utils/getUniqueTags";
+import getPostsByTag from "@utils/getPostsByTag";
+import DetailLayout from "@layouts/DetailLayout.astro";
+import NoteSummaryCard from "@components/NoteSummaryCard.astro";
+import LinkButton from "@components/LinkButton.astro";
+import { transformTag, normalizeTag } from "@utils/tagUtils";
+
+export interface Props {
+  post: CollectionEntry<"garden" | "stream">;
+  topic: string;
+  displayTopic: string;
+}
+
+export async function getStaticPaths() {
+  const gardenNotes = await getCollection("garden", ({ data }) => !data.draft);
+  const streamNotes = await getCollection("stream", ({ data }) => !data.draft);
+  const posts = [...gardenNotes, ...streamNotes];
+  const tags = getUniqueTags(posts);
+
+  return tags.map(tag => {
+    const { slug, display } = transformTag(tag);
+    return {
+      params: { topic: slug },
+      props: { topic: tag, displayTopic: display },
+    };
+  });
+}
+
+const { topic, displayTopic } = Astro.props;
+
+const gardenNotes = await getCollection("garden", ({ data }) => !data.draft);
+const streamNotes = await getCollection("stream", ({ data }) => !data.draft);
+const posts = [...gardenNotes, ...streamNotes];
+const tagPosts = getPostsByTag(posts, normalizeTag(topic));
+const gardenTagNotes = tagPosts.filter(
+  ({ collection }) => collection === "garden"
+);
+const streamTagNotes = tagPosts.filter(
+  ({ collection }) => collection === "stream"
+);
+
+// Error handling: If no posts found for this topic, throw a 404
+if (tagPosts.length === 0) {
+  return Astro.redirect("/404");
+}
+---
+
+<DetailLayout>
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
+  <Fragment slot="pageTitle">
+    <h1
+      class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
+    >
+      <span
+        class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
+      >
+        Notes
+      </span>
+      Topic: {displayTopic}
+    </h1>
+    <p class="mb-4">
+      <em class="font-bold">{displayTopic}</em> notes from both the garden and stream.
+      This is not the ideal way to navigate a garden, but it may be handy finding
+      some related content.
+    </p>
+    <p>
+      Back to
+      <LinkButton
+        href="/topics"
+        className="text-skin-accent underline underline-offset-4 decoration-dashed"
+      >
+        all topics
+      </LinkButton>
+    </p>
+  </Fragment>
+  <div class="flex flex-col gap-8">
+    {
+      gardenTagNotes.length !== 0 && (
+        <>
+          <h3 class="text-2xl font-bold">Garden Notes</h3>
+          <ul class="flex flex-col gap-24 max-lg:px-8">
+            {gardenTagNotes.map(({ collection, data, slug }) => (
+              <NoteSummaryCard
+                href={`/${slug}`}
+                frontmatter={data}
+                cardType={collection}
+              />
+            ))}
+          </ul>
+        </>
+      )
+    }
+    {
+      streamTagNotes.length !== 0 && (
+        <>
+          <h3 class="text-2xl font-bold">Stream Notes</h3>
+          <ul class="flex flex-col gap-24 max-lg:px-8">
+            {streamTagNotes.map(({ collection, data, slug }) => (
+              <NoteSummaryCard
+                href={`/${slug}`}
+                frontmatter={data}
+                cardType={collection}
+              />
+            ))}
+          </ul>
+        </>
+      )
+    }
+  </div>
+</DetailLayout>

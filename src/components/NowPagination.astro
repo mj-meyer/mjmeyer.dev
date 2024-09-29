@@ -34,7 +34,7 @@ const showPagination = prevUrl || nextUrl;
       {prevUrl && (
         <LinkButton
           href={prevUrl}
-          className="select-none"
+          className="select-none flex items-center"
           ariaLabel={`Go to ${prevDisplay}`}
         >
           <svg
@@ -54,7 +54,7 @@ const showPagination = prevUrl || nextUrl;
       {nextUrl && (
         <LinkButton
           href={nextUrl}
-          className="select-none"
+          className="select-none flex items-center"
           ariaLabel={`Go to ${nextDisplay}`}
         >
           {nextDisplay}

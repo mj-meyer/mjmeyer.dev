@@ -7,6 +7,7 @@ import type { CollectionEntry } from "astro:content";
 import BlobIcon from "@components/BlobIcon.astro";
 import LinkList from "@components/LinkList.astro";
 import { getCollection } from "astro:content";
+import { transformTag } from "@utils/tagUtils";
 
 export interface Props {
   post: CollectionEntry<"garden" | "stream" | "page" | "now">;
@@ -110,9 +111,10 @@ const allContent = [...allGardenNotes, ...allStreams];
       {
         tags && tags.length > 0 && (
           <ul class="tags-container">
-            {tags.map((tag: string) => (
-              <Tag name={tag} />
-            ))}
+            {tags.map((tag: string) => {
+              const { slug, display } = transformTag(tag);
+              return <Tag name={slug} display={display} />;
+            })}
           </ul>
         )
       }

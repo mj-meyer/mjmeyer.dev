@@ -21,7 +21,7 @@ const next = pageNum < totalPages ? "" : "disabled";
         href={`/${collectionType}${
           pageNum - 1 !== 1 ? "/" + (pageNum - 1) : ""
         }`}
-        className={`select-none ${prev}`}
+        className={`select-none flex items-center ${prev}`}
         ariaLabel="Previous"
       >
         <svg
@@ -40,7 +40,7 @@ const next = pageNum < totalPages ? "" : "disabled";
       <LinkButton
         disabled={next === "disabled"}
         href={`/${collectionType}/${pageNum + 1}`}
-        className={`select-none ${next}`}
+        className={`select-none flex items-center ${next}`}
         ariaLabel="Next"
       >
         Next
