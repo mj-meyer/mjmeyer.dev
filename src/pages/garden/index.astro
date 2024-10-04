@@ -15,25 +15,26 @@ const paginatedPosts = sortedPosts.slice(0, SITE.postPerPage);
 const noteStates = ["seedling", "budding", "evergreen"] as const;
 ---
 
-<DetailLayout>
+<DetailLayout
+  title="Digital Garden Notes"
+  description="My always growing and evolving thoughts, notes and ideas."
+>
   <Fragment slot="header">
     <Header activeNav="garden" />
   </Fragment>
   <Fragment slot="pageTitle">
-    <h1
-      class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
-    >
-      <span
-        class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
-        >Notes</span
+    <div class="flex flex-col gap-4 text-3xl font-light">
+      <h1
+        class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
       >
-      Digital Garden
-    </h1>
-    <p class="pb-2">My own thoughts, notes and ideas.</p>
-    <p>
-      Typically, you don't walk through a garden chronologically, but this does
-      help find some more recent work.
-    </p>
+        <span
+          class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
+          >Notes</span
+        >
+        Digital Garden
+      </h1>
+      <p>My always growing and evolving thoughts, notes and ideas.</p>
+    </div>
   </Fragment>
 
   <div

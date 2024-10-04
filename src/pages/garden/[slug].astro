@@ -32,8 +32,8 @@ const { slug } = Astro.params;
 const posts = (await getCollection("garden")) as CollectionEntry<"garden">[];
 const sortedPosts = getSortedPosts(posts) as CollectionEntry<"garden">[];
 const totalPages = getPageNumbers(sortedPosts.length);
-const noteTypes = ["seedling", "budding", "evergreen"] as const;
 
+const noteTypes = ["seedling", "budding", "evergreen"] as const;
 let currentPage = 1;
 let filteredPosts = sortedPosts;
 let paginatedPosts = sortedPosts;
@@ -55,35 +55,77 @@ if (noteTypes.includes(slug as NoteType) && isNaN(Number(slug))) {
   paginatedPosts = sortedPosts.slice(startPost, lastPost);
   totalPageCount = totalPages.length;
 }
-
-const pageTitle = noteTypes.includes(slug as NoteType)
-  ? `${slug} Notes`
-  : "My Digital Garden";
-
-const pageDesc = noteTypes.includes(slug as NoteType)
-  ? `Filtered view of ${slug} notes from my digital garden.`
-  : "A digital garden is a collection of imperfect notes and ideas that grow slowly over time.";
 ---
 
-<DetailLayout>
+<DetailLayout
+  title="Digital Garden Notes"
+  description="My always growing and evolving thoughts, notes and ideas."
+>
   <Fragment slot="header">
     <Header activeNav="garden" />
   </Fragment>
   <Fragment slot="pageTitle">
-    <h1
-      class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
-    >
-      <span
-        class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
-        >Notes</span
+    <div class="flex flex-col gap-4 text-3xl">
+      <h1
+        class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
       >
-      Digital Garden
-    </h1>
-    <p class="pb-2">My own thoughts, notes and ideas.</p>
-    <p>
-      Typically, you don't walk through a garden chronologically, but this does
-      help find some more recent work.
-    </p>
+        <span
+          class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
+          >Notes</span
+        >
+        Digital Garden
+      </h1>
+      <div class="flex flex-col gap-4 font-light">
+        {
+          slug === "seedling" && (
+            <>
+              <p>
+                <strong>Seedling</strong> thoughts, ideas and notes that will
+                probably evolve and grow rapidly as they take root.
+              </p>
+
+              <p>
+                Some seedlings may never grow or evolve because they are atomic
+                and are meant to support other notes.
+              </p>
+            </>
+          )
+        }
+        {
+          slug === "budding" && (
+            <>
+              <>
+                <p>
+                  <strong>Budding</strong> thoughts, ideas and notes that are
+                  supported by other notes.
+                </p>
+                <p>
+                  They are more likely to be interesting observations that may
+                  change or express an alternative view point as opposed to
+                  stongly held opinions or beliefs.
+                </p>
+              </>
+            </>
+          )
+        }
+        {
+          slug === "evergreen" && (
+            <>
+              <>
+                <p>
+                  <strong>Evergreen</strong> thoughts, ideas and notes that I
+                  hold strongly.
+                </p>
+                <p>
+                  They rarely change other than growing more as I branch out
+                  more thoughts or grow their roots with more supporting notes.
+                </p>
+              </>
+            </>
+          )
+        }
+      </div>
+    </div>
   </Fragment>
   <div
     class="flex flex-wrap justify-center font-medium font-montserrat uppercase text-sm gap-4 my-16"

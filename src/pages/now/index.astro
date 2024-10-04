@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Header from "@components/Header.astro";
 import DetailLayout from "@layouts/DetailLayout.astro";
+import LinkButton from "@components/LinkButton.astro";
 
 const posts = await getCollection("now");
 
@@ -44,22 +45,38 @@ const processedRestOfPosts = restOfPosts.map(post => {
 });
 ---
 
-<DetailLayout>
+<DetailLayout
+  title="Now"
+  description="Now page showing what's going on at this point in my life"
+>
   <Fragment slot="header">
     <Header activeNav="about" />
   </Fragment>
   <Fragment slot="pageTitle">
-    <h1
-      class="text-4xl flex z-20 flex-col md:text-5xl lg:text-8xl font-black mb-4 relative text-balance"
-    >
-      <span
-        class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-16 lg:text-9xl"
+    <div class="flex flex-col gap-4 text-3xl font-light">
+      <h1
+        class="text-4xl flex z-20 flex-col md:text-5xl lg:text-8xl font-black mb-4 relative text-balance"
       >
-        what's up
-      </span>
-      Now
-    </h1>
-    <p>page description test what do you think?</p>
+        <span
+          class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-16 lg:text-9xl"
+          >what's up</span
+        >
+        Now
+      </h1>
+      <p>What I'm focussed on at this point in my life.</p>
+      <p>
+        A <LinkButton
+          href="https://nownownow.com/about"
+          className="text-skin-accent underline underline-offset-4 decoration-dashed"
+          target="_blank"
+        >
+          now page
+        </LinkButton>
+        is a concept that was popularised by Derek Sivers. It's like an about page,
+        but more personal. I like to think of it as a personal public diary that
+        I update every month.
+      </p>
+    </div>
   </Fragment>
 
   <!-- Render the first 3 posts fully -->

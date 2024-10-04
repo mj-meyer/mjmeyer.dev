@@ -1,9 +1,11 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "About"
+subtitle: "Me"
+description: "I'm a fullstack software engineer with more than 15 years of hands-on experience, nine of which I've spent deeply engaged in SaaS / application development. "
 ---
 
-I'm a frontend engineer with more than 14 years of hands-on experience, eight of which I've spent deeply engaged in SaaS application development. I love leading from the trenches, combining technical and servant leadership, while staying hands-on with coding and delivering the final products.
+I love leading from the trenches, combining technical and servant leadership, while staying hands-on with coding and delivering the final products.
 
 Writing clean, testable code is always the goal, while keeping in mind that everything has trade-offs and technical debt is inevitable. I strive to manage and mitigate any impact from accrued debt effectively.
 
@@ -11,7 +13,7 @@ I'm actively expanding my fullstack skills, focusing on system architecture, bac
 
 ## My strengths
 
-- My self-awareness enables me to discern when I can contribute and when I need to solicit help.
+- I'm able to discern when I can contribute and when I need to solicit help.
 - I strive to foster a positive team environment by recognizing and promoting the excellent work done by my colleagues.
 - With a natural inclination for problem-solving, I tackle both technical and personal challenges with equal fervour.
 - My passion for staying updated with the latest tech excites me more than the latest Netflix drop. I find immense joy in my work!
