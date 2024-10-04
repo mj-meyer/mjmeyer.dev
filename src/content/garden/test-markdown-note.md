@@ -1,37 +1,25 @@
 ---
 title: Test Markdown Formatting
-publishDatetime: 2024-08-25T11:18:32Z
-updateDatetime: 2024-08-25T11:18:32Z
 description: This is just a test note for formatting
-noteState: seedling
+publishDatetime: 2024-08-25T11:18:32.000Z
+updateDatetime: 2024-08-25T11:18:32.000Z
 tags:
-  - seedling
-  - testone
-  - testtwo
-  - testthree
-  - testfour
-  - testfive
-  - testsix
-  - testseven
-  - testeight
-  - testnine
-  - testten
-  - testeleven
-  - testtwelve
-  - testthirteen
-  - testfourteen
-  - testfifteen
-  - testsixteen
+  - oneTag
+  - twoTag
+  - threeTag
+  - fourTag
+  - fiveTag
+  - sixTag
+  - sevenTag
+  - eightTag
+  - nineTag
+  - test-one
 publish: true
-incomingLinks:
-  - test-for-now-page
-  - test-stream-note
-  - test-note-for-garden-two
-outgoingLinks:
-  - untitled-5
-  - test-stream-note
+noteState: budding
+type: garden
+incomingLinks: []
+outgoingLinks: []
 ---
-
 # Comprehensive Markdown Example
 
 This document showcases various Markdown syntax elements.
@@ -54,7 +42,8 @@ http://www.youtube.com/watch?v=Hoe-woAhq_k
 
 ## Twitter Test
 
-<blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">i had to use vscode for a day to get lambda breakpoints working again<br><br>i learned its debugger deviates a lot from the &quot;standard&quot; - you get way more than attaching chrome devtools<br><br>does anyone bother using a debugger in neovim?</p>&mdash; dax (@thdxr) <a href="https://twitter.com/thdxr/status/1830767036852523055?ref_src=twsrc%5Etfw">September 3, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+https://twitter.com/thdxr/status/1830767036852523055?ref_src=twsrc%5Etfw
+
 ## Emphasis
 
 _Italic text_ or _Italic text_
@@ -143,28 +132,15 @@ function example() {
 
 ## Footnotes
 
-Here's a sentence with a footnote. [^1]
+Here's a sentence with a footnote.
 
 here's another test ^[hello there how about this information, what does it look like?]
 
 [^1]: This is the footnote.
 
-## Definition Lists
-
-Term 1
-: Definition 1
-
-Term 2
-: Definition 2a
-: Definition 2b
-
 ## Abbreviations
 
 The HTML specification is maintained by the W3C.
-
-## Emojis (Note: support may vary)
-
-:smile: :heart: :thumbsup:
 
 ## Diagrams (using Mermaid syntax, requires Mermaid support)
 
@@ -175,10 +151,6 @@ graph TD;
     B-->D;
     C-->D;
 ```
-
-## Comments
-
-[//]: # "This is a comment that won't be rendered"
 
 ## Escape Characters
 
