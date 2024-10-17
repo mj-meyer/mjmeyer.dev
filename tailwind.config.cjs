@@ -28,7 +28,8 @@ module.exports = {
         hightlight: withOpacity("--color-highlight"),
         fill: withOpacity("--color-fill"),
       },
-      gray: colors.gray
+      gray: colors.gray,
+      ...colors
     },
     // backgroundImage: {
     //   skin: {
@@ -44,6 +45,7 @@ module.exports = {
         card: withOpacity("--color-card"),
         "card-muted": withOpacity("--color-card-muted"),
       },
+      ...colors
     },
     stroke: {
       skin: {
@@ -64,6 +66,7 @@ module.exports = {
         accent: withOpacity("--color-accent"),
         card: withOpacity("--color-card"),
       },
+      ...colors
     },
     fill: {
       skin: {
@@ -79,13 +82,12 @@ module.exports = {
       montserrat: ["Montserrat", "sans-serif"],
       montserratAlt: ["Montserrat Alternates", "sans-serif"],
     },
-    // },
     extend:{
       colors: {
         skin: {
           fill: withOpacity("--color-fill"),
           highlight: withOpacity("--color-highlight"),
-        }
+        },
       }
     }
   },

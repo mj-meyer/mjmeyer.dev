@@ -7,9 +7,10 @@ import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 import tokyoNight from "./shiki-themes/tokyo-night-theme.json";
 import vercel from "@astrojs/vercel/static";
-
+import rehypeExternalLinks from "rehype-external-links";
 import mdx from "@astrojs/mdx";
 import embeds from "astro-embed/integration";
+import remarkObsidianCallout from "remark-obsidian-callout";
 
 // https://astro.build/config
 export default defineConfig({
@@ -27,11 +28,36 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [
+      [
+        remarkObsidianCallout,
+        {
+          blockquoteClass: "callout not-prose",
+        },
+      ],
       remarkToc,
       [
         remarkCollapse,
         {
           test: "Table of contents",
+        },
+      ],
+    ],
+    rehypePlugins: [
+      [
+        rehypeExternalLinks,
+        {
+          target: "_blank",
+          content: {
+            type: "element",
+            tagName: "span",
+            properties: {
+              className: "External link icon",
+            },
+            children: [],
+          },
+          contentProperties: {
+            className: ["external-link-icon"],
+          },
         },
       ],
     ],

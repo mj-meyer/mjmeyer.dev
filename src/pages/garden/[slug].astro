@@ -55,6 +55,8 @@ if (noteTypes.includes(slug as NoteType) && isNaN(Number(slug))) {
   paginatedPosts = sortedPosts.slice(startPost, lastPost);
   totalPageCount = totalPages.length;
 }
+
+const isSlugNumber = !isNaN(Number(slug));
 ---
 
 <DetailLayout
@@ -94,33 +96,36 @@ if (noteTypes.includes(slug as NoteType) && isNaN(Number(slug))) {
         {
           slug === "budding" && (
             <>
-              <>
-                <p>
-                  <strong>Budding</strong> thoughts, ideas and notes that are
-                  supported by other notes.
-                </p>
-                <p>
-                  They are more likely to be interesting observations that may
-                  change or express an alternative view point as opposed to
-                  stongly held opinions or beliefs.
-                </p>
-              </>
+              <p>
+                <strong>Budding</strong> thoughts, ideas and notes that are
+                supported by other notes.
+              </p>
+              <p>
+                They are more likely to be interesting observations that may
+                change or express an alternative view point as opposed to
+                stongly held opinions or beliefs.
+              </p>
             </>
           )
         }
         {
           slug === "evergreen" && (
             <>
-              <>
-                <p>
-                  <strong>Evergreen</strong> thoughts, ideas and notes that I
-                  hold strongly.
-                </p>
-                <p>
-                  They rarely change other than growing more as I branch out
-                  more thoughts or grow their roots with more supporting notes.
-                </p>
-              </>
+              <p>
+                <strong>Evergreen</strong> thoughts, ideas and notes that I hold
+                strongly.
+              </p>
+              <p>
+                They rarely change other than growing more as I branch out more
+                thoughts or grow their roots with more supporting notes.
+              </p>
+            </>
+          )
+        }
+        {
+          isSlugNumber && (
+            <>
+              <p>My always growing and evolving thoughts, notes and ideas.</p>
             </>
           )
         }

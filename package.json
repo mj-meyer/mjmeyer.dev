@@ -1,6 +1,7 @@
 {
   "name": "",
   "version": "2.2.0",
+  "type": "module",
   "scripts": {
     "dev": "astro check --watch & astro dev",
     "start": "astro dev",
@@ -25,6 +26,8 @@
     "fuse.js": "^6.6.2",
     "github-slugger": "^2.0.0",
     "lucide-react": "^0.436.0",
+    "mdast-util-to-string": "^4.0.0",
+    "rehype-external-links": "^3.0.0",
     "remark-collapse": "^0.1.2",
     "remark-toc": "^8.0.1",
     "satori": "^0.10.14",
@@ -55,6 +58,7 @@
     "prettier-plugin-tailwindcss": "^0.2.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "remark-obsidian-callout": "^1.4.0",
     "typescript-eslint": "^8.0.1"
   },
   "config": {

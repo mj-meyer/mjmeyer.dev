@@ -63,6 +63,8 @@ const pageTitle = streamTypes.includes(slug as StreamType)
 const pageDesc = streamTypes.includes(slug as StreamType)
   ? `Filtered view of ${slug} content from my digital stream of content I've collected from around the interwebs.`
   : "A digital stream of content I've collected from around the interwebs.";
+
+const isSlugNumber = !isNaN(Number(slug));
 ---
 
 <DetailLayout title={pageTitle} description={pageDesc}>
@@ -80,11 +82,22 @@ const pageDesc = streamTypes.includes(slug as StreamType)
         >
         Stream
       </h1>
-      <p>
-        A filtered digital stream of <strong>{slug}</strong> resources I've collected
-        from around the interwebs that aligns with my interests and supports my learning
-        journey, making it easier to revisit and share with others.
-      </p>
+      {
+        isSlugNumber ? (
+          <p>
+            A filtered digital stream of digital resources I've collected from
+            around the interwebs that aligns with my interests and supports my
+            learning journey, making it easier to revisit and share with others.
+          </p>
+        ) : (
+          <p>
+            A filtered digital stream of <strong>{slug}</strong> resources I've
+            collected from around the interwebs that aligns with my interests
+            and supports my learning journey, making it easier to revisit and
+            share with others.
+          </p>
+        )
+      }
       <p>
         Think of this like "quote" posts / tweets, except they're less
         ephemeral.
