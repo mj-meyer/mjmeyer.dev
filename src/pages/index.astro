@@ -19,18 +19,6 @@ const sortedStreamPosts = getSortedPosts(
 ) as CollectionEntry<"stream">[];
 
 const socialCount = SOCIALS.filter(social => social.active).length;
-
-// Dummy curated links
-const curatedLinks = [
-  { title: "My Favorite Development Tools", slug: "favorite-dev-tools" },
-  { title: "Getting Started with Astro", slug: "astro-intro" },
-  { title: "Why I Love Digital Gardening", slug: "digital-gardening-love" },
-  { title: "The Art of Code Refactoring", slug: "code-refactoring-art" },
-  {
-    title: "Building a Personal Brand as a Developer",
-    slug: "dev-personal-brand",
-  },
-];
 ---
 
 <Layout>
@@ -42,7 +30,7 @@ const curatedLinks = [
       class="mb-16 pt-44 max-md:pt-0 max-lg:pt-16 z-50 relative max-xl:pl-12 max-sm:pl-0 max-sm:pr-0"
     >
       <div
-        class="flex flex-col-reverse md:flex-row items-start gap-8 justify-between"
+        class="flex flex-col-reverse md:flex-row items-center gap-8 justify-between"
       >
         <div
           class="lg:w-3/5 mt-8 max-md:mt-4 md:mt-0 flex flex-col font-light gap-4"
@@ -72,37 +60,18 @@ const curatedLinks = [
               alt="MJ Meyer Profile Image Dark"
             />
           </div>
-          <p class="text-2xl max-sm:text-xl max-lg:px-12">
+          <p class="text-2xl max-sm:text-xl max-lg:px-12 mb-6">
             In a galaxy plagued by bad software, bugs, atrocious UX, and legacy
             UI, I've dedicated the last 15 years to crafting stellar digital
             experiences using HTML, CSS, and a variety of JS/TS frameworks &
-            libraries, including React, Angular, Next, Remix, Astro, and
-            Node.js.
-          </p>
-          <p class="text-2xl max-sm:text-xl max-lg:px-12">
-            As a Star Wars-loving, Xbox-jamming, BBQ (braai) aficionado, my
-            mission goes beyond vanquishing the digital dark side. With my
-            incredible wife by my side, I guide my three foundlings in "the way"
-            as we embrace our new adventure moving from SA 🇿🇦 to NZ&nbsp;🇳🇿.
+            libraries, like React, Next and Node.js.
           </p>
           <p class="text-2xl max-sm:text-xl max-lg:px-12">
             This is where I cultivate my <LinkButton
-              href="/garden"
+              href="/what-is-a-digital-garden"
               className="text-skin-accent underline underline-offset-4 decoration-dashed"
               >digital garden</LinkButton
-            >. You can learn more <LinkButton
-              href="/about"
-              className="text-skin-accent underline underline-offset-4 decoration-dashed"
-              >about</LinkButton
-            > me, see what tools I <LinkButton
-              href="/uses"
-              className="text-skin-accent underline underline-offset-4 decoration-dashed"
-              >use</LinkButton
-            >, or follow what I'm up to <LinkButton
-              href="/now"
-              className="text-skin-accent underline underline-offset-4 decoration-dashed"
-              >now</LinkButton
-            >.
+            >— start exploring below 👇
           </p>
           <div
             class="lg:hidden text-center flex justify-start flex-col items-center pt-12 max-md:pt-4"
@@ -154,29 +123,81 @@ const curatedLinks = [
         >
           <span
             class="absolute font-extrabold -left-4 -top-12 opacity-60 -z-10 text-skin-hightlight text-7xl max-lg:text-6xl max-lg:-top-9 max-sm:text-4xl max-sm:-top-6"
-            >Noteworthy</span
-          >Favorites
+            >The Pursuit of</span
+          >Excellence
         </h2>
         <p>
-          These are some of my favorite notes and things I like to ponder about.
-          Not because they're fully grown, but I find them interesting to think
-          about and the rest of the digital garden will be crafted around these
-          notes.
+          This digital garden is a reflection of my ongoing journey—a pursuit of
+          growth, curiosity, and balance in work, life, and faith. It’s not
+          about arriving at perfection but about making progress, one
+          intentional step at a time.
         </p>
-        <ul class="space-y-4 pt-4 pl-6">
-          {
-            curatedLinks.map(link => (
-              <li>
-                <a
-                  href={`/garden/${link.slug}`}
-                  class="text-skin-accent hover:underline"
-                >
-                  {link.title}
-                </a>
-              </li>
-            ))
-          }
+        <p>Here are a few of the pathways you can explore:</p>
+
+        <ul class="space-y-6 pl-6 list-disc">
+          <li class="flex flex-col gap-2">
+            <LinkButton
+              href="/engineering-excellence"
+              className="text-skin-accent underline underline-offset-4 decoration-dashed"
+              >Software Engineering Excellence</LinkButton
+            ><p class="text-xl">
+              From identifying skill gaps to mastering architecture, managing
+              projects, and exploring cutting-edge technologies, this is where I
+              dive into the craft and share what I learn along the way.
+            </p>
+          </li>
+          <li class="flex flex-col gap-2">
+            <LinkButton
+              href="/chasing-big-goals"
+              className="text-skin-accent underline underline-offset-4 decoration-dashed"
+              >Chasing Big Goals</LinkButton
+            >
+            <p class="text-xl">
+              With tools like goal setting, digital gardening, and feedback
+              loops, I map out the steps to make progress—in both my craft and
+              personal life.
+            </p>
+          </li>
+          <li class="flex flex-col gap-2">
+            <LinkButton
+              href="/navigate-life-seasons"
+              className="text-skin-accent underline underline-offset-4 decoration-dashed"
+              >Navigating Life's Seasons</LinkButton
+            >
+            <p class="text-xl">
+              From family and faith to personal ambitions, this is where I
+              reflect on the challenges and joys of finding purpose and balance.
+            </p>
+          </li>
+          <li class="flex flex-col gap-2">
+            <LinkButton
+              href="/creating-something-new"
+              className="text-skin-accent underline underline-offset-4 decoration-dashed"
+              >Creating Something New</LinkButton
+            >
+            <p class="text-xl">
+              Every idea starts as a seed. This is where I document my indie
+              hacking journey, side projects, and the big ideas I’m turning into
+              reality.
+            </p>
+          </li>
         </ul>
+
+        <p>
+          You can also learn more <LinkButton
+            href="/about"
+            className="text-skin-accent underline underline-offset-4 decoration-dashed"
+            >about me</LinkButton
+          >, explore what tools I <LinkButton
+            href="/uses"
+            className="text-skin-accent underline underline-offset-4 decoration-dashed"
+            >use</LinkButton
+          >, or follow what I'm up to <LinkButton
+            href="/now"
+            className="text-skin-accent underline underline-offset-4 decoration-dashed"
+            >now</LinkButton
+          >.
+        </p>
       </div>
 
       <div
