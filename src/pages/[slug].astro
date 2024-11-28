@@ -2,11 +2,11 @@
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import PostDetails from "@layouts/PostDetails.astro";
-import getPageNumbers from "@utils/getPageNumbers";
 
 export interface Props {
   post: CollectionEntry<"garden" | "stream">;
   collection: "garden" | "stream";
+  page?: number;
 }
 
 export async function getStaticPaths() {
@@ -14,16 +14,10 @@ export async function getStaticPaths() {
   const streamPosts = await getCollection("stream", ({ data }) => !data.draft);
   const posts = [...gardenPosts, ...streamPosts];
 
-  const postResult = posts.map(post => ({
+  return posts.map(post => ({
     params: { slug: post.slug },
     props: { post, collection: post.collection },
   }));
-
-  const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
-    params: { slug: String(pageNum) },
-  }));
-
-  return [...postResult, ...pagePaths];
 }
 
 const { post, collection } = Astro.props;

@@ -385,3 +385,9 @@ blockquote[data-callout="quote"] .callout-title-icon,
 blockquote[data-callout="cite"] .callout-title-icon {
   @apply text-slate-500;
 }
+
+astro-embed-tweet {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}

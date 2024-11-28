@@ -147,7 +147,7 @@ const generateOgImage = async (mytext = SITE.title, postTitle = SITE.title) => {
 
   console.info("Output PNG Image  :", `${mytext}.png`);
 
-  await writeFile(`${slugifyStr(mytext)}.png`, pngBuffer);
+  await writeFile(`public/assets/${slugifyStr(mytext)}.png`, pngBuffer);
 
   return svg;
 };

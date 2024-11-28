@@ -45,7 +45,7 @@ const updateTimeStamp = updateDatetime.toLocaleDateString([], {
           </span>
         </span>
         <span class="flex flex-col">
-          <span>{title}</span>
+          <span class="capitalize">{title}</span>
           <span class="absolute uppercase bg-skin-highlight px-4 py-1 -bottom-3.5 right-2 text-skin-base rounded-lg text-sm group-hover:no-underline">
             {updateTimeStamp}
           </span>
@@ -67,11 +67,11 @@ const updateTimeStamp = updateDatetime.toLocaleDateString([], {
           </span>
         </span>
         <span class="flex flex-col gap-4 pt-2">
-          <span class="font-montserrat font-medium text-2xl">{title}</span>
+          <span class="font-montserrat capitalize font-medium text-2xl">
+            {title}
+          </span>
           <span class="text-lg text-skin-heading pl-3">
-            {frontmatter.description} a really long description that should be
-            truncated but not really cause I haven't implemented it yet i'm just
-            trying out to see what really long text would look like.
+            {frontmatter.description}
           </span>
           <span class="absolute uppercase bg-skin-highlight px-4 py-1 -bottom-3.5 right-2 text-skin-base rounded-lg text-sm group-hover:no-underline">
             {updateTimeStamp}

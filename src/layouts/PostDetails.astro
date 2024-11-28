@@ -8,6 +8,7 @@ import BlobIcon from "@components/BlobIcon.astro";
 import LinkList from "@components/LinkList.astro";
 import { getCollection } from "astro:content";
 import { transformTag } from "@utils/tagUtils";
+import { slugifyStr } from "@utils/slugify";
 
 export interface Props {
   post: CollectionEntry<"garden" | "stream" | "page" | "now">;
@@ -31,33 +32,26 @@ const noteState = "noteState" in post.data ? post.data.noteState : undefined;
 
 const { Content } = await post.render();
 
-const ogUrl = new URL(ogImage ? ogImage : `${post.slug}.svg`, Astro.url.origin)
-  .href;
+const ogUrl = new URL(
+  ogImage ? ogImage : `assets/${slugifyStr(post.slug).replace(/-/g, "")}.png`,
+  Astro.url.origin
+).href;
 
-const noteType = noteState
-  ? (post.data as any).noteState
-  : (post.data as any).streamType;
+const noteType = "noteState" in post.data 
+  ? post.data.noteState 
+  : "streamType" in post.data 
+    ? post.data.streamType 
+    : undefined;
 const fullUpdateDate = updateDatetime.toLocaleDateString([], {
   year: "numeric",
   month: "short",
   day: "numeric",
 });
-// const fullPublishDate = publishDatetime.toLocaleDateString([], {
-//   year: "numeric",
-//   month: "short",
-//   day: "numeric",
-// });
-// const updateYear = updateDatetime.toLocaleDateString([], {
-//   year: "numeric",
-// });
-
-// const updateMonth = updateDatetime.toLocaleDateString([], {
-//   month: "short",
-// });
-
-// const updateDay = updateDatetime.toLocaleDateString([], {
-//   day: "numeric",
-// });
+const fullPublishDate = publishDatetime.toLocaleDateString([], {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
 
 // Fetch all posts for link validation
 const allGardenNotes = await getCollection("garden");
@@ -84,7 +78,9 @@ const allContent = [...allGardenNotes, ...allStreams];
       <div
         class="relative flex-col pb-12 border-b-2 border-dashed border-skin-card flex gap-8"
       >
-        <h1 class="text-5xl text-left font-extrabold text-skin-accent w-full">
+        <h1
+          class="text-5xl text-left font-extrabold text-skin-accent capitalize w-full"
+        >
           {title}
         </h1>
         <div class="description text-4xl font-light">
@@ -106,6 +102,11 @@ const allContent = [...allGardenNotes, ...allStreams];
               {fullUpdateDate}
             </span>
           </div>
+          <span class="absolute top-12 text-xs"
+            >orginally published on <strong class="underline"
+              >{fullPublishDate}</strong
+            ></span
+          >
         </div>
       </div>
       {
@@ -122,7 +123,7 @@ const allContent = [...allGardenNotes, ...allStreams];
       <article
         id="article"
         role="article"
-        class="prose dark:prose-invert mx-auto text-2xl mt-8 pt-4 max-w-3xl prose-p:text-2xl prose-p:font-light prose-p:leading-9"
+        class="prose dark:prose-invert mx-auto text-2xl mt-8 pt-16 max-w-3xl prose-p:text-2xl prose-p:font-light prose-p:leading-9 prose-li:font-light"
       >
         <Content />
       </article>
@@ -171,9 +172,13 @@ const allContent = [...allGardenNotes, ...allStreams];
       callout.addEventListener("click", function (event) {
         const currentTarget = event.currentTarget;
         const isExpanded =
-          currentTarget.getAttribute("data-expanded") === "true";
+          (currentTarget as HTMLElement)?.getAttribute("data-expanded") ===
+          "true";
         // Toggle the data-expanded attribute
-        currentTarget.setAttribute("data-expanded", (!isExpanded).toString());
+        (currentTarget as HTMLElement)?.setAttribute(
+          "data-expanded",
+          (!isExpanded).toString()
+        );
       });
     }
   });

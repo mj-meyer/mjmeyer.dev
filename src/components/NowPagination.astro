@@ -15,7 +15,7 @@ function formatSlugToUrl(slug: string) {
 
 function formatSlugToDisplay(slug: string) {
   const [year, month] = slug.split("-");
-  const date = new Date(year, parseInt(month) - 1);
+  const date = new Date(parseInt(year), parseInt(month) - 1);
   return date.toLocaleDateString("en-US", { year: "numeric", month: "short" });
 }
 
