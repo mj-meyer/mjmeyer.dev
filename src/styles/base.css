@@ -221,7 +221,7 @@ blockquote[data-callout] > div.callout-title {
 
 [data-expanded="true"] .callout-content,
 blockquote[data-expandable="false"] .callout-content {
-  max-height: 100px; /* or whatever height needed */
+  max-height: 500px; /* or whatever height needed */
   transition: max-height padding 0.8s ease-out;
   padding: 1rem;
 }
