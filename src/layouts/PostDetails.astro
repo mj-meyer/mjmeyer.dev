@@ -173,6 +173,15 @@ const allContent = [...allGardenNotes, ...allStreams];
   .tags-container {
     @apply mt-2 ml-0 p-0 w-3/5;
   }
+
+  :global(.unpublished-link) {
+    @apply opacity-50 cursor-not-allowed;
+    text-decoration-style: wavy !important;
+  }
+  
+  :global(.unpublished-link:hover) {
+    @apply no-underline;
+  }
 </style>
 <script>
   // add listener to all callout nodes.

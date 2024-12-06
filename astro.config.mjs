@@ -11,6 +11,7 @@ import rehypeExternalLinks from "rehype-external-links";
 import mdx from "@astrojs/mdx";
 import embeds from "astro-embed/integration";
 import remarkObsidianCallout from "remark-obsidian-callout";
+import { rehypeUnpublishedLinks } from './src/utils/rehypeUnpublishedLinks'
 
 // https://astro.build/config
 export default defineConfig({
@@ -60,6 +61,7 @@ export default defineConfig({
           },
         },
       ],
+      rehypeUnpublishedLinks,
     ],
     shikiConfig: {
       theme: {
