@@ -12,7 +12,8 @@
     "format:check": "prettier --plugin-search-dir=. --check .",
     "format": "prettier --plugin-search-dir=. --write .",
     "cz": "cz",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "og:test": "tsx scripts/test-og-image.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.2",
