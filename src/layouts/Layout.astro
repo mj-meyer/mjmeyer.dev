@@ -3,7 +3,7 @@ import { SITE } from "@config";
 import "@styles/base.css";
 import WaveSeparator from "@components/WaveSeparator.astro";
 import TailwindIndicator from "@components/TailwindIndicator.astro";
-
+import PostHog from "../components/posthog.astro";
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
 export interface Props {
@@ -26,6 +26,8 @@ const socialImageURL = new URL(
   ogImage ? ogImage : SITE.ogImage,
   Astro.url.origin
 ).href;
+
+const isDev = import.meta.env.DEV;
 ---
 
 <!doctype html>
@@ -77,6 +79,7 @@ const socialImageURL = new URL(
       )
     }
 
+    <PostHog />
     <script is:inline src="/toggle-theme.js"></script>
   </head>
   <body>
@@ -99,6 +102,6 @@ const socialImageURL = new URL(
     <div class="z-50 relative flex-1 flex flex-col">
       <slot />
     </div>
-    <TailwindIndicator />
+    {isDev && <TailwindIndicator />}
   </body>
 </html>
