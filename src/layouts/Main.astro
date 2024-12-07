@@ -1,5 +1,6 @@
 ---
 import Breadcrumbs from "@components/Breadcrumbs.astro";
+import { fade } from "astro:transitions";
 
 export interface Props {
   pageTitle: string;
@@ -10,7 +11,7 @@ const { pageTitle, pageDesc } = Astro.props;
 ---
 
 <Breadcrumbs />
-<main id="main-content">
+<main id="main-content" transition:animate={fade({ duration: "0.3s" })}>
   <h1>{pageTitle}</h1>
   <p>{pageDesc}</p>
   <slot />

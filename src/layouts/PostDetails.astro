@@ -9,6 +9,7 @@ import LinkList from "@components/LinkList.astro";
 import { getCollection } from "astro:content";
 import { transformTag } from "@utils/tagUtils";
 import { slugifyStr } from "@utils/slugify";
+import { fade } from "astro:transitions";
 
 export interface Props {
   post: CollectionEntry<"garden" | "stream" | "page" | "now">;
@@ -72,7 +73,11 @@ const allContent = [...allGardenNotes, ...allStreams];
     {collection === "now" ? <Header /> : <Header activeNav={collection} />}
   </Fragment>
 
-  <main id="main-content" class="relative">
+  <main
+    id="main-content"
+    class="relative"
+    transition:animate={fade({ duration: "0.3s" })}
+  >
     <div class="max-w-3xl mx-auto">
       <div
         class="relative flex-col pb-12 border-b-2 border-dashed border-skin-card flex gap-8"
@@ -184,21 +189,26 @@ const allContent = [...allGardenNotes, ...allStreams];
   }
 </style>
 <script>
-  // add listener to all callout nodes.
-  const callouts = document.querySelectorAll(".callout");
-  callouts.forEach(callout => {
-    if (callout.getAttribute("data-expandable") === "true") {
-      callout.addEventListener("click", function (event) {
-        const currentTarget = event.currentTarget;
-        const isExpanded =
-          (currentTarget as HTMLElement)?.getAttribute("data-expanded") ===
-          "true";
-        // Toggle the data-expanded attribute
-        (currentTarget as HTMLElement)?.setAttribute(
-          "data-expanded",
-          (!isExpanded).toString()
-        );
-      });
-    }
-  });
+  function calloutsInit() {
+    // add listener to all callout nodes.
+    const callouts = document.querySelectorAll(".callout");
+    callouts.forEach(callout => {
+      if (callout.getAttribute("data-expandable") === "true") {
+        callout.addEventListener("click", function (event) {
+          const currentTarget = event.currentTarget;
+          const isExpanded =
+            (currentTarget as HTMLElement)?.getAttribute("data-expanded") ===
+            "true";
+          // Toggle the data-expanded attribute
+          (currentTarget as HTMLElement)?.setAttribute(
+            "data-expanded",
+            (!isExpanded).toString()
+          );
+        });
+      }
+    });
+  }
+
+  document.addEventListener("astro:after-swap", calloutsInit);
+  calloutsInit();
 </script>

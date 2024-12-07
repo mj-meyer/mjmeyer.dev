@@ -4,6 +4,7 @@ import "@styles/base.css";
 import WaveSeparator from "@components/WaveSeparator.astro";
 import TailwindIndicator from "@components/TailwindIndicator.astro";
 import PostHog from "../components/posthog.astro";
+import { ViewTransitions } from "astro:transitions";
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
 export interface Props {
@@ -23,7 +24,7 @@ const {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 // Remove trailing slash from URLs
-const formattedURL = canonicalURL.href.replace(/\/$/, '');
+const formattedURL = canonicalURL.href.replace(/\/$/, "");
 
 const socialImageURL = new URL(
   ogImage ? ogImage : SITE.ogImage,
@@ -47,6 +48,8 @@ const isDev = import.meta.env.DEV;
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={SITE.author} />
+
+    <ViewTransitions />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title} />
