@@ -1,0 +1,83 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BlobIcon from "./BlobIcon.astro";
+
+export interface Props {
+  href?: string;
+  frontmatter: CollectionEntry<"garden" | "stream">["data"];
+  secHeading?: boolean;
+  cardType?: "stream" | "garden";
+  expanded?: boolean;
+}
+
+type GardenFrontmatter = CollectionEntry<"garden">["data"];
+type StreamFrontmatter = CollectionEntry<"stream">["data"];
+
+const { href, frontmatter, cardType, expanded } = Astro.props;
+
+const { title, updateDatetime } = frontmatter;
+
+const noteType =
+  cardType === "garden"
+    ? (frontmatter as GardenFrontmatter).noteState
+    : (frontmatter as StreamFrontmatter).streamType;
+
+const updateTimeStamp = updateDatetime.toLocaleDateString([], {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+{
+  !expanded ? (
+    <li class="list-none">
+      <a
+        href={href}
+        class="text-skin-accent hover:bg-skin-accent/5 border-dashed border-2 py-6 px-4 rounded-xl border-skin-card flex gap-2 items-center relative group"
+      >
+        <span class="text-skin-base flex items-center absolute -left-7 -top-[1.6rem] opacity-100">
+          <span class="relative z-40 flex -rotate-[25deg]">
+            <BlobIcon type={noteType} className="size-12" />
+          </span>
+          <span class="relative z-10 text-skin-base bg-skin-highlight uppercase items-center rounded-lg text-sm flex -ml-4 pl-6 pr-3 py-1">
+            {noteType}
+          </span>
+        </span>
+        <span class="flex flex-col">
+          <span class="capitalize">{title}</span>
+          <span class="absolute uppercase bg-skin-highlight px-4 py-1 -bottom-3.5 right-2 text-skin-base rounded-lg text-sm group-hover:no-underline">
+            {updateTimeStamp}
+          </span>
+        </span>
+      </a>
+    </li>
+  ) : (
+    <li>
+      <a
+        href={href}
+        class="text-skin-accent z-20 hover:bg-skin-accent/5 p-8 rounded-3xl border-dashed border-skin-card border-2 flex relative group"
+      >
+        <span class="text-skin-base flex items-center absolute -left-7 -top-[1.6rem] opacity-100">
+          <span class="relative z-40 flex -rotate-[25deg]">
+            <BlobIcon type={noteType} className="size-12 scale-150" />
+          </span>
+          <span class="relative z-10 text-skin-base bg-skin-highlight uppercase items-center rounded-lg text-lg flex pr-6 py-1 tracking-wider -ml-6 pl-12">
+            {noteType}
+          </span>
+        </span>
+        <span class="flex flex-col gap-4 pt-2">
+          <span class="font-montserrat capitalize font-medium text-2xl">
+            {title}
+          </span>
+          <span class="text-lg text-skin-heading pl-3">
+            {frontmatter.description}
+          </span>
+          <span class="absolute uppercase bg-skin-highlight px-4 py-1 -bottom-3.5 right-2 text-skin-base rounded-lg text-sm group-hover:no-underline">
+            {updateTimeStamp}
+          </span>
+        </span>
+      </a>
+    </li>
+  )
+}

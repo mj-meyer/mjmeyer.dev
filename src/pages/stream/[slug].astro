@@ -1,0 +1,145 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import getSortedPosts from "@utils/getSortedPosts";
+import getPageNumbers from "@utils/getPageNumbers";
+import { SITE } from "@config";
+import Header from "@components/Header.astro";
+import NoteSummaryCard from "@components/NoteSummaryCard.astro";
+import DetailLayout from "@layouts/DetailLayout.astro";
+import Pagination from "@components/Pagination.astro";
+
+export interface Props {
+  post: CollectionEntry<"stream">;
+}
+
+type StreamType = CollectionEntry<"stream">["data"]["streamType"];
+
+export async function getStaticPaths() {
+  const posts = await getCollection("stream", ({ data }) => !data.draft);
+  const sortedPosts = getSortedPosts(posts);
+  const streamTypes = [...new Set(posts.map(post => post.data.streamType))];
+  const pagePaths = getPageNumbers(sortedPosts.length).map(pageNum => ({
+    params: { slug: String(pageNum) },
+  }));
+  const filterPaths = streamTypes.map(streamType => ({
+    params: { slug: streamType },
+  }));
+  return [...pagePaths, ...filterPaths];
+}
+
+const { slug } = Astro.params;
+const posts = (await getCollection("stream")) as CollectionEntry<"stream">[];
+const sortedPosts = getSortedPosts(posts) as CollectionEntry<"stream">[];
+const totalPages = getPageNumbers(sortedPosts.length);
+const streamTypes = [...new Set(posts.map(post => post.data.streamType))];
+
+let currentPage = 1;
+let filteredPosts = sortedPosts;
+let paginatedPosts = sortedPosts;
+let totalPageCount = 1;
+
+if (streamTypes.includes(slug as StreamType) && isNaN(Number(slug))) {
+  // Filter by stream type without pagination
+  filteredPosts = sortedPosts.filter(post => post.data.streamType === slug);
+  paginatedPosts = filteredPosts;
+  currentPage = 1;
+} else {
+  // Paginate
+  currentPage =
+    slug && !isNaN(Number(slug)) && totalPages.includes(Number(slug))
+      ? Number(slug)
+      : 1;
+  const lastPost = currentPage * SITE.postPerPage;
+  const startPost = lastPost - SITE.postPerPage;
+  paginatedPosts = sortedPosts.slice(startPost, lastPost);
+  totalPageCount = totalPages.length;
+}
+
+const pageTitle = streamTypes.includes(slug as StreamType)
+  ? `${slug} Stream`
+  : "Digital Stream of Resources";
+
+const pageDesc = streamTypes.includes(slug as StreamType)
+  ? `Filtered view of ${slug} content from my digital stream of content I've collected from around the interwebs.`
+  : "A digital stream of content I've collected from around the interwebs.";
+
+const isSlugNumber = !isNaN(Number(slug));
+---
+
+<DetailLayout title={pageTitle} description={pageDesc}>
+  <Fragment slot="header">
+    <Header activeNav="stream" />
+  </Fragment>
+  <Fragment slot="pageTitle">
+    <div class="flex flex-col gap-4 text-3xl font-light">
+      <h1
+        class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
+      >
+        <span
+          class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
+          >Resources</span
+        >
+        Stream
+      </h1>
+      {
+        isSlugNumber ? (
+          <p>
+            A filtered digital stream of digital resources I've collected from
+            around the interwebs that aligns with my interests and supports my
+            learning journey, making it easier to revisit and share with others.
+          </p>
+        ) : (
+          <p>
+            A filtered digital stream of <strong>{slug}</strong> resources I've
+            collected from around the interwebs that aligns with my interests
+            and supports my learning journey, making it easier to revisit and
+            share with others.
+          </p>
+        )
+      }
+      <p>
+        Think of this like "quote" posts / tweets, except they're less
+        ephemeral.
+      </p>
+    </div>
+  </Fragment>
+  <div
+    class="flex flex-wrap justify-center font-medium font-montserrat uppercase text-sm gap-4 my-16"
+  >
+    <a
+      href="/stream"
+      class={`px-6 h-8 flex border items-center rounded-3xl bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60`}
+      >All</a
+    >
+    {
+      streamTypes.map(type => (
+        <a
+          href={`/stream/${type}`}
+          class={`px-4 h-8 flex border items-center rounded-3xl ${slug === type ? "bg-skin-card border-skin-fill/30 text-skin-inverted" : "bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60"}`}
+        >
+          {type}
+        </a>
+      ))
+    }
+  </div>
+  <ul class="flex flex-col gap-24 max-lg:px-8">
+    {
+      paginatedPosts.map(({ data, slug }) => (
+        <NoteSummaryCard
+          href={`/${slug}`}
+          frontmatter={data as CollectionEntry<"stream">["data"]}
+          cardType={"stream"}
+          expanded
+        />
+      ))
+    }
+  </ul>
+  <Fragment slot="pagination">
+    <Pagination
+      pageNum={currentPage}
+      totalPages={totalPageCount}
+      collectionType={"stream"}
+    />
+  </Fragment>
+</DetailLayout>

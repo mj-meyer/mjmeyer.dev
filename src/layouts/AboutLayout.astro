@@ -1,28 +1,57 @@
 ---
-import { SITE } from "@config";
-import Breadcrumbs from "@components/Breadcrumbs.astro";
-import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
-import Layout from "./Layout.astro";
+import DetailLayout from "./DetailLayout.astro";
 
 export interface Props {
   frontmatter: {
     title: string;
+    subtitle: string;
     description?: string;
+    metaTitle?: string;
+    metaDescription?: string;
   };
 }
 
+// TODO: need to map the frontmatter title to detail layout
 const { frontmatter } = Astro.props;
 ---
 
-<Layout title={`${frontmatter.title} | ${SITE.title}`}>
-  <Header activeNav="about" />
-  <Breadcrumbs />
-  <main id="main-content">
-    <section id="about" class="prose mb-28 max-w-3xl prose-img:border-0">
-      <h1 class="text-2xl tracking-wider sm:text-3xl">{frontmatter.title}</h1>
-      <slot />
-    </section>
-  </main>
-  <Footer />
-</Layout>
+<DetailLayout
+  title={frontmatter.metaTitle || frontmatter.title}
+  description={frontmatter.metaDescription || frontmatter.description}
+>
+  <Fragment slot="header">
+    <Header activeNav="about" />
+  </Fragment>
+  <Fragment slot="pageTitle">
+    <div class="flex flex-col gap-4 text-xl font-light md:text-3xl">
+      <h1
+        class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
+      >
+        <span
+          class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
+          >{frontmatter.subtitle}</span
+        >
+        {frontmatter.title}
+      </h1>
+      {frontmatter.description && <p>{frontmatter.description}</p>}
+    </div>
+  </Fragment>
+  <div
+    class="prose flex w-full flex-col max-w-full prose-p:text-xl prose-p:font-light prose-ul:text-xl prose-ul:font-light prose-h2:text-2xl prose-h2:mt-6 prose-h4:text-xl prose-p:my-4 md:prose-p:text-2xl md:prose-h2:text-4xl md:prose-h4:text-2xl"
+  >
+    <slot />
+  </div>
+</DetailLayout>
+
+<style>
+  .post-list {
+    @apply mt-12;
+  }
+  .post-list li {
+    @apply mb-4;
+  }
+  .post-list a {
+    /* @apply text-blue-600 hover:underline; */
+  }
+</style>

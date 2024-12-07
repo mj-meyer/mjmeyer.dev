@@ -1,0 +1,107 @@
+---
+import { getCollection } from "astro:content";
+import DetailLayout from "@layouts/DetailLayout.astro";
+import Header from "@components/Header.astro";
+import NowPagination from "@components/NowPagination.astro";
+import LinkButton from "@components/LinkButton.astro";
+
+export async function getStaticPaths() {
+  const nowPosts = await getCollection("now");
+  const sortedPosts = nowPosts.sort((a, b) => b.slug.localeCompare(a.slug));
+
+  return sortedPosts.map((post, index) => {
+    const [year, month] = post.slug.split("-");
+    return {
+      params: { slug: `${year}/${month.toLowerCase()}` },
+      props: {
+        post,
+        prevPost: index > 0 ? sortedPosts[index - 1] : null,
+        nextPost:
+          index < sortedPosts.length - 1 ? sortedPosts[index + 1] : null,
+      },
+    };
+  });
+}
+
+const { post, prevPost, nextPost } = Astro.props;
+const [year, month, day] = post.slug.split("-");
+const monthFormatted = new Intl.DateTimeFormat("en-US", {
+  month: "long",
+}).format(new Date(`${year}-${month}-${day}`));
+
+const { Content } = await post.render();
+---
+
+<DetailLayout
+  title={`Now | ${monthFormatted} ${year}`}
+  description={`Now page from ${monthFormatted} ${year}`}
+>
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
+  <Fragment slot="pageTitle">
+    <div class="flex flex-col gap-4 text-3xl font-light">
+      <h1
+        class="text-4xl flex z-20 flex-col md:text-5xl lg:text-8xl font-black mb-4 relative text-balance"
+      >
+        <span
+          class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-16 lg:text-9xl"
+          >what's up</span
+        >
+        Now
+      </h1>
+      <p>What I'm focussed on at this point in my life.</p>
+      <p>
+        A <LinkButton
+          href="https://nownownow.com/about"
+          className="text-skin-accent underline underline-offset-4 decoration-dashed"
+          target="_blank"
+        >
+          now page
+        </LinkButton>
+        is a concept that was popularised by Derek Sivers. It's like an about page,
+        but more personal. I like to think of it as a personal public diary that
+        I update every month.
+      </p>
+
+      <LinkButton
+        href="/now"
+        className="text-skin-accent underline underline-offset-4 decoration-dashed"
+      >
+        See the latest now page
+      </LinkButton>
+    </div>
+  </Fragment>
+  <div class="flex flex-col gap-28 w-full pt-24 max-md:gap-16 max-md:pt-8">
+    <div
+      class="w-full max-w-full pb-16 prose prose-p:text-2xl prose-p:leading-10 prose-p:font-light max-md:prose-p:text-xl border-b-2 border-skin-accent/30 border-dashed"
+    >
+      <h2
+        class="text-4xl flex flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
+      >
+        <span
+          class="absolute -z-10 text-skin-hightlight -left-4 -top-7 text-5xl opacity-40 md:-left-12 md:-top-16 md:text-8xl lg:-top-16 lg:text-8xl"
+        >
+          {year}
+        </span>
+        {monthFormatted}
+      </h2>
+      <Content />
+    </div>
+  </div>
+  <Fragment slot="pagination">
+    <NowPagination prevPost={prevPost} nextPost={nextPost} />
+  </Fragment>
+</DetailLayout>
+
+<style>
+  .post-list {
+    @apply mt-12;
+  }
+  .post-list li {
+    @apply mb-4;
+  }
+  .post-list a {
+    /* @apply text-blue-600 hover:underline; */
+  }
+</style>

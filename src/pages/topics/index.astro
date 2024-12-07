@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import Header from "@components/Header.astro";
+import DetailLayout from "@layouts/DetailLayout.astro";
+import Tag from "@components/Tag.astro";
+import getUniqueTags from "@utils/getUniqueTags";
+import { transformTag } from "@utils/tagUtils";
+
+const gardenNotes = await getCollection("garden", ({ data }) => !data.draft);
+const streamNotes = await getCollection("stream", ({ data }) => !data.draft);
+const posts = [...gardenNotes, ...streamNotes];
+const tags = getUniqueTags(posts);
+---
+
+<DetailLayout>
+  <Fragment slot="header">
+    <Header activeNav="stream" />
+  </Fragment>
+  <Fragment slot="pageTitle">
+    <h1
+      class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
+    >
+      <span
+        class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
+      >
+        Note
+      </span>
+      Topics
+    </h1>
+    <p>
+      Notes from both the garden and stream. This is not the ideal way to
+      navigate a garden, but it may be handy finding some related content.
+    </p>
+  </Fragment>
+  <ul>
+    {
+      tags.map(tag => {
+        const { slug, display } = transformTag(tag);
+        return <Tag name={slug} display={display} size="lg" />;
+      })
+    }
+  </ul>
+</DetailLayout>

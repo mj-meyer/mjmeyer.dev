@@ -32,11 +32,42 @@
   html[data-theme="dark"] #sun-svg {
     display: block;
   }
+
+  html.dark a > .external-link-icon,
+  html.light a > .external-link-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    top: -0.5rem;
+    margin-left: 0.2rem;
+    display: inline-block;
+    position: relative;
+    color: white !important;
+    stroke: white !important;
+    fill: white !important;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  html.dark .external-link-icon {
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgb(205, 191, 217)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>');
+  }
+  html.dark a:hover > .external-link-icon {
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgb(219, 128, 255)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>');
+  }
+  html.light .external-link-icon {
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgb(14, 1, 22)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>');
+  }
+  html.light a:hover > .external-link-icon {
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgb(168, 90, 255)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>');
+  }
+
   html {
     @apply bg-skin-highlight;
+    --color-text-dark: 22, 1, 34;
+    --color-text-light: 225, 219, 255;
   }
   body {
-    @apply flex min-h-screen flex-col bg-gradient-to-tl from-skin-fill to-skin-highlight font-lato text-lg text-skin-base 
+    @apply flex min-h-screen flex-col bg-skin-fill font-lato text-lg text-skin-base 
     selection:bg-skin-accent selection:bg-opacity-70 selection:text-skin-inverted;
   }
   h1,
@@ -62,10 +93,19 @@
     focus-visible:no-underline focus-visible:outline-dashed;
   }
   svg {
-    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
+    @apply inline-block h-6 w-6;
   }
   svg.icon-tabler {
-    @apply inline-block h-6 w-6 scale-125 fill-transparent stroke-skin-base stroke-2 opacity-90 hover:stroke-skin-accent group-hover:fill-transparent sm:scale-110;
+    @apply inline-block size-7 scale-150 fill-transparent stroke-skin-base stroke-1 opacity-90 hover:stroke-skin-accent group-hover:fill-transparent sm:scale-150;
+    shape-rendering: geometricPrecision;
+    stroke-linecap: round;
+  }
+  svg.x-icon {
+    /* @apply size-6 mr-2 stroke-[1.5px]; */
+  }
+  svg.blob-bg {
+    width: 100%;
+    height: 100%;
   }
   .prose {
     @apply prose-headings:!mb-3 prose-headings:!text-skin-heading
@@ -88,6 +128,10 @@
     prose-img:!mt-2 prose-img:border-2 
     prose-img:border-skin-line prose-hr:!border-skin-line;
   }
+  /* since we're using the title frontmatter, hide it. */
+  .prose h1 {
+    display: none;
+  }
   .prose a {
     @apply hover:!text-skin-accent;
   }
@@ -107,6 +151,10 @@
   }
   .prose h2#table-of-contents + p {
     @apply hidden;
+  }
+
+  html.dark .prose-blockquote.callout-note > .callout-title {
+    @apply flex flex-row;
   }
 
   /* ===== scrollbar ===== */
@@ -142,4 +190,204 @@
   .focus-outline {
     @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
   }
+}
+/* ===== callout plugin ===== */
+/* TODO: add styling for dropdowns and other callout states */
+blockquote[data-callout] {
+  font-weight: 300;
+  border-radius: 0.5rem;
+  margin: 2rem 0;
+  @apply border-l-8;
+}
+blockquote[data-callout] > div {
+  padding: 1rem;
+  font-size: 1.2rem;
+  /* font-weight: 300; */
+}
+
+blockquote[data-callout] > div.callout-title {
+  font-size: 1.5rem;
+  line-height: 100%;
+  align-items: center;
+  border-radius: 0 0.5rem 0 0;
+}
+
+[data-expanded="false"] .callout-content {
+  max-height: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: max-height padding 0.2s ease-out;
+}
+
+[data-expanded="true"] .callout-content,
+blockquote[data-expandable="false"] .callout-content {
+  max-height: 500px; /* or whatever height needed */
+  transition: max-height padding 0.8s ease-out;
+  padding: 1rem;
+}
+
+blockquote > div.callout-title {
+  cursor: pointer;
+  @apply flex flex-row gap-4 items-end;
+}
+
+blockquote[data-expandable="false"] > div.callout-title {
+  cursor: auto;
+}
+
+blockquote[data-callout="note"],
+blockquote[data-callout="example"] {
+  @apply bg-skin-card/30 border-skin-card;
+}
+blockquote[data-callout="note"] > .callout-title,
+blockquote[data-callout="example"] > .callout-title {
+  @apply bg-skin-card/30;
+}
+
+blockquote[data-callout="note"] .callout-title-icon,
+blockquote[data-callout="example"] .callout-title-icon {
+  @apply text-skin-card;
+}
+
+blockquote[data-callout="abstract"],
+blockquote[data-callout="summary"],
+blockquote[data-callout="tldr"] {
+  @apply bg-blue-500/30 border-blue-500;
+}
+
+blockquote[data-callout="abstract"] > .callout-title,
+blockquote[data-callout="summary"] > .callout-title,
+blockquote[data-callout="tldr"] > .callout-title {
+  @apply bg-blue-500/30;
+}
+
+blockquote[data-callout="abstract"] .callout-title-icon,
+blockquote[data-callout="summary"] .callout-title-icon,
+blockquote[data-callout="tldr"] .callout-title-icon {
+  @apply text-blue-500;
+}
+
+blockquote[data-callout="info"],
+blockquote[data-callout="todo"],
+blockquote[data-callout="tip"],
+blockquote[data-callout="hint"],
+blockquote[data-callout="important"] {
+  @apply bg-teal-500/30 border-teal-500;
+}
+
+blockquote[data-callout="info"] > .callout-title,
+blockquote[data-callout="todo"] > .callout-title,
+blockquote[data-callout="tip"] > .callout-title,
+blockquote[data-callout="hint"] > .callout-title,
+blockquote[data-callout="important"] > .callout-title {
+  @apply bg-teal-500/30;
+}
+
+blockquote[data-callout="info"] .callout-title-icon,
+blockquote[data-callout="todo"] .callout-title-icon,
+blockquote[data-callout="tip"] .callout-title-icon,
+blockquote[data-callout="hint"] .callout-title-icon,
+blockquote[data-callout="important"] .callout-title-icon {
+  @apply text-teal-500;
+}
+
+blockquote[data-callout="success"],
+blockquote[data-callout="check"],
+blockquote[data-callout="done"],
+blockquote[data-callout="question"],
+blockquote[data-callout="help"],
+blockquote[data-callout="faq"] {
+  @apply bg-emerald-500/30 border-emerald-500;
+}
+
+blockquote[data-callout="success"] > .callout-title,
+blockquote[data-callout="check"] > .callout-title,
+blockquote[data-callout="done"] > .callout-title,
+blockquote[data-callout="question"] > .callout-title,
+blockquote[data-callout="help"] > .callout-title,
+blockquote[data-callout="faq"] > .callout-title {
+  @apply bg-emerald-500/30;
+}
+
+blockquote[data-callout="success"] .callout-title-icon,
+blockquote[data-callout="check"] .callout-title-icon,
+blockquote[data-callout="done"] .callout-title-icon,
+blockquote[data-callout="question"] .callout-title-icon,
+blockquote[data-callout="help"] .callout-title-icon,
+blockquote[data-callout="faq"] .callout-title-icon {
+  @apply text-emerald-500;
+}
+
+blockquote[data-callout="warning"],
+blockquote[data-callout="attention"],
+blockquote[data-callout="caution"] {
+  @apply bg-yellow-500/30 border-yellow-500;
+}
+
+blockquote[data-callout="warning"] > .callout-title,
+blockquote[data-callout="attention"] > .callout-title,
+blockquote[data-callout="caution"] > .callout-title {
+  @apply bg-yellow-500/30;
+}
+
+blockquote[data-callout="warning"] .callout-title-icon,
+blockquote[data-callout="attention"] .callout-title-icon,
+blockquote[data-callout="caution"] .callout-title-icon {
+  @apply text-yellow-500;
+}
+
+blockquote[data-callout="failure"],
+blockquote[data-callout="fail"],
+blockquote[data-callout="missing"] {
+  @apply bg-rose-400/30 border-rose-400;
+}
+
+blockquote[data-callout="failure"] > .callout-title,
+blockquote[data-callout="fail"] > .callout-title,
+blockquote[data-callout="missing"] > .callout-title {
+  @apply bg-rose-400/30;
+}
+
+blockquote[data-callout="failure"] .callout-title-icon,
+blockquote[data-callout="fail"] .callout-title-icon,
+blockquote[data-callout="missing"] .callout-title-icon {
+  @apply text-rose-400;
+}
+
+blockquote[data-callout="danger"],
+blockquote[data-callout="error"],
+blockquote[data-callout="bug"] {
+  @apply bg-red-500/30 border-red-500;
+}
+
+blockquote[data-callout="danger"] > .callout-title,
+blockquote[data-callout="error"] > .callout-title,
+blockquote[data-callout="bug"] > .callout-title {
+  @apply bg-red-500/30;
+}
+
+blockquote[data-callout="danger"] .callout-title-icon,
+blockquote[data-callout="error"] .callout-title-icon,
+blockquote[data-callout="bug"] .callout-title-icon {
+  @apply text-red-500;
+}
+
+blockquote[data-callout="quote"],
+blockquote[data-callout="cite"] {
+  @apply bg-slate-500/30 border-slate-500;
+}
+blockquote[data-callout="quote"] > .callout-title,
+blockquote[data-callout="cite"] > .callout-title {
+  @apply bg-slate-500/30;
+}
+
+blockquote[data-callout="quote"] .callout-title-icon,
+blockquote[data-callout="cite"] .callout-title-icon {
+  @apply text-slate-500;
+}
+
+astro-embed-tweet {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }

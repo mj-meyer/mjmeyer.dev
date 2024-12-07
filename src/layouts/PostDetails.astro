@@ -3,80 +3,202 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
-import Meta from "@components/Meta";
 import type { CollectionEntry } from "astro:content";
+import BlobIcon from "@components/BlobIcon.astro";
+import LinkList from "@components/LinkList.astro";
+import { getCollection } from "astro:content";
+import { transformTag } from "@utils/tagUtils";
 import { slugifyStr } from "@utils/slugify";
 
 export interface Props {
-  post: CollectionEntry<"blog">;
+  post: CollectionEntry<"garden" | "stream" | "page" | "now">;
+  collection: "garden" | "stream" | "now";
 }
 
-const { post } = Astro.props;
+const { post, collection } = Astro.props;
 
 const {
   title,
-  author,
   description,
   ogImage,
-  pubDatetime,
-  updatetime,
+  publishDatetime,
+  updateDatetime,
   tags,
-  noteState,
-} = post.data;
+  incomingLinks,
+  outgoingLinks,
+} = post.data as CollectionEntry<"garden" | "stream">["data"];
 
 const { Content } = await post.render();
 
 const ogUrl = new URL(
-  ogImage ? ogImage : `${slugifyStr(title)}.svg`,
+  ogImage ? ogImage : `assets/${slugifyStr(post.slug).replace(/-/g, "")}.png`,
   Astro.url.origin
 ).href;
+
+const noteType =
+  "noteState" in post.data
+    ? post.data.noteState
+    : "streamType" in post.data
+      ? post.data.streamType
+      : undefined;
+const fullUpdateDate = updateDatetime.toLocaleDateString([], {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+const fullPublishDate = publishDatetime.toLocaleDateString([], {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+
+// Fetch all posts for link validation
+const allGardenNotes = await getCollection("garden");
+const allStreams = await getCollection("stream");
+const allContent = [...allGardenNotes, ...allStreams];
+// const dateType =
+//   new Date(updateDatetime) > new Date(publishDatetime)
+//     ? "Updated"
+//     : "Published";
 ---
 
-<Layout title={title} author={author} description={description} ogImage={ogUrl}>
-  <Header />
-  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
-    <button
-      class="focus-outline mb-2 mt-8 flex hover:opacity-75"
-      onclick="history.back()"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg"
-        ><path
-          d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
-        ></path>
-      </svg><span>Go back</span>
-    </button>
-  </div>
-  <main id="main-content" class="relative">
-    <h1 class="post-title">{title}</h1>
-    <div
-      class="my-2 border-skin-line border-opacity-30 max-lg:border-y max-lg:pt-2"
-    >
-      <Meta
-        detail
-        updatetime={updatetime}
-        pubDatetime={pubDatetime}
-        noteState={noteState}
-      />
-    </div>
-    <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
-      <Content />
-    </article>
+<Layout
+  title={title}
+  description={description}
+  ogImage={ogUrl}
+  hasWaveSeparator={false}
+>
+  <Fragment slot="header">
+    {collection === "now" ? <Header /> : <Header activeNav={collection} />}
+  </Fragment>
 
-    <ul class="tags-container">
-      {tags.map(tag => <Tag name={tag} />)}
-    </ul>
+  <main id="main-content" class="relative">
+    <div class="max-w-3xl mx-auto">
+      <div
+        class="relative flex-col pb-12 border-b-2 border-dashed border-skin-card flex gap-8"
+      >
+        <h1
+          class="text-5xl text-left font-extrabold text-skin-accent capitalize w-full"
+        >
+          {title}
+        </h1>
+        <div class="description text-4xl font-light">
+          {description}
+        </div>
+        <div
+          class="uppercase absolute -bottom-11 right-0 flex items-center w-full justify-end"
+        >
+          <span class="z-30 translate-x-4 contrast-125 -rotate-[25deg]">
+            <BlobIcon
+              type={noteType ?? "other"}
+              className="size-12 scale-150"
+            />
+          </span>
+          <span
+            class="relative flex items-center pl-6 flex-col border border-skin-card bg-skin-card/60 py-1 px-3"
+          >
+            {noteType}
+          </span>
+          <div class="flex flex-col border-skin-card border py-1 px-3">
+            <span class="">
+              {fullUpdateDate}
+            </span>
+          </div>
+          <span class="absolute top-12 text-xs"
+            >orginally published on <strong class="underline"
+              >{fullPublishDate}</strong
+            ></span
+          >
+        </div>
+      </div>
+      {
+        tags && tags.length > 0 && (
+          <ul class="tags-container">
+            {tags.map((tag: string) => {
+              const { slug, display } = transformTag(tag);
+              return <Tag name={slug} display={display} />;
+            })}
+          </ul>
+        )
+      }
+
+      <article
+        id="article"
+        role="article"
+        class="prose dark:prose-invert mx-auto text-2xl mt-8 pt-16 max-w-3xl prose-p:text-2xl prose-p:font-light prose-p:leading-9 prose-li:font-light"
+      >
+        <Content />
+      </article>
+      <div class="mt-16 flex gap-12">
+        {
+          incomingLinks && incomingLinks.length > 0 && (
+            <LinkList
+              links={incomingLinks}
+              type="incoming"
+              allPosts={allContent}
+            />
+          )
+        }
+        {
+          outgoingLinks && outgoingLinks.length > 0 && (
+            <LinkList
+              links={outgoingLinks}
+              type="outgoing"
+              allPosts={allContent}
+            />
+          )
+        }
+      </div>
+    </div>
   </main>
   <Footer />
 </Layout>
 
 <style>
   main {
-    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+    @apply mx-auto relative z-20 w-full max-w-5xl px-4 pt-24 pb-12  flex gap-8;
   }
+
+  aside {
+    display: none;
+  }
+
+  #article {
+    @apply border-b-2 pb-16 border-dashed border-skin-card/40;
+  }
+
   .post-title {
-    @apply text-2xl font-semibold text-skin-accent;
+    @apply text-5xl text-center font-extrabold text-skin-accent w-full;
   }
   .tags-container {
-    @apply my-8;
+    @apply flex flex-wrap w-full border-b-2 border-dashed border-skin-card pb-8 text-center mt-20 ml-0 md:mt-2 md:ml-0 md:p-0 md:pb-4 md:w-3/5;
+  }
+
+  :global(.unpublished-link) {
+    @apply opacity-50 cursor-not-allowed;
+    text-decoration-style: wavy !important;
+  }
+
+  :global(.unpublished-link:hover) {
+    @apply no-underline;
   }
 </style>
+<script>
+  // add listener to all callout nodes.
+  const callouts = document.querySelectorAll(".callout");
+  callouts.forEach(callout => {
+    if (callout.getAttribute("data-expandable") === "true") {
+      callout.addEventListener("click", function (event) {
+        const currentTarget = event.currentTarget;
+        const isExpanded =
+          (currentTarget as HTMLElement)?.getAttribute("data-expanded") ===
+          "true";
+        // Toggle the data-expanded attribute
+        (currentTarget as HTMLElement)?.setAttribute(
+          "data-expanded",
+          (!isExpanded).toString()
+        );
+      });
+    }
+  });
+</script>

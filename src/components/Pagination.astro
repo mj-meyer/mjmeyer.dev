@@ -1,0 +1,67 @@
+---
+import LinkButton from "./LinkButton.astro";
+
+export type Props = {
+  pageNum: number;
+  totalPages: number;
+  collectionType: string;
+};
+
+const { pageNum, totalPages, collectionType } = Astro.props;
+
+const prev = pageNum > 1 ? "" : "disabled";
+const next = pageNum < totalPages ? "" : "disabled";
+---
+
+{
+  totalPages > 1 && (
+    <nav class="pagination-wrapper" aria-label="Pagination">
+      <LinkButton
+        disabled={prev === "disabled"}
+        href={`/${collectionType}${
+          pageNum - 1 !== 1 ? "/" + (pageNum - 1) : ""
+        }`}
+        className={`select-none flex items-center ${prev}`}
+        ariaLabel="Previous"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M12.707 17.293 8.414 13H18v-2H8.414l4.293-4.293-1.414-1.414L4.586 12l6.707 6.707z"
+          />
+        </svg>
+        Prev
+      </LinkButton>
+      <LinkButton
+        disabled={next === "disabled"}
+        href={`/${collectionType}/${pageNum + 1}`}
+        className={`select-none flex items-center ${next}`}
+        ariaLabel="Next"
+      >
+        Next
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+          />
+        </svg>
+      </LinkButton>
+    </nav>
+  )
+}
+
+<style>
+  .pagination-wrapper {
+    @apply mb-8 mt-auto flex gap-8 justify-center;
+  }
+</style>

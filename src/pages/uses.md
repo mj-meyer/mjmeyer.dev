@@ -1,7 +1,11 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "Uses"
+subtitle: "Technology"
+description: "A detailed breakdown of software and hardware tech that I use."
 ---
+
+This was inspired by [Wes Bos's uses page](https://wesbos.com/uses) and also the "directory" he created [uses.tech](https://uses.tech/)
 
 ## Hardware / Desk Setup
 

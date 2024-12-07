@@ -1,0 +1,91 @@
+---
+import { SITE } from "@config";
+import getSortedPosts from "@utils/getSortedPosts";
+import getPageNumbers from "@utils/getPageNumbers";
+
+import { getCollection, type CollectionEntry } from "astro:content";
+import Header from "@components/Header.astro";
+import NoteSummaryCard from "@components/NoteSummaryCard.astro";
+import DetailLayout from "@layouts/DetailLayout.astro";
+import Pagination from "@components/Pagination.astro";
+
+const posts = await getCollection("stream");
+
+const sortedPosts = getSortedPosts(posts);
+
+const totalPages = getPageNumbers(sortedPosts.length);
+
+const paginatedPosts = sortedPosts.slice(0, SITE.postPerPage);
+
+const streamTypes = [...new Set(posts.map(post => post.data.streamType))];
+---
+
+<DetailLayout
+  title="Digital Stream of Resource Notes"
+  description="A digital stream of content I've collected from around the interwebs"
+>
+  <Fragment slot="header">
+    <Header activeNav="stream" />
+  </Fragment>
+  <Fragment slot="pageTitle">
+    <div class="flex flex-col gap-4 text-3xl font-light">
+      <h1
+        class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
+      >
+        <span
+          class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
+          >Resources</span
+        >
+        Stream
+      </h1>
+      <p>
+        Content I've collected from around the interwebs that aligns with my
+        interests and supports my learning journey, making it easier to revisit
+        and share with others.
+      </p>
+      <p>
+        Think of this like "quote" posts / tweets, except they're less
+        ephemeral.
+      </p>
+    </div>
+  </Fragment>
+  <div
+    class="flex flex-wrap justify-center font-medium font-montserrat uppercase text-sm gap-4 my-16"
+  >
+    <a
+      href="/stream"
+      class={`px-6 flex border items-center h-8 font-montserrat uppercase rounded-3xl bg-skin-card border-skin-fill/30 text-skin-inverted`}
+      >All</a
+    >
+    {
+      streamTypes.map(type => (
+        <a
+          href={`/stream/${type}`}
+          class={`px-4 h-8 flex border items-center rounded-3xl bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60`}
+        >
+          {type}
+        </a>
+      ))
+    }
+  </div>
+
+  <ul class="flex flex-col gap-24 max-lg:px-8">
+    {
+      paginatedPosts.map(({ data, slug }) => (
+        <NoteSummaryCard
+          href={slug}
+          frontmatter={data as CollectionEntry<"stream">["data"]}
+          cardType={"stream"}
+          expanded
+        />
+      ))
+    }
+  </ul>
+  <Fragment slot="pagination">
+    <Pagination
+      pageNum={1}
+      totalPages={totalPages.length}
+      collectionType={"stream"}
+    />
+  </Fragment>
+</DetailLayout>

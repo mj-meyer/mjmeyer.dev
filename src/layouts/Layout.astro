@@ -1,21 +1,23 @@
 ---
 import { SITE } from "@config";
 import "@styles/base.css";
-
+import WaveSeparator from "@components/WaveSeparator.astro";
+import TailwindIndicator from "@components/TailwindIndicator.astro";
+import PostHog from "../components/posthog.astro";
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
 export interface Props {
   title?: string;
-  author?: string;
   description?: string;
   ogImage?: string;
+  hasWaveSeparator?: boolean;
 }
 
 const {
   title = SITE.title,
-  author = SITE.author,
   description = SITE.desc,
   ogImage = SITE.ogImage,
+  hasWaveSeparator = true,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -24,9 +26,11 @@ const socialImageURL = new URL(
   ogImage ? ogImage : SITE.ogImage,
   Astro.url.origin
 ).href;
+
+const isDev = import.meta.env.DEV;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -39,7 +43,7 @@ const socialImageURL = new URL(
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
-    <meta name="author" content={author} />
+    <meta name="author" content={SITE.author} />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title} />
@@ -48,6 +52,7 @@ const socialImageURL = new URL(
     <meta property="og:image" content={socialImageURL} />
 
     <!-- Twitter -->
+    <script src="https://platform.twitter.com/widgets.js"></script>
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
@@ -59,7 +64,7 @@ const socialImageURL = new URL(
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <link
-      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,900;1,300;1,400&family=Montserrat:ital,wght@0,100;0,400;0,700;0,900;1,100;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
     {
@@ -74,9 +79,29 @@ const socialImageURL = new URL(
       )
     }
 
+    <PostHog />
     <script is:inline src="/toggle-theme.js"></script>
   </head>
   <body>
-    <slot />
+    <div
+      class={`header bg-gradient-to-br to-skin-fill from-skin-fill via-40% via-skin-highlight w-full relative ${hasWaveSeparator ? "pb-20 max-sm:pb-10" : "pb-4"}`}
+    >
+      <div class="-top-12 max-md:-top-8 flex w-full absolute z-10">
+        <WaveSeparator noMargin />
+      </div>
+
+      <div class="">
+        <slot name="header" />
+      </div>
+    </div>
+    <div class="absolute top-80 max-lg:top-72 max-sm:top-56 left-0 w-full z-10">
+      <WaveSeparator rotate />
+    </div>
+
+    {hasWaveSeparator && <WaveSeparator />}
+    <div class="z-50 relative flex-1 flex flex-col">
+      <slot />
+    </div>
+    {isDev && <TailwindIndicator />}
   </body>
 </html>

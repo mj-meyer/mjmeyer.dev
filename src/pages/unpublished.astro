@@ -1,0 +1,87 @@
+---
+import { SITE } from "@config";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import LinkButton from "@components/LinkButton.astro";
+import { Sprout } from "lucide-react";
+
+const searchParams = Astro.url.searchParams;
+const noteName = searchParams.get("note")?.replace(/-/g, " ");
+---
+
+<Layout title={`Coming Soon | ${SITE.title}`} hasWaveSeparator={false}>
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
+
+  <main id="main-content">
+    <div class="coming-soon-wrapper">
+      <span class="text-skin-accent mb-4 flex items-center justify-center w-[120px] h-[120px]">
+        <Sprout className="animate-sway w-full h-full" client:load />
+      </span>
+      <h1>Coming Soon</h1>
+      {
+        noteName && (
+          <p class="note-title">
+            "<span class="capitalize">{noteName}</span>"
+          </p>
+        )
+      }
+      <p class="message">
+        This note is still growing in my digital garden.
+        <br />
+        Check back soon to see what blooms!
+      </p>
+      <div class="flex gap-8 items-center">
+        <LinkButton
+          href="/"
+          className="my-6 underline decoration-dashed underline-offset-8 text-lg"
+        >
+          Return to garden
+        </LinkButton>
+        <button
+          onclick="history.back()"
+          class="my-6 underline decoration-dashed underline-offset-8 text-lg text-skin-accent hover:text-skin-accent"
+        >
+          Go back
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  #main-content {
+    @apply mx-auto flex max-w-3xl flex-1 items-center justify-center;
+  }
+  .coming-soon-wrapper {
+    @apply mb-14 flex flex-col items-center justify-center text-center;
+  }
+  .coming-soon-wrapper h1 {
+    @apply mt-8 text-4xl font-bold text-skin-accent sm:text-5xl;
+  }
+  .note-title {
+    @apply mt-8 text-2xl font-light text-skin-base sm:text-3xl;
+  }
+  .message {
+    @apply mt-8 text-xl font-light text-skin-base;
+  }
+
+  @keyframes sway {
+    0%,
+    100% {
+      transform: rotate(-10deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+  }
+
+  .animate-sway {
+    animation: sway 3s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+</style>

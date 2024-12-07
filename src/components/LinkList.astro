@@ -1,0 +1,76 @@
+---
+import type { CollectionEntry } from "astro:content";
+import NoteSummaryCard from "./NoteSummaryCard.astro";
+
+type Props = {
+  links: string[];
+  type: "incoming" | "outgoing";
+  allPosts: CollectionEntry<"garden" | "stream">[];
+};
+
+type GardenType = CollectionEntry<"garden">;
+type StreamType = CollectionEntry<"stream">;
+
+const { links, type, allPosts } = Astro.props;
+
+const validLinks = links.filter(link =>
+  allPosts.some(post => post.slug === link)
+);
+
+const linkDetails = validLinks.map(link => {
+  const post = allPosts.find(post => post.slug === link) as
+    | GardenType
+    | StreamType;
+  return post;
+});
+
+const [gardenLinks, streamLinks] = linkDetails.reduce(
+  (acc, { collection, ...rest }) => {
+    if (collection === "garden") {
+      acc[0].push(rest as GardenType);
+    } else {
+      acc[1].push(rest as StreamType);
+    }
+    return acc;
+  },
+  [[] as GardenType[], [] as StreamType[]]
+);
+---
+
+<div class="w-1/2 flex flex-col gap-8">
+  <h2
+    class="text-left text-2xl underline-offset-8 text-skin-heading uppercase font-montserrat font-black"
+  >
+    {type === "incoming" ? "Notes linking here" : "References in this note"}
+  </h2>
+  {
+    gardenLinks.length > 0 && (
+      <div>
+        <ul>
+          {gardenLinks.map(({ slug, data }) => (
+            <NoteSummaryCard
+              href={slug}
+              frontmatter={data as CollectionEntry<"garden" | "stream">["data"]}
+              cardType={"garden"}
+            />
+          ))}
+        </ul>
+      </div>
+    )
+  }
+  {
+    streamLinks.length > 0 && (
+      <div>
+        <ul>
+          {streamLinks.map(({ slug, data }) => (
+            <NoteSummaryCard
+              href={slug}
+              frontmatter={data as CollectionEntry<"stream">["data"]}
+              cardType={"stream"}
+            />
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</div>

@@ -1,45 +1,173 @@
 ---
 import { getCollection } from "astro:content";
-import type { CollectionEntry  } from "astro:content";
-import Posts from "@layouts/Posts.astro";
+import type { CollectionEntry } from "astro:content";
 import getSortedPosts from "@utils/getSortedPosts";
 import getPageNumbers from "@utils/getPageNumbers";
 import { SITE } from "@config";
+import Header from "@components/Header.astro";
+import NoteSummaryCard from "@components/NoteSummaryCard.astro";
+import DetailLayout from "@layouts/DetailLayout.astro";
+import Pagination from "@components/Pagination.astro";
 
 export interface Props {
-  post: CollectionEntry<"blog">;
+  post: CollectionEntry<"garden">;
 }
 
-export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
+type NoteType = CollectionEntry<"garden">["data"]["noteState"];
 
-  const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
+export async function getStaticPaths() {
+  const posts = await getCollection("garden", ({ data }) => !data.draft);
+  const sortedPosts = getSortedPosts(posts);
+  const noteTypes = ["seedling", "budding", "evergreen"];
+  const pagePaths = getPageNumbers(sortedPosts.length).map(pageNum => ({
     params: { slug: String(pageNum) },
   }));
-
-  return [...pagePaths];
+  const filterPaths = noteTypes.map(noteType => ({
+    params: { slug: noteType },
+  }));
+  return [...pagePaths, ...filterPaths];
 }
 
 const { slug } = Astro.params;
-
-const posts = await getCollection("blog");
-
-const sortedPosts = getSortedPosts(posts);
-
+const posts = (await getCollection("garden")) as CollectionEntry<"garden">[];
+const sortedPosts = getSortedPosts(posts) as CollectionEntry<"garden">[];
 const totalPages = getPageNumbers(sortedPosts.length);
 
-const currentPage =
-  slug && !isNaN(Number(slug)) && totalPages.includes(Number(slug))
-    ? Number(slug)
-    : 0;
-const lastPost = currentPage * SITE.postPerPage;
-const startPost = lastPost - SITE.postPerPage;
+const noteTypes = ["seedling", "budding", "evergreen"] as const;
+let currentPage = 1;
+let filteredPosts = sortedPosts;
+let paginatedPosts = sortedPosts;
+let totalPageCount = 1;
 
-const paginatedPosts = sortedPosts.slice(startPost, lastPost);
+if (noteTypes.includes(slug as NoteType) && isNaN(Number(slug))) {
+  // Filter by note type without pagination
+  filteredPosts = sortedPosts.filter(post => post.data.noteState === slug);
+  paginatedPosts = filteredPosts;
+  currentPage = 1;
+} else {
+  // Paginate
+  currentPage =
+    slug && !isNaN(Number(slug)) && totalPages.includes(Number(slug))
+      ? Number(slug)
+      : 1;
+  const lastPost = currentPage * SITE.postPerPage;
+  const startPost = lastPost - SITE.postPerPage;
+  paginatedPosts = sortedPosts.slice(startPost, lastPost);
+  totalPageCount = totalPages.length;
+}
+
+const isSlugNumber = !isNaN(Number(slug));
 ---
 
-<Posts
-  posts={paginatedPosts}
-  pageNum={currentPage}
-  totalPages={totalPages.length}
-/>
+<DetailLayout
+  title="Digital Garden Notes"
+  description="My always growing and evolving thoughts, notes and ideas."
+>
+  <Fragment slot="header">
+    <Header activeNav="garden" />
+  </Fragment>
+  <Fragment slot="pageTitle">
+    <div class="flex flex-col gap-4 text-3xl">
+      <h1
+        class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
+      >
+        <span
+          class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
+          >Notes</span
+        >
+        Digital Garden
+      </h1>
+      <div class="flex flex-col gap-4 font-light">
+        {
+          slug === "seedling" && (
+            <>
+              <p>
+                <strong>Seedling</strong> thoughts, ideas and notes that will
+                probably evolve and grow rapidly as they take root.
+              </p>
+
+              <p>
+                Some seedlings may never grow or evolve because they are atomic
+                and are meant to support other notes.
+              </p>
+            </>
+          )
+        }
+        {
+          slug === "budding" && (
+            <>
+              <p>
+                <strong>Budding</strong> thoughts, ideas and notes that are
+                supported by other notes.
+              </p>
+              <p>
+                They are more likely to be interesting observations that may
+                change or express an alternative view point as opposed to
+                stongly held opinions or beliefs.
+              </p>
+            </>
+          )
+        }
+        {
+          slug === "evergreen" && (
+            <>
+              <p>
+                <strong>Evergreen</strong> thoughts, ideas and notes that I hold
+                strongly.
+              </p>
+              <p>
+                They rarely change other than growing more as I branch out more
+                thoughts or grow their roots with more supporting notes.
+              </p>
+            </>
+          )
+        }
+        {
+          isSlugNumber && (
+            <>
+              <p>My always growing and evolving thoughts, notes and ideas.</p>
+            </>
+          )
+        }
+      </div>
+    </div>
+  </Fragment>
+  <div
+    class="flex flex-wrap justify-center font-medium font-montserrat uppercase text-sm gap-4 my-16"
+  >
+    <a
+      href="/garden"
+      class={`px-6 h-8 flex border items-center rounded-3xl bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60`}
+      >All</a
+    >
+    {
+      noteTypes.map(type => (
+        <a
+          href={`/garden/${type}`}
+          class={`px-4 h-8 flex border items-center rounded-3xl ${slug === type ? "bg-skin-card border-skin-fill/30 text-skin-inverted" : "bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60"}`}
+        >
+          {type}
+        </a>
+      ))
+    }
+  </div>
+  <ul class="flex flex-col gap-24 max-lg:px-8">
+    {
+      paginatedPosts.map(({ data, slug }) => (
+        <NoteSummaryCard
+          href={`/${slug}`}
+          frontmatter={data as CollectionEntry<"garden">["data"]}
+          cardType={"garden"}
+          expanded
+        />
+      ))
+    }
+  </ul>
+  <Fragment slot="pagination">
+    <Pagination
+      pageNum={currentPage}
+      totalPages={totalPageCount}
+      collectionType={"garden"}
+    />
+  </Fragment>
+</DetailLayout>

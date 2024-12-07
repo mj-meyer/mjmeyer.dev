@@ -25,6 +25,10 @@ function setPreference() {
 
 function reflectPreference() {
   document.firstElementChild.setAttribute("data-theme", themeValue);
+  // remove old theme class
+  document.documentElement.classList.remove("light", "dark");
+  // set html class to theme value
+  document.documentElement.className = themeValue;
 
   document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
 }

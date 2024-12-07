@@ -1,14 +1,16 @@
-import type { BlogFrontmatter } from "@content/_schemas";
-import Meta from "./Meta";
+import type { CollectionEntry } from "astro:content";
+// import Meta from "./Meta";
 
 export interface Props {
   href?: string;
-  frontmatter: BlogFrontmatter;
+  frontmatter: CollectionEntry<"garden" | "stream">["data"];
   secHeading?: boolean;
 }
 
 export default function Card({ href, frontmatter, secHeading = true }: Props) {
-  const { title, updatetime, description, noteState } = frontmatter;
+  const { title, description } = frontmatter;
+
+  // const state = frontmatter.noteState || frontmatter.streamType;
   return (
     <li className="my-6">
       <a
@@ -25,7 +27,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
           </h3>
         )}
       </a>
-      <Meta updatetime={updatetime} noteState={noteState} />
+      {/* <Meta updatetime={updateDatetime} noteState={noteState} /> */}
       <p className="pt-2">{description}</p>
     </li>
   );

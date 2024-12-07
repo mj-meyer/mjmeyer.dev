@@ -8,18 +8,24 @@ import Footer from "@components/Footer.astro";
 import SearchBar from "@components/Search";
 
 // Retrieve all articles
-const posts = await getCollection("blog", ({ data }) => !data.draft);
+const gardenNotes = await getCollection("garden", ({ data }) => !data.draft);
+const streamNotes = await getCollection("stream", ({ data }) => !data.draft);
+const posts = [...gardenNotes, ...streamNotes];
 
 // List of items to search in
-const searchList = posts.map(({ data }) => ({
+const searchList = posts.map(({ data, slug }) => ({
+  slug,
   title: data.title,
   description: data.description,
   data,
 }));
 ---
 
-<Layout title={`Search | ${SITE.title}`}>
-  <Header activeNav="search" />
+<Layout title={`Search | ${SITE.title}`} hasWaveSeparator={false}>
+  <Fragment slot="header">
+    <Header activeNav="search" />
+  </Fragment>
+
   <Main pageTitle="Search" pageDesc="Search any article ...">
     <SearchBar client:load searchList={searchList} />
   </Main>

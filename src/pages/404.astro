@@ -6,8 +6,10 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 ---
 
-<Layout title={`404 Not Found | ${SITE.title}`}>
-  <Header />
+<Layout title={`404 Not Found | ${SITE.title}`} hasWaveSeparator={false}>
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
 
   <main id="main-content">
     <div class="not-found-wrapper">
