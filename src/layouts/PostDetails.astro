@@ -171,14 +171,14 @@ const allContent = [...allGardenNotes, ...allStreams];
     @apply text-5xl text-center font-extrabold text-skin-accent w-full;
   }
   .tags-container {
-    @apply mt-2 ml-0 p-0 w-3/5;
+    @apply flex flex-wrap w-full border-b-2 border-dashed border-skin-card pb-8 text-center mt-20 ml-0 md:mt-2 md:ml-0 md:p-0 md:pb-4 md:w-3/5;
   }
 
   :global(.unpublished-link) {
     @apply opacity-50 cursor-not-allowed;
     text-decoration-style: wavy !important;
   }
-  
+
   :global(.unpublished-link:hover) {
     @apply no-underline;
   }

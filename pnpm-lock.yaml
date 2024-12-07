@@ -134,8 +134,8 @@ devDependencies:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
   remark-obsidian-callout:
-    specifier: ^1.4.0
-    version: 1.4.0
+    specifier: ^1.5.1
+    version: 1.5.1
   typescript-eslint:
     specifier: ^8.0.1
     version: 8.0.1(eslint@8.54.0)(typescript@5.5.4)
@@ -6653,9 +6653,10 @@ packages:
       - supports-color
     dev: false
 
-  /remark-obsidian-callout@1.4.0:
-    resolution: {integrity: sha512-FId2NMYYFR+b9eMC1yMTlSGjujziQQJMdwI85fI02cDy5coidMyI++AgJaV2m8jJXKLIDnzVii1I9+tpq7WbRA==}
+  /remark-obsidian-callout@1.5.1:
+    resolution: {integrity: sha512-eLvaDujdmAGugWvIBta5FPhwbBq3X+2ZyGBSdcteoGI5pJMmrdJJoA72ustRBr/ObDqS0cB4q1ERKzwyiJhpxw==}
     dependencies:
+      mdast-util-to-string: 4.0.0
       unist-util-visit: 5.0.0
     dev: true
 
