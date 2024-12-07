@@ -46,7 +46,7 @@ const [gardenLinks, streamLinks] = linkDetails.reduce(
   {
     gardenLinks.length > 0 && (
       <div>
-        <ul>
+        <ul class="flex flex-col gap-8">
           {gardenLinks.map(({ slug, data }) => (
             <NoteSummaryCard
               href={slug}
@@ -61,7 +61,7 @@ const [gardenLinks, streamLinks] = linkDetails.reduce(
   {
     streamLinks.length > 0 && (
       <div>
-        <ul>
+        <ul class="flex flex-col gap-8">
           {streamLinks.map(({ slug, data }) => (
             <NoteSummaryCard
               href={slug}
