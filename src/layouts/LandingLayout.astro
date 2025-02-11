@@ -1,0 +1,138 @@
+---
+import { SITE } from "@config";
+import "@styles/base.css";
+import WaveSeparator from "@components/WaveSeparator.astro";
+import WaveSeparatorMarketing from "@components/WaveSeparatorMarketing.astro";
+import MarketingHeader from "@components/MarketingHeader.astro";
+import Footer from "@components/Footer.astro";
+import TailwindIndicator from "@components/TailwindIndicator.astro";
+import PostHog from "../components/posthog.astro";
+import { ViewTransitions } from "astro:transitions";
+const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+
+export interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  hasWaveSeparator?: boolean;
+  hideFooter?: boolean;
+}
+
+const {
+  title = SITE.title,
+  description = SITE.desc,
+  ogImage = SITE.ogImage,
+  hasWaveSeparator = true,
+  hideFooter = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// Remove trailing slash from URLs
+const formattedURL = canonicalURL.href.replace(/\/$/, "");
+
+const socialImageURL = new URL(
+  ogImage ? ogImage : SITE.ogImage,
+  Astro.url.origin
+).href;
+
+const isDev = import.meta.env.DEV;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="canonical" href={formattedURL} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- General Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.author} />
+
+    <ViewTransitions />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={formattedURL} />
+    <meta property="og:image" content={socialImageURL} />
+
+    <!-- Twitter -->
+    <script src="https://platform.twitter.com/widgets.js"></script>
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={formattedURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={socialImageURL} />
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    {
+      // If PUBLIC_GOOGLE_SITE_VERIFICATION is set in the environment variable,
+      // include google-site-verification tag in the heading
+      // Learn more: https://support.google.com/webmasters/answer/9008080#meta_tag_verification&zippy=%2Chtml-tag
+      googleSiteVerification && (
+        <meta
+          name="google-site-verification"
+          content={googleSiteVerification}
+        />
+      )
+    }
+
+    <PostHog />
+    <script is:inline src="/toggle-theme.js"></script>
+  </head>
+  <body>
+    <div
+      class={`header bg-gradient-to-br to-skin-fill from-skin-fill via-40% via-skin-highlight w-full relative ${hasWaveSeparator ? "pb-20 max-sm:pb-10" : "pb-4"}`}
+    >
+      <div class="-top-12 max-md:-top-8 flex w-full absolute z-10">
+        <WaveSeparator noMargin />
+      </div>
+
+      <MarketingHeader />
+
+      <div class="">
+        <slot name="header">
+          <section
+            id="hero"
+            class="mb-16 pt-44 max-md:pt-0 max-lg:pt-16 z-50 relative max-xl:pl-12 max-sm:pl-0 max-sm:pr-0"
+          >
+            <slot name="hero" />
+          </section>
+        </slot>
+      </div>
+    </div>
+
+    <div class="absolute top-80 max-lg:top-96 max-sm:top-56 left-0 w-full z-10">
+      <WaveSeparatorMarketing rotate />
+    </div>
+
+    {hasWaveSeparator && <WaveSeparator />}
+    
+    <main
+      class="flex flex-col flex-1 px-4 pb-12 sm:px-4 md:px-8 lg:px-16 xl:px-32 min-h-96 bg-gradient-to-b to-skin-highlight/20 from-skin-fill"
+    >
+      <section
+        id="content"
+        class="flex gap-24 max-md:gap-16 w-full flex-row min-h-96 pt-16 max-sm:pt-8 md:flex-row overflow-hidden"
+      >
+        <slot />
+      </section>
+    </main>
+
+    {!hideFooter && <Footer />}
+    {isDev && <TailwindIndicator />}
+  </body>
+</html>
