@@ -6,7 +6,7 @@ import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 import tokyoNight from "./shiki-themes/tokyo-night-theme.json";
-import vercel from "@astrojs/vercel/static";
+import vercel from "@astrojs/vercel/serverless";
 import rehypeExternalLinks from "rehype-external-links";
 import mdx from "@astrojs/mdx";
 import embeds from "astro-embed/integration";
@@ -22,7 +22,10 @@ export default defineConfig({
         applyBaseStyles: false,
       },
     }),
-    react(),
+    react({
+      include: ['**/react/*', '**/components/*'],
+      experimentalReactChildren: true
+    }),
     sitemap(),
     embeds(),
     mdx(),
@@ -78,8 +81,9 @@ export default defineConfig({
       exclude: ["@resvg/resvg-js"],
     },
   },
-  output: "static",
+  output: "hybrid",
   adapter: vercel({
     analytics: true,
+    edgeMiddleware: true
   }),
 });

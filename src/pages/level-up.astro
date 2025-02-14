@@ -1,0 +1,284 @@
+---
+import Layout from "@layouts/LandingLayout.astro";
+import { Target, LineChart, Code, Loader2 } from "lucide-react";
+import { Toast } from "../components/Toast";
+
+// Add this line to force server-side rendering
+export const prerender = false;
+---
+
+<Layout
+  title="Level Up Your Dev Career | Goal Setting System"
+  description="Transform your development career with a proven goal-setting and review system built in Obsidian. Get organized, stay accountable, and level up your skills."
+>
+  <Fragment slot="hero">
+    <h1
+      class="text-4xl text-skin-accent uppercase max-sm:w-2/3 max-sm:text-2xl flex flex-col text-center md:text-5xl lg:text-7xl font-black mb-4 relative text-balance"
+    >
+      16 Years. $1+ Million Lost.
+    </h1>
+    <div
+      class="flex flex-row pt-16 items-center gap-8 text-center max-w-full mx-auto"
+    >
+      <div class="text-left flex flex-col gap-4">
+        <h2
+          class="text-4xl max-sm:w-2/3 max-sm:text-2xl flex flex-col text-left md:text-4xl lg:text-6xl font-black mb-4 relative text-balance"
+        >
+          <!--<span-->
+          <!--  class="absolute max-sm:-left-0 max-sm:text-4xl -left-16 -top-10 text-6xl opacity-30 sm:text-7xl max-sm:-top-6 sm:-top-12 md:-top-16 md:text-8xl lg:-top-24 lg:text-8xl w-screen"-->
+          <!--  16 Years. $1+ Million Lost.</span-->
+          Don't Make My Costly Mistakes
+        </h2>
+        <p class="text-2xl max-sm:text-sm opacity-80 font-medium uppercase">
+          A PROVEN SYSTEM TO SPOT AND SEIZE CAREER-DEFINING OPPORTUNITIES
+        </p>
+      </div>
+      <!--<h1 class="text-5xl md:text-6xl font-black mb-6">-->
+      <!--  Level Up Your Dev Career with-->
+      <!--  <span class="text-skin-accent">Structured Goal Setting</span>-->
+      <!--</h1>-->
+      <!--<p class="text-xl md:text-2xl mb-8 max-w-2xl">-->
+      <!--  Get my battle-tested Obsidian setup for tracking goals, habits, and-->
+      <!--  progress. Used by hundreds of developers to stay focused and achieve-->
+      <!--  more.-->
+      <!--</p>-->
+
+      <div
+        class="w-full max-w-md mx-auto bg-skin-card p-6 rounded-lg shadow-lg"
+      >
+        <form id="signup-form" class="space-y-4">
+          <div>
+            <label for="email" class="sr-only">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="w-full px-4 py-2 rounded border bg-skin-fill border-skin-accent focus:outline-none focus:ring-2 focus:ring-skin-accent"
+              placeholder="Enter your email address"
+            />
+          </div>
+          <button
+            type="submit"
+            id="submit-btn"
+            class="w-full bg-skin-accent text-skin-inverted py-2 px-6 rounded-md font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+          >
+            <span>Get the Free Template</span>
+            <div id="spinner" class="hidden">
+              <Loader2 className="w-5 h-5 animate-spin" />
+            </div>
+          </button>
+        </form>
+      </div>
+    </div>
+  </Fragment>
+
+  <div class="w-full flex flex-col gap-24">
+    <!-- Benefits Section -->
+    <section class="text-center">
+      <h2 class="text-3xl font-bold mb-12">Why Developers Love This System</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="p-6 rounded-lg bg-skin-card">
+          <Target
+            client:only="react"
+            className="w-12 h-12 mx-auto mb-4 text-skin-accent"
+          />
+          <h3 class="text-xl font-bold mb-2">Clear Direction</h3>
+          <p>
+            Break down big career goals into actionable weekly and daily tasks
+          </p>
+        </div>
+        <div class="p-6 rounded-lg bg-skin-card">
+          <LineChart
+            client:only="react"
+            className="w-12 h-12 mx-auto mb-4 text-skin-accent"
+          />
+          <h3 class="text-xl font-bold mb-2">Track Progress</h3>
+          <p>
+            Built-in review cycles help you measure growth and stay accountable
+          </p>
+        </div>
+        <div class="p-6 rounded-lg bg-skin-card">
+          <Code
+            client:only="react"
+            className="w-12 h-12 mx-auto mb-4 text-skin-accent"
+          />
+          <h3 class="text-xl font-bold mb-2">Skill Growth</h3>
+          <p>Systematically improve your technical and soft skills over time</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="text-center">
+      <h2 class="text-3xl font-bold mb-12">Developer Success Stories</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="p-6 rounded-lg bg-skin-card">
+          <p class="italic mb-4">
+            "This system helped me go from junior to senior developer in 18
+            months. The structured approach to goal setting made all the
+            difference."
+          </p>
+          <div class="font-bold">Sarah Chen</div>
+          <div class="text-sm opacity-75">Senior Frontend Developer</div>
+        </div>
+        <div class="p-6 rounded-lg bg-skin-card">
+          <p class="italic mb-4">
+            "I was stuck in tutorial hell before finding this template. Now I
+            have clear goals and actually ship projects regularly."
+          </p>
+          <div class="font-bold">Marcus Johnson</div>
+          <div class="text-sm opacity-75">Full Stack Developer</div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <Toast client:only="react" />
+</Layout>
+
+<script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"
+></script>
+
+<script is:inline>
+  // Wait for libraries to load
+  window.addEventListener("load", () => {
+    // Wait for toast to be available
+    const checkToast = setInterval(() => {
+      if (window.toast) {
+        clearInterval(checkToast);
+        initializeForm();
+      }
+    }, 100);
+
+    function initializeForm() {
+      // Create confetti instance with optimized settings
+      const confettiSettings = {
+        target: "confetti-canvas",
+        max: 40,
+        size: 1,
+        animate: true,
+        props: ["circle", "square", "triangle"],
+        colors: [
+          [255, 198, 30],
+          [165, 104, 246],
+          [45, 175, 230],
+        ],
+        clock: 25,
+        rotate: true,
+        respawn: false,
+        origin: { y: 0.7 },
+      };
+
+      // Handle form submission
+      const form = document.getElementById("signup-form");
+      const submitBtn = document.getElementById("submit-btn");
+      const spinner = document.getElementById("spinner");
+      const btnText = submitBtn?.querySelector("span");
+
+      async function handleSubmit(e) {
+        e.preventDefault();
+        if (!form || !submitBtn || !spinner || !btnText) return;
+
+        const emailInput = form.querySelector("#email");
+        const email = emailInput ? emailInput.value : "";
+
+        // Show loading state
+        spinner.classList.remove("hidden");
+        btnText.textContent = "Subscribing...";
+        submitBtn.disabled = true;
+
+        try {
+          const response = await fetch("/api/subscribe", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: email.trim() }),
+          });
+
+          console.log("Client response:", response.status);
+
+          let data;
+          try {
+            const text = await response.text();
+            data = JSON.parse(text);
+          } catch (e) {
+            console.error("Failed to parse response:", e);
+            throw new Error("Invalid server response");
+          }
+
+          if (!response.ok) {
+            throw new Error(data.error || "Subscription failed");
+          }
+
+          // Success state
+          let canvas = document.getElementById("confetti-canvas");
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.id = "confetti-canvas";
+            canvas.className = "fixed pointer-events-none inset-0 z-50";
+            canvas.style.opacity = "0.8";
+            document.body.appendChild(canvas);
+          }
+
+          // Get button position
+          const buttonRect = submitBtn.getBoundingClientRect();
+          const buttonCenterX = (buttonRect.left + buttonRect.right) / 2;
+          const origin = {
+            x: buttonCenterX / window.innerWidth,
+            y: buttonRect.top / window.innerHeight,
+          };
+
+          const confetti = new window.ConfettiGenerator({
+            ...confettiSettings,
+            origin,
+          });
+
+          confetti.render();
+          setTimeout(() => {
+            confetti.clear();
+          }, 2000);
+
+          window.toast.success(
+            "🎉 You're in! Check your inbox for the Obsidian template.",
+            {
+              duration: 5000,
+              position: "bottom-center",
+            }
+          );
+
+          form.reset();
+        } catch (error) {
+          console.error("Form submission error:", error);
+          window.toast.error(
+            error instanceof Error
+              ? error.message
+              : "Something went wrong. Please try again.",
+            {
+              duration: 5000,
+              position: "bottom-center",
+            }
+          );
+        } finally {
+          // Reset button state
+          spinner.classList.add("hidden");
+          btnText.textContent = "Get the Free Template";
+          submitBtn.disabled = false;
+        }
+      }
+
+      form?.addEventListener("submit", handleSubmit);
+    }
+  });
+</script>
+
+<canvas id="confetti-canvas" class="fixed pointer-events-none inset-0 z-50"
+></canvas>
+
+<div id="toast-container"></div>
+
+<style>
+  #confetti-canvas {
+    opacity: 0.8;
+  }
+</style>

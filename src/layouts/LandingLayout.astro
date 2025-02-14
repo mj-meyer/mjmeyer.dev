@@ -103,7 +103,7 @@ const isDev = import.meta.env.DEV;
 
       <MarketingHeader />
 
-      <div class="">
+      <div class="overflow-hidden">
         <slot name="header">
           <section
             id="hero"
@@ -120,7 +120,7 @@ const isDev = import.meta.env.DEV;
     </div>
 
     {hasWaveSeparator && <WaveSeparator />}
-    
+
     <main
       class="flex flex-col flex-1 px-4 pb-12 sm:px-4 md:px-8 lg:px-16 xl:px-32 min-h-96 bg-gradient-to-b to-skin-highlight/20 from-skin-fill"
     >
