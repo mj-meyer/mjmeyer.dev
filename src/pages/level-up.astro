@@ -1,7 +1,8 @@
 ---
 import Layout from "@layouts/LandingLayout.astro";
-import { Target, LineChart, Code, Loader2 } from "lucide-react";
+import { Loader2, Check } from "lucide-react";
 import { Toast } from "../components/Toast";
+import WaveDivider from "../components/WaveDivider.astro";
 
 // Add this line to force server-side rendering
 export const prerender = false;
@@ -13,40 +14,98 @@ export const prerender = false;
 >
   <Fragment slot="hero">
     <h1
-      class="text-4xl text-skin-accent uppercase max-sm:w-2/3 max-sm:text-2xl flex flex-col text-center md:text-5xl lg:text-7xl font-black mb-4 relative text-balance"
+      class="text-4xl flex -mt-8 flex-col border-skin-accent-line uppercase max-sm:w-2/3 max-sm:text-2xl text-center md:text-5xl lg:text-7xl font-black mb-4 relative text-balance"
     >
-      16 Years. $1+ Million Lost.
+      16 Years as a developer. <span class="underline text-skin-accent"
+        >$1,170,050 Lost.</span
+      >
     </h1>
     <div
       class="flex flex-row pt-16 items-center gap-8 text-center max-w-full mx-auto"
     >
-      <div class="text-left flex flex-col gap-4">
-        <h2
-          class="text-4xl max-sm:w-2/3 max-sm:text-2xl flex flex-col text-left md:text-4xl lg:text-6xl font-black mb-4 relative text-balance"
-        >
-          <!--<span-->
-          <!--  class="absolute max-sm:-left-0 max-sm:text-4xl -left-16 -top-10 text-6xl opacity-30 sm:text-7xl max-sm:-top-6 sm:-top-12 md:-top-16 md:text-8xl lg:-top-24 lg:text-8xl w-screen"-->
-          <!--  16 Years. $1+ Million Lost.</span-->
-          Don't Make My Costly Mistakes
-        </h2>
-        <p class="text-2xl max-sm:text-sm opacity-80 font-medium uppercase">
-          A PROVEN SYSTEM TO SPOT AND SEIZE CAREER-DEFINING OPPORTUNITIES
-        </p>
+      <div class="text-left flex flex-col">
+        <div class="flex flex-col gap-8">
+          <h2 class="text-5xl font-bold">
+            Technical Debt is Visible. <span class="text-skin-accent"
+              >Career Debt is Silent.</span
+            >
+          </h2>
+          <p class="text-2xl text-balance font-montserrat font-normal">
+            For developers grinding away at their day jobs while watching others
+            build thriving careers and successful side projects.
+          </p>
+          <p class="text-2xl text-balance font-montserrat font-normal">
+            STOP staying stuck in the same bad patterns! There is a better way!
+          </p>
+          <div class="flex flex-col gap-4">
+            <p
+              class="text-xl text-balance text-skin-accent font-montserrat font-bold"
+            >
+              In this FREE email course, you'll learn:
+            </p>
+            <ul class="flex flex-col gap-3">
+              <li class="flex items-start gap-2">
+                <Check
+                  className="w-6 h-6 mt-1 text-skin-accent flex-shrink-0"
+                  client:only="react"
+                />
+                <span
+                  >The exact system I use to identify life-changing
+                  opportunities others miss</span
+                >
+              </li>
+              <li class="flex items-start gap-2">
+                <Check
+                  className="w-6 h-6 mt-1 text-skin-accent flex-shrink-0"
+                  client:only="react"
+                />
+                <span
+                  >How to turn your daily work into career-defining moments</span
+                >
+              </li>
+              <li class="flex items-start gap-2">
+                <Check
+                  className="w-6 h-6 mt-1 text-skin-accent flex-shrink-0"
+                  client:only="react"
+                />
+                <span
+                  >My framework for building unstoppable momentum in tech</span
+                >
+              </li>
+              <li class="flex items-start gap-2">
+                <Check
+                  className="w-6 h-6 mt-1 text-skin-accent flex-shrink-0"
+                  client:only="react"
+                />
+                <span>The morning routine that creates "luck" on autopilot</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <!--<h1 class="text-5xl md:text-6xl font-black mb-6">-->
-      <!--  Level Up Your Dev Career with-->
-      <!--  <span class="text-skin-accent">Structured Goal Setting</span>-->
-      <!--</h1>-->
-      <!--<p class="text-xl md:text-2xl mb-8 max-w-2xl">-->
-      <!--  Get my battle-tested Obsidian setup for tracking goals, habits, and-->
-      <!--  progress. Used by hundreds of developers to stay focused and achieve-->
-      <!--  more.-->
-      <!--</p>-->
 
       <div
-        class="w-full max-w-md mx-auto bg-skin-card p-6 rounded-lg shadow-lg"
+        class="w-full max-w-md mt-6 mx-auto rounded-3xl border-dashed border-skin-accent border-2 border-t-0 relative"
       >
-        <form id="signup-form" class="space-y-4">
+        <span
+          class="absolute mx-auto py-2 bg-skin-accent -top-6 text-skin-inverted rounded-tl-3xl rounded-tr-3xl font-montserrat w-full text-center left-0 text-5xl font-black"
+        >
+          FREE <span class="text-skin-inverted/60">FOR NOW</span>
+        </span>
+
+        <form id="signup-form" class="mt-10 p-8 space-y-4">
+          <div>
+            <label for="firstName" class="sr-only">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              required
+              class="w-full px-4 py-2 rounded-lg border bg-skin-fill border-skin-accent focus:outline-none focus:ring-2 focus:ring-skin-accent"
+              placeholder="Enter your first name"
+            />
+          </div>
           <div>
             <label for="email" class="sr-only">Email address</label>
             <input
@@ -54,14 +113,14 @@ export const prerender = false;
               id="email"
               name="email"
               required
-              class="w-full px-4 py-2 rounded border bg-skin-fill border-skin-accent focus:outline-none focus:ring-2 focus:ring-skin-accent"
+              class="w-full px-4 py-2 rounded-lg border bg-skin-fill border-skin-accent focus:outline-none focus:ring-2 focus:ring-skin-accent"
               placeholder="Enter your email address"
             />
           </div>
           <button
             type="submit"
             id="submit-btn"
-            class="w-full bg-skin-accent text-skin-inverted py-2 px-6 rounded-md font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+            class="w-full bg-skin-accent text-skin-inverted py-2 px-6 rounded-lg font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
           >
             <span>Get the Free Template</span>
             <div id="spinner" class="hidden">
@@ -73,62 +132,552 @@ export const prerender = false;
     </div>
   </Fragment>
 
-  <div class="w-full flex flex-col gap-24">
-    <!-- Benefits Section -->
-    <section class="text-center">
-      <h2 class="text-3xl font-bold mb-12">Why Developers Love This System</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="p-6 rounded-lg bg-skin-card">
-          <Target
-            client:only="react"
-            className="w-12 h-12 mx-auto mb-4 text-skin-accent"
-          />
-          <h3 class="text-xl font-bold mb-2">Clear Direction</h3>
-          <p>
-            Break down big career goals into actionable weekly and daily tasks
-          </p>
-        </div>
-        <div class="p-6 rounded-lg bg-skin-card">
-          <LineChart
-            client:only="react"
-            className="w-12 h-12 mx-auto mb-4 text-skin-accent"
-          />
-          <h3 class="text-xl font-bold mb-2">Track Progress</h3>
-          <p>
-            Built-in review cycles help you measure growth and stay accountable
-          </p>
-        </div>
-        <div class="p-6 rounded-lg bg-skin-card">
-          <Code
-            client:only="react"
-            className="w-12 h-12 mx-auto mb-4 text-skin-accent"
-          />
-          <h3 class="text-xl font-bold mb-2">Skill Growth</h3>
-          <p>Systematically improve your technical and soft skills over time</p>
+  <div class="w-full max-w-full flex flex-col">
+    <!-- Hidden Cost Section -->
+    <section class="relative overflow-hidden w-full max-w-full py-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-4 md:px-8 lg:px-16 xl:px-32">
+        <h2 class="text-5xl font-black text-center mb-16">
+          The Hidden Cost of Being
+          <span class="text-skin-accent">'Just a Developer'</span>
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+          <!-- Left Column - Main Message -->
+          <div class="space-y-6">
+            <p class="text-xl leading-relaxed">
+              For the first half of my career, I was leaving massive
+              opportunities on the table.
+              <span class="text-skin-accent font-semibold"
+                >Like most developers, I was:</span
+              >
+            </p>
+
+            <div class="space-y-4 relative">
+              <div class="absolute w-0.5 bg-skin-accent/20 h-full left-3 top-0">
+              </div>
+
+              <div
+                class="relative pl-12 py-2 transition-all hover:translate-x-2 duration-200"
+              >
+                <div
+                  class="absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-skin-accent bg-skin-fill"
+                >
+                </div>
+                <p class="text-lg">
+                  Stuck in the implementation loop - writing code but not
+                  building real leverage
+                </p>
+              </div>
+
+              <div
+                class="relative pl-12 py-2 transition-all hover:translate-x-2 duration-200"
+              >
+                <div
+                  class="absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-skin-accent bg-skin-fill"
+                >
+                </div>
+                <p class="text-lg">
+                  Watching opportunities pass by while staying in my comfort
+                  zone
+                </p>
+              </div>
+
+              <div
+                class="relative pl-12 py-2 transition-all hover:translate-x-2 duration-200"
+              >
+                <div
+                  class="absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-skin-accent bg-skin-fill"
+                >
+                </div>
+                <p class="text-lg">
+                  Struggling to turn my knowledge into tangible career growth
+                </p>
+              </div>
+
+              <div
+                class="relative pl-12 py-2 transition-all hover:translate-x-2 duration-200"
+              >
+                <div
+                  class="absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-skin-accent bg-skin-fill"
+                >
+                </div>
+                <p class="text-lg">
+                  Missing the signs of bigger possibilities right in front of me
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column - Visual Element -->
+          <div class="relative">
+            <div
+              class="aspect-square rounded-3xl border-2 border-dashed border-skin-accent p-8 flex items-center justify-center bg-skin-card/30"
+            >
+              <div class="text-center space-y-4">
+                <p class="text-6xl font-black text-skin-accent">16</p>
+                <p class="text-xl font-medium">Years of Learning</p>
+                <p class="text-6xl font-black text-skin-accent">$1M+</p>
+                <p class="text-xl font-medium">In Lost Opportunities</p>
+                <p class="mt-8 text-lg opacity-75">
+                  Don't wait as long as I did
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Testimonials -->
-    <section class="text-center">
-      <h2 class="text-3xl font-bold mb-12">Developer Success Stories</h2>
-      <div class="grid md:grid-cols-2 gap-8">
-        <div class="p-6 rounded-lg bg-skin-card">
-          <p class="italic mb-4">
-            "This system helped me go from junior to senior developer in 18
-            months. The structured approach to goal setting made all the
-            difference."
-          </p>
-          <div class="font-bold">Sarah Chen</div>
-          <div class="text-sm opacity-75">Senior Frontend Developer</div>
+    <WaveDivider rotate height="lg" marginBottom={-15} />
+
+    <!-- The Turning Point Section -->
+    <section
+      class="relative overflow-hidden w-full max-w-full py-44 bg-skin-card/30"
+    >
+      <div class="max-w-6xl mx-auto px-4 sm:px-4 md:px-8 lg:px-16 xl:px-32">
+        <h2 class="text-5xl font-black mb-16">
+          The Turning Point:
+          <span class="block mt-4 text-3xl font-medium text-skin-accent">
+            When Everything Changed
+          </span>
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-16 items-start">
+          <div class="space-y-6">
+            <p class="text-xl leading-relaxed">
+              Then I discovered something powerful. I started piecing together
+              elements of what would become the FABRIC system. Even with just
+              fragments of this approach:
+            </p>
+
+            <div class="space-y-6 relative mt-8">
+              <div
+                class="absolute w-1 bg-gradient-to-b from-skin-accent to-transparent h-full -left-6 top-0 opacity-20"
+              >
+              </div>
+
+              <div
+                class="transform hover:translate-x-2 transition-transform duration-200"
+              >
+                <h3 class="text-xl font-bold text-skin-accent mb-2">
+                  Immigration Success
+                </h3>
+                <p>
+                  Successfully navigated immigration from South Africa to New
+                  Zealand
+                </p>
+              </div>
+
+              <div
+                class="transform hover:translate-x-2 transition-transform duration-200"
+              >
+                <h3 class="text-xl font-bold text-skin-accent mb-2">
+                  Financial Freedom
+                </h3>
+                <p>Transformed from needing two incomes to thriving on one</p>
+              </div>
+
+              <div
+                class="transform hover:translate-x-2 transition-transform duration-200"
+              >
+                <h3 class="text-xl font-bold text-skin-accent mb-2">
+                  Family Growth
+                </h3>
+                <p>
+                  Grew our family from one child to three while increasing our
+                  quality of life
+                </p>
+              </div>
+
+              <div
+                class="transform hover:translate-x-2 transition-transform duration-200"
+              >
+                <h3 class="text-xl font-bold text-skin-accent mb-2">
+                  Career Expansion
+                </h3>
+                <p>Built career opportunities I never thought possible</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative">
+            <div
+              class="rounded-3xl border-2 border-dashed border-skin-accent p-8 bg-skin-fill relative overflow-hidden"
+            >
+              <div
+                class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-skin-accent via-transparent to-skin-accent opacity-30"
+              >
+              </div>
+              <div class="text-center space-y-6">
+                <p class="text-2xl font-bold">And that was with an</p>
+                <p class="text-5xl font-black text-skin-accent">INCOMPLETE</p>
+                <p class="text-2xl font-bold">system</p>
+                <div class="h-px w-1/2 mx-auto bg-skin-accent opacity-20 my-8">
+                </div>
+                <p class="text-lg opacity-75 italic">
+                  "Imagine what you could achieve with the complete
+                  framework..."
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="p-6 rounded-lg bg-skin-card">
-          <p class="italic mb-4">
-            "I was stuck in tutorial hell before finding this template. Now I
-            have clear goals and actually ship projects regularly."
+      </div>
+    </section>
+
+    <WaveDivider height="lg" marginBottom={-25} />
+
+    <!-- The FABRIC System Section -->
+    <section class="relative overflow-hidden w-full max-w-full py-24">
+      <div class="max-w-6xl mx-auto px-4 sm:px-4 md:px-8 lg:px-16 xl:px-32">
+        <div class="text-center max-w-4xl mx-auto mb-16">
+          <h2 class="text-5xl font-black mb-6">
+            The FABRIC System:
+            <span class="block mt-4 text-skin-accent">A Complete Framework</span
+            >
+          </h2>
+          <p class="text-xl">
+            I've now refined these scattered pieces into a systematic approach
+            that helps you:
           </p>
-          <div class="font-bold">Marcus Johnson</div>
-          <div class="text-sm opacity-75">Full Stack Developer</div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="group relative">
+            <div
+              class="absolute inset-0.5 bg-gradient-to-br from-skin-accent to-transparent opacity-5 blur-2xl group-hover:opacity-10 transition-opacity rounded-3xl"
+            >
+            </div>
+            <div
+              class="relative p-8 rounded-3xl border-2 border-dashed border-skin-accent bg-skin-fill h-full"
+            >
+              <h3 class="text-2xl font-bold mb-4 text-skin-accent">
+                Turn Knowledge Into Power
+              </h3>
+              <p class="text-lg">
+                Turn everyday learning into career-defining opportunities
+              </p>
+            </div>
+          </div>
+
+          <div class="group relative">
+            <div
+              class="absolute inset-0.5 bg-gradient-to-br from-skin-accent to-transparent opacity-5 blur-2xl group-hover:opacity-10 transition-opacity rounded-3xl"
+            >
+            </div>
+            <div
+              class="relative p-8 rounded-3xl border-2 border-dashed border-skin-accent bg-skin-fill h-full"
+            >
+              <h3 class="text-2xl font-bold mb-4 text-skin-accent">
+                Automated Success
+              </h3>
+              <p class="text-lg">
+                Build systems that create "luck" while you sleep
+              </p>
+            </div>
+          </div>
+
+          <div class="group relative">
+            <div
+              class="absolute inset-0.5 bg-gradient-to-br from-skin-accent to-transparent opacity-5 blur-2xl group-hover:opacity-10 transition-opacity rounded-3xl"
+            >
+            </div>
+            <div
+              class="relative p-8 rounded-3xl border-2 border-dashed border-skin-accent bg-skin-fill h-full"
+            >
+              <h3 class="text-2xl font-bold mb-4 text-skin-accent">
+                Spot Opportunities
+              </h3>
+              <p class="text-lg">Identify high-leverage moments others miss</p>
+            </div>
+          </div>
+
+          <div class="group relative">
+            <div
+              class="absolute inset-0.5 bg-gradient-to-br from-skin-accent to-transparent opacity-5 blur-2xl group-hover:opacity-10 transition-opacity rounded-3xl"
+            >
+            </div>
+            <div
+              class="relative p-8 rounded-3xl border-2 border-dashed border-skin-accent bg-skin-fill h-full"
+            >
+              <h3 class="text-2xl font-bold mb-4 text-skin-accent">
+                Transform Knowledge
+              </h3>
+              <p class="text-lg">Transform knowledge into tangible outcomes</p>
+            </div>
+          </div>
+
+          <div class="group relative md:col-span-2">
+            <div
+              class="absolute inset-0.5 bg-gradient-to-br from-skin-accent to-transparent opacity-5 blur-2xl group-hover:opacity-10 transition-opacity rounded-3xl"
+            >
+            </div>
+            <div
+              class="relative p-8 rounded-3xl border-2 border-dashed border-skin-accent bg-skin-fill h-full"
+            >
+              <h3 class="text-2xl font-bold mb-4 text-skin-accent">
+                Unstoppable Momentum
+              </h3>
+              <p class="text-lg">
+                Create unstoppable career momentum through systematic growth and
+                opportunity capture
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <WaveDivider rotate />
+
+    <!-- What You Get Section -->
+    <section
+      class="relative overflow-hidden w-full max-w-full py-24 bg-skin-card/30"
+    >
+      <div class="max-w-6xl mx-auto px-4 sm:px-4 md:px-8 lg:px-16 xl:px-32">
+        <div class="text-center max-w-4xl mx-auto mb-16">
+          <h2 class="text-5xl font-black mb-6">What You Get</h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-16">
+          <!-- Email Course Card -->
+          <div class="relative">
+            <div
+              class="rounded-3xl border-2 border-dashed border-skin-accent p-8 bg-skin-fill h-full"
+            >
+              <div
+                class="absolute -top-4 left-8 px-4 py-1 bg-skin-accent text-skin-inverted rounded-full text-sm font-bold"
+              >
+                CORE PROGRAM
+              </div>
+              <h3 class="text-3xl font-black mb-6 text-skin-accent">
+                6-Part Email Course
+              </h3>
+              <p class="text-xl mb-8">Master the complete FABRIC framework</p>
+
+              <ul class="space-y-4">
+                <li class="flex items-start gap-3">
+                  <Check
+                    className="w-6 h-6 mt-1 text-skin-accent flex-shrink-0"
+                    client:only="react"
+                  />
+                  <span
+                    >Define your ideal future and map the path to get there</span
+                  >
+                </li>
+                <li class="flex items-start gap-3">
+                  <Check
+                    className="w-6 h-6 mt-1 text-skin-accent flex-shrink-0"
+                    client:only="react"
+                  />
+                  <span
+                    >Build systems for capturing and leveraging everything you
+                    learn</span
+                  >
+                </li>
+                <li class="flex items-start gap-3">
+                  <Check
+                    className="w-6 h-6 mt-1 text-skin-accent flex-shrink-0"
+                    client:only="react"
+                  />
+                  <span>Create feedback loops that accelerate your growth</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <Check
+                    className="w-6 h-6 mt-1 text-skin-accent flex-shrink-0"
+                    client:only="react"
+                  />
+                  <span
+                    >Transform your knowledge into opportunities and influence</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Bonuses Card -->
+          <div class="relative">
+            <div
+              class="rounded-3xl border-2 border-dashed border-skin-accent p-8 bg-skin-fill h-full"
+            >
+              <div
+                class="absolute -top-4 left-8 px-4 py-1 bg-skin-accent text-skin-inverted rounded-full text-sm font-bold"
+              >
+                EXCLUSIVE BONUSES
+              </div>
+              <h3 class="text-3xl font-black mb-6 text-skin-accent">
+                Bonus Resources
+              </h3>
+              <p class="text-xl mb-8">
+                Additional tools for faster implementation
+              </p>
+
+              <ul class="space-y-4">
+                <li class="flex items-start gap-3">
+                  <div
+                    class="w-6 h-6 mt-1 rounded-full bg-skin-accent/10 flex items-center justify-center flex-shrink-0"
+                  >
+                    <span class="text-skin-accent font-bold">1</span>
+                  </div>
+                  <span
+                    >Quick-start Guide: The "Opportunity Spotter" checklist</span
+                  >
+                </li>
+                <li class="flex items-start gap-3">
+                  <div
+                    class="w-6 h-6 mt-1 rounded-full bg-skin-accent/10 flex items-center justify-center flex-shrink-0"
+                  >
+                    <span class="text-skin-accent font-bold">2</span>
+                  </div>
+                  <span
+                    >Framework for identifying high-leverage moments in tech</span
+                  >
+                </li>
+                <li class="flex items-start gap-3">
+                  <div
+                    class="w-6 h-6 mt-1 rounded-full bg-skin-accent/10 flex items-center justify-center flex-shrink-0"
+                  >
+                    <span class="text-skin-accent font-bold">3</span>
+                  </div>
+                  <span
+                    >Real examples of how successful developers use these
+                    principles</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <WaveDivider />
+
+    <!-- Who This Isn't For Section -->
+    <section class="relative overflow-hidden w-full max-w-full py-24">
+      <div class="max-w-6xl mx-auto px-4 sm:px-4 md:px-8 lg:px-16 xl:px-32">
+        <h2 class="text-5xl font-black text-center mb-16">
+          Who This Isn't For
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div
+            class="p-6 rounded-3xl border-2 border-dashed border-skin-accent/50 bg-skin-fill/50"
+          >
+            <p class="flex items-start gap-3">
+              <span class="text-2xl text-skin-accent/50">×</span>
+              <span>Developers content with staying in their comfort zone</span>
+            </p>
+          </div>
+
+          <div
+            class="p-6 rounded-3xl border-2 border-dashed border-skin-accent/50 bg-skin-fill/50"
+          >
+            <p class="flex items-start gap-3">
+              <span class="text-2xl text-skin-accent/50">×</span>
+              <span
+                >Those unwilling to invest time in building systems for
+                long-term growth</span
+              >
+            </p>
+          </div>
+
+          <div
+            class="p-6 rounded-3xl border-2 border-dashed border-skin-accent/50 bg-skin-fill/50"
+          >
+            <p class="flex items-start gap-3">
+              <span class="text-2xl text-skin-accent/50">×</span>
+              <span
+                >People looking for quick shortcuts without putting in the work</span
+              >
+            </p>
+          </div>
+
+          <div
+            class="p-6 rounded-3xl border-2 border-dashed border-skin-accent/50 bg-skin-fill/50"
+          >
+            <p class="flex items-start gap-3">
+              <span class="text-2xl text-skin-accent/50">×</span>
+              <span
+                >Anyone not interested in creating real impact with their
+                knowledge</span
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <WaveDivider rotate />
+
+    <!-- Final Call To Action Section -->
+    <section
+      class="relative overflow-hidden w-full max-w-full py-24 bg-gradient-to-b from-skin-card/30 to-transparent"
+    >
+      <div class="max-w-6xl mx-auto px-4 sm:px-4 md:px-8 lg:px-16 xl:px-32">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <h2 class="text-5xl font-black mb-6">The Choice Is Yours</h2>
+          <p class="text-xl opacity-80">
+            I've already paid the $1 million+ tuition in missed opportunities so
+            you don't have to. Join me, and let's build something extraordinary
+            together.
+          </p>
+        </div>
+
+        <div class="max-w-4xl mx-auto">
+          <div class="relative">
+            <div
+              class="absolute inset-0.5 bg-gradient-to-br from-skin-accent to-transparent opacity-5 blur-2xl"
+            >
+            </div>
+            <div
+              class="relative p-8 rounded-3xl border-2 border-dashed border-skin-accent bg-skin-fill"
+            >
+              <form
+                id="signup-form-bottom"
+                class="flex flex-col md:flex-row gap-4 items-end"
+              >
+                <div class="flex-1">
+                  <label
+                    for="firstName-bottom"
+                    class="block text-sm font-medium mb-2">First Name</label
+                  >
+                  <input
+                    type="text"
+                    id="firstName-bottom"
+                    name="firstName"
+                    required
+                    class="w-full px-4 py-3 rounded-xl border bg-skin-fill border-skin-accent focus:outline-none focus:ring-2 focus:ring-skin-accent"
+                    placeholder="Enter your first name"
+                  />
+                </div>
+                <div class="flex-1">
+                  <label
+                    for="email-bottom"
+                    class="block text-sm font-medium mb-2">Email Address</label
+                  >
+                  <input
+                    type="email"
+                    id="email-bottom"
+                    name="email"
+                    required
+                    class="w-full px-4 py-3 rounded-xl border bg-skin-fill border-skin-accent focus:outline-none focus:ring-2 focus:ring-skin-accent"
+                    placeholder="Enter your email address"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  id="submit-btn-bottom"
+                  class="px-8 bg-skin-accent text-skin-inverted py-3 rounded-xl font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 text-lg whitespace-nowrap"
+                >
+                  <span>Start Your Journey</span>
+                  <div id="spinner-bottom" class="hidden">
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  </div>
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -169,105 +718,125 @@ export const prerender = false;
         origin: { y: 0.7 },
       };
 
-      // Handle form submission
-      const form = document.getElementById("signup-form");
-      const submitBtn = document.getElementById("submit-btn");
-      const spinner = document.getElementById("spinner");
-      const btnText = submitBtn?.querySelector("span");
+      // Handle form submission for both forms
+      function setupForm(formId, submitBtnId, spinnerId) {
+        const form = document.getElementById(formId);
+        const submitBtn = document.getElementById(submitBtnId);
+        const spinner = document.getElementById(spinnerId);
+        const btnText = submitBtn?.querySelector("span");
 
-      async function handleSubmit(e) {
-        e.preventDefault();
-        if (!form || !submitBtn || !spinner || !btnText) return;
+        async function handleSubmit(e) {
+          e.preventDefault();
+          if (!form || !submitBtn || !spinner || !btnText) return;
 
-        const emailInput = form.querySelector("#email");
-        const email = emailInput ? emailInput.value : "";
+          const emailInput = form.querySelector(
+            `#${formId === "signup-form" ? "email" : "email-bottom"}`
+          );
+          const firstNameInput = form.querySelector(
+            `#${formId === "signup-form" ? "firstName" : "firstName-bottom"}`
+          );
+          const email = emailInput ? emailInput.value : "";
+          const firstName = firstNameInput ? firstNameInput.value : "";
 
-        // Show loading state
-        spinner.classList.remove("hidden");
-        btnText.textContent = "Subscribing...";
-        submitBtn.disabled = true;
+          // Show loading state
+          spinner.classList.remove("hidden");
+          btnText.textContent = "Subscribing...";
+          submitBtn.disabled = true;
 
-        try {
-          const response = await fetch("/api/subscribe", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email: email.trim() }),
-          });
-
-          console.log("Client response:", response.status);
-
-          let data;
           try {
-            const text = await response.text();
-            data = JSON.parse(text);
-          } catch (e) {
-            console.error("Failed to parse response:", e);
-            throw new Error("Invalid server response");
-          }
+            const response = await fetch("/api/subscribe", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: email.trim(),
+                firstName: firstName.trim(),
+              }),
+            });
 
-          if (!response.ok) {
-            throw new Error(data.error || "Subscription failed");
-          }
+            console.log("Client response:", response.status);
 
-          // Success state
-          let canvas = document.getElementById("confetti-canvas");
-          if (!canvas) {
-            canvas = document.createElement("canvas");
-            canvas.id = "confetti-canvas";
-            canvas.className = "fixed pointer-events-none inset-0 z-50";
-            canvas.style.opacity = "0.8";
-            document.body.appendChild(canvas);
-          }
-
-          // Get button position
-          const buttonRect = submitBtn.getBoundingClientRect();
-          const buttonCenterX = (buttonRect.left + buttonRect.right) / 2;
-          const origin = {
-            x: buttonCenterX / window.innerWidth,
-            y: buttonRect.top / window.innerHeight,
-          };
-
-          const confetti = new window.ConfettiGenerator({
-            ...confettiSettings,
-            origin,
-          });
-
-          confetti.render();
-          setTimeout(() => {
-            confetti.clear();
-          }, 2000);
-
-          window.toast.success(
-            "🎉 You're in! Check your inbox for the Obsidian template.",
-            {
-              duration: 5000,
-              position: "bottom-center",
+            let data;
+            try {
+              const text = await response.text();
+              data = JSON.parse(text);
+            } catch (e) {
+              console.error("Failed to parse response:", e);
+              throw new Error("Invalid server response");
             }
-          );
 
-          form.reset();
-        } catch (error) {
-          console.error("Form submission error:", error);
-          window.toast.error(
-            error instanceof Error
-              ? error.message
-              : "Something went wrong. Please try again.",
-            {
-              duration: 5000,
-              position: "bottom-center",
+            if (!response.ok) {
+              throw new Error(data.error || "Subscription failed");
             }
-          );
-        } finally {
-          // Reset button state
-          spinner.classList.add("hidden");
-          btnText.textContent = "Get the Free Template";
-          submitBtn.disabled = false;
+
+            // Success state
+            let canvas = document.getElementById("confetti-canvas");
+            if (!canvas) {
+              canvas = document.createElement("canvas");
+              canvas.id = "confetti-canvas";
+              canvas.className = "fixed pointer-events-none inset-0 z-50";
+              canvas.style.opacity = "0.8";
+              document.body.appendChild(canvas);
+            }
+
+            // Get button position
+            const buttonRect = submitBtn.getBoundingClientRect();
+            const buttonCenterX = (buttonRect.left + buttonRect.right) / 2;
+            const origin = {
+              x: buttonCenterX / window.innerWidth,
+              y: buttonRect.top / window.innerHeight,
+            };
+
+            const confetti = new window.ConfettiGenerator({
+              ...confettiSettings,
+              origin,
+            });
+
+            confetti.render();
+            setTimeout(() => {
+              confetti.clear();
+            }, 2000);
+
+            window.toast.success(
+              "🎉 You're in! Check your inbox for the Obsidian template.",
+              {
+                duration: 5000,
+                position: "bottom-center",
+              }
+            );
+
+            // Reset both forms on success
+            document.getElementById("signup-form").reset();
+            document.getElementById("signup-form-bottom").reset();
+          } catch (error) {
+            console.error("Form submission error:", error);
+            window.toast.error(
+              error instanceof Error
+                ? error.message
+                : "Something went wrong. Please try again.",
+              {
+                duration: 5000,
+                position: "bottom-center",
+              }
+            );
+          } finally {
+            // Reset button state
+            spinner.classList.add("hidden");
+            btnText.textContent =
+              formId === "signup-form"
+                ? "Get the Free Template"
+                : "Start Your Journey";
+            submitBtn.disabled = false;
+          }
         }
+
+        form?.addEventListener("submit", handleSubmit);
       }
 
-      form?.addEventListener("submit", handleSubmit);
+      // Setup both forms
+      setupForm("signup-form", "submit-btn", "spinner");
+      setupForm("signup-form-bottom", "submit-btn-bottom", "spinner-bottom");
     }
   });
 </script>

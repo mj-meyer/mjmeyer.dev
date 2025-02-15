@@ -73,7 +73,7 @@ module.exports = {
         base: withOpacity("--color-text-base"),
         accent: withOpacity("--color-accent"),
         fill: withOpacity("--color-fill"),
-
+        card: withOpacity("--color-card"),
       },
       transparent: "transparent",
     },
@@ -82,7 +82,7 @@ module.exports = {
       montserrat: ["Montserrat", "sans-serif"],
       montserratAlt: ["Montserrat Alternates", "sans-serif"],
     },
-    extend:{
+    extend: {
       colors: {
         skin: {
           fill: withOpacity("--color-fill"),

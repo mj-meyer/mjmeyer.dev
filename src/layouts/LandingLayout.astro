@@ -122,11 +122,11 @@ const isDev = import.meta.env.DEV;
     {hasWaveSeparator && <WaveSeparator />}
 
     <main
-      class="flex flex-col flex-1 px-4 pb-12 sm:px-4 md:px-8 lg:px-16 xl:px-32 min-h-96 bg-gradient-to-b to-skin-highlight/20 from-skin-fill"
+      class="flex flex-col flex-1 min-h-96 bg-gradient-to-b to-skin-highlight/20 from-skin-fill"
     >
       <section
         id="content"
-        class="flex gap-24 max-md:gap-16 w-full flex-row min-h-96 pt-16 max-sm:pt-8 md:flex-row overflow-hidden"
+        class="flex w-full max-w-full p-0 flex-col min-h-96 overflow-hidden"
       >
         <slot />
       </section>

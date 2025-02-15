@@ -7,41 +7,13 @@ const CONVERTKIT_FORM_ID = import.meta.env.PUBLIC_CONVERTKIT_FORM_ID;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const contentType = request.headers.get("Content-Type") || "";
-    console.log("Received Content-Type:", contentType);
+    const { email, firstName } = await request.json();
 
-    if (!contentType.includes("application/json")) {
-      console.log("Content-Type check failed");
-      return new Response(JSON.stringify({ error: "Content-Type must be application/json" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
-
-    const body = await request.text();
-    if (!body) {
-      return new Response(JSON.stringify({ error: "Request body is empty" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
-
-    let data;
-    try {
-      data = JSON.parse(body);
-    } catch (e) {
-      return new Response(JSON.stringify({ error: "Invalid JSON in request body" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
-
-    const { email } = data;
-    if (!email) {
-      return new Response(JSON.stringify({ error: "Email is required" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" }
-      });
+    if (!email || !firstName) {
+      return new Response(
+        JSON.stringify({ error: "Email and first name are required" }),
+        { status: 400 }
+      );
     }
 
     if (!CONVERTKIT_API_KEY || !CONVERTKIT_FORM_ID) {
@@ -60,44 +32,25 @@ export const POST: APIRoute = async ({ request }) => {
         },
         body: JSON.stringify({
           api_key: CONVERTKIT_API_KEY,
-          email: email,
+          email,
+          first_name: firstName,
         }),
       }
     );
 
-    const responseText = await response.text();
-    let responseData;
-    
-    try {
-      responseData = JSON.parse(responseText);
-    } catch (e) {
-      return new Response(JSON.stringify({ error: "Invalid response from ConvertKit" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
-
     if (!response.ok) {
-      return new Response(JSON.stringify({ error: responseData.error || "Subscription failed" }), {
-        status: response.status,
-        headers: { "Content-Type": "application/json" }
-      });
+      throw new Error('Subscription failed');
     }
 
-    return new Response(JSON.stringify({ success: true, data: responseData }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" }
-    });
+    return new Response(
+      JSON.stringify({ message: "Successfully subscribed!" }),
+      { status: 200 }
+    );
   } catch (error) {
     console.error('Subscription error:', error);
     return new Response(
-      JSON.stringify({
-        error: error instanceof Error ? error.message : "Failed to subscribe",
-      }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
+      JSON.stringify({ error: "Failed to subscribe" }),
+      { status: 500 }
     );
   }
 }; 
