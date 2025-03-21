@@ -1,6 +1,6 @@
 ---
 import Layout from "@layouts/LandingLayout.astro";
-import { Loader2, Check } from "lucide-react";
+import { Loader2, Check, ArrowRight, TrendingUp, Baby, Plane, Briefcase } from "lucide-react";
 import { Toast } from "../components/Toast";
 import WaveDivider from "../components/WaveDivider.astro";
 
@@ -31,11 +31,12 @@ export const prerender = false;
             >
           </h2>
           <p class="text-2xl text-balance font-montserrat font-normal">
-            For developers grinding away at their day jobs while watching others
-            build thriving careers and successful side projects.
+            Are you a developer grinding away at your day job while watching
+            others build thriving careers and successful side projects?
           </p>
           <p class="text-2xl text-balance font-montserrat font-normal">
-            STOP staying stuck in the same bad patterns! There is a better way!
+            I was... and I've paid dearly for it! I'd like to help you avoid my
+            mistakes.
           </p>
           <div class="flex flex-col gap-4">
             <p
@@ -135,14 +136,30 @@ export const prerender = false;
   <div class="w-full max-w-full flex flex-col">
     <!-- Hidden Cost Section -->
     <section class="relative overflow-hidden w-full max-w-full py-16">
-      <div class="max-w-6xl mx-auto px-4 sm:px-4 md:px-8 lg:px-16 xl:px-32">
+      <div class="max-w-8xl mx-auto px-4 sm:px-4 md:px-8 lg:px-16 xl:px-32">
         <h2 class="text-5xl font-black text-center mb-16">
           The Hidden Cost of Being
           <span class="text-skin-accent">'Just a Developer'</span>
         </h2>
 
         <div class="grid md:grid-cols-2 gap-16 items-center">
-          <!-- Left Column - Main Message -->
+          <!-- Image Column (Now First) -->
+          <div class="relative">
+            <!-- Decorative Background Shapes -->
+            <div class="absolute -bottom-12 -right-12 w-64 h-64 rotate-45 bg-skin-card/30 rounded-[30%_70%_70%_30%/30%_30%_70%_70%] z-0"></div>
+            <div class="absolute -top-12 -left-12 w-48 h-48 -rotate-12 bg-skin-card/30 rounded-[30%_70%_70%_30%/30%_30%_70%_70%] z-0"></div>
+            
+            <!-- Image Container -->
+            <div class="relative rounded-3xl border-2 border-dashed border-skin-accent p-4 bg-skin-fill shadow-lg z-[1]">
+              <img 
+                src="/dev-career-missed-opportunities.png" 
+                alt="Developer Career Missed Opportunities Visualization" 
+                class="w-full h-auto rounded-2xl"
+              />
+            </div>
+          </div>
+
+          <!-- Text Column (Now Second) -->
           <div class="space-y-6">
             <p class="text-xl leading-relaxed">
               For the first half of my career, I was leaving massive
@@ -153,7 +170,7 @@ export const prerender = false;
             </p>
 
             <div class="space-y-4 relative">
-              <div class="absolute w-0.5 bg-skin-accent/20 h-full left-3 top-0">
+              <div class="absolute w-0.5 bg-skin-accent h-full left-3 top-0">
               </div>
 
               <div
@@ -207,23 +224,6 @@ export const prerender = false;
               </div>
             </div>
           </div>
-
-          <!-- Right Column - Visual Element -->
-          <div class="relative">
-            <div
-              class="aspect-square rounded-3xl border-2 border-dashed border-skin-accent p-8 flex items-center justify-center bg-skin-card/30"
-            >
-              <div class="text-center space-y-4">
-                <p class="text-6xl font-black text-skin-accent">16</p>
-                <p class="text-xl font-medium">Years of Learning</p>
-                <p class="text-6xl font-black text-skin-accent">$1M+</p>
-                <p class="text-xl font-medium">In Lost Opportunities</p>
-                <p class="mt-8 text-lg opacity-75">
-                  Don't wait as long as I did
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -232,92 +232,227 @@ export const prerender = false;
 
     <!-- The Turning Point Section -->
     <section
-      class="relative overflow-hidden w-full max-w-full py-44 bg-skin-card/30"
+      class="relative overflow-hidden w-full max-w-full py-0 bg-skin-card/30"
     >
-      <div class="max-w-6xl mx-auto px-4 sm:px-4 md:px-8 lg:px-16 xl:px-32">
-        <h2 class="text-5xl font-black mb-16">
-          The Turning Point:
-          <span class="block mt-4 text-3xl font-medium text-skin-accent">
-            When Everything Changed
-          </span>
-        </h2>
-
-        <div class="grid md:grid-cols-2 gap-16 items-start">
+      <div class="max-w-8xl mx-auto px-4 sm:px-4 md:px-8 lg:px-16 xl:px-32">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
           <div class="space-y-6">
+            <h2 class="text-5xl font-black">
+              The Turning Point:
+              <span class="block mt-4 text-3xl font-medium text-skin-accent">
+                When Everything Changed
+              </span>
+            </h2>
+
             <p class="text-xl leading-relaxed">
               Then I discovered something powerful. I started piecing together
               elements of what would become the FABRIC system. Even with just
               fragments of this approach:
             </p>
 
-            <div class="space-y-6 relative mt-8">
-              <div
-                class="absolute w-1 bg-gradient-to-b from-skin-accent to-transparent h-full -left-6 top-0 opacity-20"
-              >
+            <div class="space-y-4 relative">
+              <div class="absolute w-0.5 bg-skin-accent h-full left-3 top-0">
               </div>
 
               <div
-                class="transform hover:translate-x-2 transition-transform duration-200"
+                class="relative pl-12 py-2 transition-all hover:translate-x-2 duration-200"
               >
-                <h3 class="text-xl font-bold text-skin-accent mb-2">
-                  Immigration Success
-                </h3>
-                <p>
+                <div
+                  class="absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-skin-accent bg-skin-fill"
+                >
+                </div>
+                <p class="text-lg">
                   Successfully navigated immigration from South Africa to New
                   Zealand
                 </p>
               </div>
 
               <div
-                class="transform hover:translate-x-2 transition-transform duration-200"
+                class="relative pl-12 py-2 transition-all hover:translate-x-2 duration-200"
               >
-                <h3 class="text-xl font-bold text-skin-accent mb-2">
-                  Financial Freedom
-                </h3>
-                <p>Transformed from needing two incomes to thriving on one</p>
+                <div
+                  class="absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-skin-accent bg-skin-fill"
+                >
+                </div>
+                <p class="text-lg">
+                  Transformed from needing two incomes to thriving on one
+                </p>
               </div>
 
               <div
-                class="transform hover:translate-x-2 transition-transform duration-200"
+                class="relative pl-12 py-2 transition-all hover:translate-x-2 duration-200"
               >
-                <h3 class="text-xl font-bold text-skin-accent mb-2">
-                  Family Growth
-                </h3>
-                <p>
+                <div
+                  class="absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-skin-accent bg-skin-fill"
+                >
+                </div>
+                <p class="text-lg">
                   Grew our family from one child to three while increasing our
                   quality of life
                 </p>
               </div>
 
               <div
-                class="transform hover:translate-x-2 transition-transform duration-200"
+                class="relative pl-12 py-2 transition-all hover:translate-x-2 duration-200"
               >
-                <h3 class="text-xl font-bold text-skin-accent mb-2">
-                  Career Expansion
-                </h3>
-                <p>Built career opportunities I never thought possible</p>
+                <div
+                  class="absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-skin-accent bg-skin-fill"
+                >
+                </div>
+                <p class="text-lg">
+                  Built career opportunities I never thought possible
+                </p>
               </div>
             </div>
           </div>
 
+          <!-- Right Column (Timeline) -->
           <div class="relative">
-            <div
-              class="rounded-3xl border-2 border-dashed border-skin-accent p-8 bg-skin-fill relative overflow-hidden"
-            >
-              <div
-                class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-skin-accent via-transparent to-skin-accent opacity-30"
+            <!-- Blob Container with fixed size -->
+            <div class="absolute inset-0 overflow-visible">
+              <!-- Blob SVG Background -->
+              <svg 
+                viewBox="0 0 200 200" 
+                class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[800px] rotate-[75deg] origin-center
+                       md:scale-100 sm:scale-125 scale-150"
+                preserveAspectRatio="none"
               >
-              </div>
-              <div class="text-center space-y-6">
-                <p class="text-2xl font-bold">And that was with an</p>
-                <p class="text-5xl font-black text-skin-accent">INCOMPLETE</p>
-                <p class="text-2xl font-bold">system</p>
-                <div class="h-px w-1/2 mx-auto bg-skin-accent opacity-20 my-8">
+                <path 
+                  d="M47.5,-57.2C59.9,-47.3,67.3,-30.9,70.8,-13.5C74.2,4,73.6,22.5,65.2,36.6C56.8,50.7,40.5,60.4,23.2,64.7C5.8,69,-12.6,67.9,-30.4,62.1C-48.2,56.2,-65.4,45.6,-71.6,30.2C-77.8,14.8,-73,-5.4,-64.6,-22.1C-56.2,-38.8,-44.2,-52,-30.1,-61.1C-16,-70.2,0.2,-75.2,14.8,-71.1C29.5,-67,35.2,-67.1,47.5,-57.2Z" 
+                  transform="translate(100 100)"
+                  class="fill-skin-fill stroke-skin-accent stroke-2"
+                />
+              </svg>
+            </div>
+
+            <!-- Content Container -->
+            <div class="relative p-8 md:p-12">
+              <!-- Timeline Container -->
+              <div class="relative pb-20">
+                <!-- Center Timeline Line -->
+                <div class="absolute left-1/2 top-0 bottom-16 w-1 bg-skin-accent -translate-x-1/2" />
+                <div 
+                  class="absolute left-1/2 top-0 bottom-16 w-1 -translate-x-1/2" 
+                  style="background: linear-gradient(180deg, transparent 0%, var(--color-accent) 20%, var(--color-accent) 100%);"
+                />
+                
+                <!-- Milestones -->
+                <div class="relative space-y-2">
+                  {[
+                    { 
+                      year: 2014,
+                      event: "Career Pivot",
+                      salary: 28000,
+                      details: "Agency → Startup",
+                      icon: "briefcase",
+                      column: 'left'
+                    },
+                    { 
+                      year: 2016,
+                      event: "Mind Shift",
+                      salary: 38000,
+                      details: "Lead Frontend Eng.",
+                      icon: "trending-up",
+                      column: 'right'
+                    },
+                    { 
+                      year: 2018,
+                      event: "Family Begins",
+                      salary: 48000,
+                      details: "First child",
+                      icon: "baby",
+                      column: 'left'
+                    },
+                    { 
+                      year: 2020,
+                      event: "Remote NZ Role",
+                      salary: 115000,
+                      details: "International opportunity",
+                      icon: "trending-up",
+                      column: 'right'
+                    },
+                    { 
+                      year: 2022,
+                      event: "Major Changes",
+                      salary: 130000,
+                      details: "Immigration + Second child",
+                      icon: "plane",
+                      column: 'left'
+                    },
+                    { 
+                      year: 2023,
+                      event: "Corporate Role",
+                      salary: 140000,
+                      details: "Full Stack Position",
+                      icon: "briefcase",
+                      column: 'right'
+                    },
+                    { 
+                      year: 2024,
+                      event: "AI Startup",
+                      salary: 160000,
+                      details: "Third child + New Role",
+                      icon: "trending-up",
+                      column: 'left'
+                    }
+                  ].map((milestone, index, array) => (
+                    <div class="flex items-center h-16">
+                      <!-- Left Content -->
+                      <div class={`flex-1 ${milestone.column === 'left' ? 'block' : 'invisible'}`}>
+                        <div class="pr-8 text-right">
+                          <div class="text-sm opacity-60">{milestone.year}</div>
+                          <div class="font-semibold leading-tight">{milestone.event}</div>
+                          <div>
+                            <span class="text-lg font-bold leading-none text-skin-accent">${(milestone.salary/1000).toFixed(0)}k</span>
+                            <div class="text-sm opacity-60 leading-tight">{milestone.details}</div>
+                            {index > 0 && (
+                              <div class="text-sm text-emerald-500 leading-none">
+                                +${((milestone.salary - array[index-1].salary)/1000).toFixed(0)}k
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Center Icon -->
+                      <div class="relative z-10">
+                        <div class={`w-12 h-12 rounded-full flex items-center justify-center
+                          bg-skin-fill border-4 border-skin-accent`}>
+                          {milestone.icon === 'briefcase' && <Briefcase className="w-5 h-5 text-skin-accent" client:load />}
+                          {milestone.icon === 'trending-up' && <TrendingUp className="w-5 h-5 text-skin-accent" client:load />}
+                          {milestone.icon === 'baby' && <Baby className="w-5 h-5 text-skin-accent" client:load />}
+                          {milestone.icon === 'plane' && <Plane className="w-5 h-5 text-skin-accent" client:load />}
+                        </div>
+                      </div>
+
+                      <!-- Right Content -->
+                      <div class={`flex-1 ${milestone.column === 'right' ? 'block' : 'invisible'}`}>
+                        <div class="pl-8">
+                          <div class="text-sm opacity-60">{milestone.year}</div>
+                          <div class="font-semibold leading-tight">{milestone.event}</div>
+                          <div>
+                            <span class="text-lg font-bold leading-none text-skin-accent">${(milestone.salary/1000).toFixed(0)}k</span>
+                            <div class="text-sm opacity-60 leading-tight">{milestone.details}</div>
+                            {index > 0 && (
+                              <div class="text-sm text-emerald-500 leading-none">
+                                +${((milestone.salary - array[index-1].salary)/1000).toFixed(0)}k
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <p class="text-lg opacity-75 italic">
-                  "Imagine what you could achieve with the complete
-                  framework..."
-                </p>
+              </div>
+            </div>
+
+            <!-- System Progress Indicator -->
+            <div class="relative z-20 text-center mb-8 -top-16">
+              <div class="inline-flex items-center gap-2 px-4 py-2 bg-skin-accent/10 rounded-full">
+                <span class="text-sm text-skin-accent">Partial FABRIC System</span>
+                <ArrowRight className="w-4 h-4 text-skin-accent" client:load />
+                <span class="text-sm font-semibold text-skin-accent">Full System</span>
               </div>
             </div>
           </div>
@@ -407,7 +542,7 @@ export const prerender = false;
             </div>
           </div>
 
-          <div class="group relative md:col-span-2">
+          <div class="group md:col-span-2">
             <div
               class="absolute inset-0.5 bg-gradient-to-br from-skin-accent to-transparent opacity-5 blur-2xl group-hover:opacity-10 transition-opacity rounded-3xl"
             >
@@ -608,7 +743,7 @@ export const prerender = false;
       </div>
     </section>
 
-    <WaveDivider rotate />
+    <WaveDivider fill="fill" rotate />
 
     <!-- Final Call To Action Section -->
     <section
