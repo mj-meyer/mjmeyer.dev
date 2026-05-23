@@ -2,6 +2,9 @@
   "name": "",
   "version": "2.2.0",
   "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "astro check --watch & astro dev",
     "start": "astro dev",
