@@ -14,6 +14,7 @@ export default tseslint.config(
       "dist/",
       ".astro/",
       ".vercel/",
+      "src/components/posthog.astro", // vendored PostHog snippet
     ],
   },
   js.configs.recommended,
@@ -28,6 +29,11 @@ export default tseslint.config(
         ...globals.browser,
       },
     },
+  },
+  // Astro's env.d.ts uses triple-slash references, which is idiomatic for .d.ts.
+  {
+    files: ["**/*.d.ts"],
+    rules: { "@typescript-eslint/triple-slash-reference": "off" },
   },
   // Must be last so it can turn off any stylistic rules that conflict with Prettier.
   eslintConfigPrettier

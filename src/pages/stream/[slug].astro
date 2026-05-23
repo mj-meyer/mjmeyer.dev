@@ -34,14 +34,13 @@ const sortedPosts = getSortedPosts(posts) as CollectionEntry<"stream">[];
 const totalPages = getPageNumbers(sortedPosts.length);
 const streamTypes = [...new Set(posts.map(post => post.data.streamType))];
 
-let currentPage = 1;
-let filteredPosts = sortedPosts;
-let paginatedPosts = sortedPosts;
+let currentPage: number;
+let paginatedPosts: CollectionEntry<"stream">[];
 let totalPageCount = 1;
 
 if (streamTypes.includes(slug as StreamType) && isNaN(Number(slug))) {
   // Filter by stream type without pagination
-  filteredPosts = sortedPosts.filter(post => post.data.streamType === slug);
+  const filteredPosts = sortedPosts.filter(post => post.data.streamType === slug);
   paginatedPosts = filteredPosts;
   currentPage = 1;
 } else {

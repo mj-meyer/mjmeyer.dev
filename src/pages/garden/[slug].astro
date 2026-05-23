@@ -34,14 +34,13 @@ const sortedPosts = getSortedPosts(posts) as CollectionEntry<"garden">[];
 const totalPages = getPageNumbers(sortedPosts.length);
 
 const noteTypes = ["seedling", "budding", "evergreen"] as const;
-let currentPage = 1;
-let filteredPosts = sortedPosts;
-let paginatedPosts = sortedPosts;
+let currentPage: number;
+let paginatedPosts: CollectionEntry<"garden">[];
 let totalPageCount = 1;
 
 if (noteTypes.includes(slug as NoteType) && isNaN(Number(slug))) {
   // Filter by note type without pagination
-  filteredPosts = sortedPosts.filter(post => post.data.noteState === slug);
+  const filteredPosts = sortedPosts.filter(post => post.data.noteState === slug);
   paginatedPosts = filteredPosts;
   currentPage = 1;
 } else {
