@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro check --watch & astro dev",
     "start": "astro dev",
-    "build": "astro build && jampack ./dist",
+    "build": "astro build",
     "preview": "astro preview",
     "sync": "astro sync",
     "astro": "astro",
@@ -42,7 +42,6 @@
   "devDependencies": {
     "@astrojs/react": "^5.0.5",
     "@astrojs/sitemap": "^3.7.2",
-    "@divriots/jampack": "^0.9.4",
     "@eslint/js": "^10.0.1",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.3.0",
