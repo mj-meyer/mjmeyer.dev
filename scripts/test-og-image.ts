@@ -1,5 +1,4 @@
 import generateOgImage from '../src/utils/generateOgImage';
-import { SITE } from '../src/config';
 
 async function testOgImage() {
   try {

@@ -1,10 +1,10 @@
 import { visit } from 'unist-util-visit'
-import type { Element } from 'hast'
+import type { Element, Root } from 'hast'
 import { toString } from 'hast-util-to-string'
 import { slugifyStr } from './slugify'
 
 export function rehypeUnpublishedLinks() {
-  return (tree: any) => {
+  return (tree: Root) => {
     visit(tree, 'element', (node: Element) => {
       if (
         node.tagName === 'a' && 

@@ -898,7 +898,7 @@ export const prerender = false;
               data = JSON.parse(text);
             } catch (e) {
               console.error("Failed to parse response:", e);
-              throw new Error("Invalid server response");
+              throw new Error("Invalid server response", { cause: e });
             }
 
             if (!response.ok) {
