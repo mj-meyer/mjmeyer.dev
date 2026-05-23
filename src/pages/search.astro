@@ -13,8 +13,8 @@ const streamNotes = await getCollection("stream", ({ data }) => !data.draft);
 const posts = [...gardenNotes, ...streamNotes];
 
 // List of items to search in
-const searchList = posts.map(({ data, slug }) => ({
-  slug,
+const searchList = posts.map(({ data, id }) => ({
+  slug: id,
   title: data.title,
   description: data.description,
   data,

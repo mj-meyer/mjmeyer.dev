@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import Header from "@components/Header.astro";
 import DetailLayout from "@layouts/DetailLayout.astro";
 import LinkButton from "@components/LinkButton.astro";
@@ -20,8 +20,7 @@ function formatDate(date: Date) {
 }
 
 const sortedPosts = posts.sort(
-  (a, b) =>
-    getDateFromSlug(b.slug).getTime() - getDateFromSlug(a.slug).getTime()
+  (a, b) => getDateFromSlug(b.id).getTime() - getDateFromSlug(a.id).getTime()
 );
 
 const firstThreePosts = sortedPosts.slice(0, 3);
@@ -30,8 +29,8 @@ const restOfPosts = sortedPosts.slice(3);
 // Process the first three posts to get their rendered content
 const renderedFirstThreePosts = await Promise.all(
   firstThreePosts.map(async post => {
-    const { Content } = await post.render();
-    const date = getDateFromSlug(post.slug);
+    const { Content } = await render(post);
+    const date = getDateFromSlug(post.id);
     const { monthName, year } = formatDate(date);
     return { ...post, Content, monthName, year };
   })
@@ -39,7 +38,7 @@ const renderedFirstThreePosts = await Promise.all(
 
 // Process the rest of the posts to extract month and year
 const processedRestOfPosts = restOfPosts.map(post => {
-  const date = getDateFromSlug(post.slug);
+  const date = getDateFromSlug(post.id);
   const { monthName, monthNumeric, year } = formatDate(date);
   return { ...post, monthName, monthNumeric, year };
 });
@@ -114,6 +113,7 @@ const processedRestOfPosts = restOfPosts.map(post => {
 </DetailLayout>
 
 <style>
+  @reference "../../styles/base.css";
   .post-list {
     @apply mt-12;
   }

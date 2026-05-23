@@ -4,7 +4,7 @@ import "@styles/base.css";
 import WaveSeparator from "@components/WaveSeparator.astro";
 import TailwindIndicator from "@components/TailwindIndicator.astro";
 import PostHog from "../components/posthog.astro";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
 export interface Props {
@@ -49,7 +49,7 @@ const isDev = import.meta.env.DEV;
     <meta name="description" content={description} />
     <meta name="author" content={SITE.author} />
 
-    <ViewTransitions />
+    <ClientRouter />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title} />
@@ -90,7 +90,7 @@ const isDev = import.meta.env.DEV;
   </head>
   <body>
     <div
-      class={`header bg-gradient-to-br to-skin-fill from-skin-fill via-40% via-skin-highlight w-full relative ${hasWaveSeparator ? "pb-20 max-sm:pb-10" : "pb-4"}`}
+      class={`header bg-linear-to-br/srgb to-skin-fill from-skin-fill via-40% via-skin-highlight w-full relative ${hasWaveSeparator ? "pb-20 max-sm:pb-10" : "pb-4"}`}
     >
       <div class="-top-12 max-md:-top-8 flex w-full absolute z-10">
         <WaveSeparator noMargin />

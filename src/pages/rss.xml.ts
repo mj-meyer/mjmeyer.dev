@@ -38,7 +38,7 @@ export const GET = async () => {
     description: SITE.desc,
     site: SITE.website,
     items: sortedPosts.map((post) => ({
-      link: `/${post.collection}/${post.slug}`,
+      link: `/${post.collection}/${post.id}`,
       title: post.data.title,
       description: getItemDescription(post),
       pubDate: new Date(post.data.publishDatetime),

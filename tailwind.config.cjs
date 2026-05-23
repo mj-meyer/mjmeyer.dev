@@ -1,12 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 
+// Tailwind v4 (used via @config) renders the opacity modifier via color-mix(in
+// oklab,...) regardless of how the color is defined, so a plain rgb(var(--x))
+// string is the simplest form. (v4 cannot emit rgba() for the modifier.)
 function withOpacity(variableName) {
-  return ({ opacityValue }) => {
-    if (opacityValue !== undefined) {
-      return `rgba(var(${variableName}), ${opacityValue})`;
-    }
-    return `rgb(var(${variableName}))`;
-  };
+  return `rgb(var(${variableName}))`;
 }
 
 const colors = require('tailwindcss/colors')
@@ -88,7 +86,7 @@ module.exports = {
           fill: withOpacity("--color-fill"),
           highlight: withOpacity("--color-highlight"),
         },
-      }
+      },
     }
   },
   plugins: [require("@tailwindcss/typography")],

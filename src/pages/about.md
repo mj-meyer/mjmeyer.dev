@@ -26,12 +26,12 @@ I'm actively expanding my fullstack skills, focusing on system architecture, bac
     <li class="mb-10 ml-4">
         <div class="absolute w-3 h-3 bg-skin-accent rounded-full mt-2 -left-1.5 border border-skin-accent"></div>
         <time class="mb-0 text-sm font-normal leading-none opacity-80">March 2020</time>
-        <h4 class="text-lg mt-0 font-bold !text-skin-accent">Sr. Frontend Engineer <small class="w-full inline-block font-normal text-skin-base">BoardPro | SaaS Startup | AKL, New Zealand</small></h4>
+        <h4 class="text-lg mt-0 font-bold text-skin-accent">Sr. Frontend Engineer <small class="w-full inline-block font-normal text-skin-base leading-8">BoardPro | SaaS Startup | AKL, New Zealand</small></h4>
         <p class="text-base">BoardPro is a SaaS platform designed to streamline board governance and compliance across global markets.</p>
         <div class="mb-2">
         <details>
             <summary>Responsibilities</summary>
-            <ul class="!mt-0">
+            <ul class="mt-0!">
                 <li>Spearhead, sustain, and develop new features for the primary Angular SaaS application.</li>
                 <li>Onboard new developers.</li>
                 <li>Proactively minimise technical debt.</li>
@@ -43,7 +43,7 @@ I'm actively expanding my fullstack skills, focusing on system architecture, bac
         <div class="mb-2">
         <details>
             <summary>Achievements</summary>
-        <ul class="!mt-0">
+        <ul class="mt-0!">
             <li>Architected our Angular application into a new Nx monorepo, simplifying build processes and reducing build times by over 90%.</li>
             <li>Introduced Azure B2C Auth with MFA to our Angular application, earning high praise from BoardPro's board director for the simplicity, smoothness, and seamlessness of the integration.</li>
             <li>My in-depth research and POCs on MFA auth providers led us to select a previously overlooked provider, resulting in significant cost savings for the business.</li>
@@ -64,12 +64,12 @@ Angular (v16) | React (v17) | JavaScript ES6+ | TypeScript | NodeJS | Nest.js | 
     <li class="mb-10 ml-4">
         <div class="absolute w-3 h-3 bg-skin-accent rounded-full mt-2 -left-1.5 border border-skin-accent"></div>
         <time class="mb-0 text-sm font-normal leading-none opacity-80">Jun 2016</time>
-        <h4 class="text-lg mt-0 font-bold !text-skin-accent">Lead Frontend Engineer - Product Team <small class="w-full inline-block font-normal text-skin-base">InfoSlips | SaaS Startup | PTA, South Africa</small></h4>
+        <h4 class="text-lg mt-0 font-bold text-skin-accent">Lead Frontend Engineer - Product Team <small class="w-full inline-block font-normal text-skin-base leading-8">InfoSlips | SaaS Startup | PTA, South Africa</small></h4>
         <p class="text-base">InfoSlips is a B2B SaaS that provides a scalable communications platform that helps vendors deliver interactive and personalised digital experiences instead of static correspondence.</p>
         <div class="mb-2">
         <details>
             <summary>Responsibilities</summary>
-            <ul class="!mt-0">
+            <ul class="mt-0!">
                 <li>Maintain and drive the development of new features for two AngularJS (1.2) applications: the B2B SaaS app and the end-user app.</li>
                 <li>Lead sprint planning for the frontend and backend teams, including other agile/scrum ceremonies.</li>
                 <li>Lead frontend product team comprising 3 developers</li>
@@ -80,7 +80,7 @@ Angular (v16) | React (v17) | JavaScript ES6+ | TypeScript | NodeJS | Nest.js | 
         <div class="mb-2">
         <details>
             <summary>Achievements</summary>
-        <ul class="!mt-0">
+        <ul class="mt-0!">
             <li>Architected a new monorepo system utilising Nx, Angular 8, NgRx, and Jest.</li>
             <li>Lead the hands-on overhaul of the end-user application, incorporating comprehensive testing, a shared component library, and a reusable design system across applications.</li>
             <li>Collaborate with the template team to establish a React/Webpack-based build system that accelerates template development, supplanting the original Gulp/AngularJS system I created.</li>
@@ -97,12 +97,12 @@ AngularJS | Gulp | Angular 2-8 | React 16 | Webpack | JavaScript ES6+ | TypeScri
 <li class="mb-10 ml-4">
 <div class="absolute w-3 h-3 bg-skin-accent rounded-full mt-2 -left-1.5 border border-skin-accent"></div>
 <time class="mb-0 text-sm font-normal leading-none opacity-80">Sep 2014</time>
-<h4 class="text-lg mt-0 font-bold !text-skin-accent">UX Frontend Engineer - Template Team <small class="w-full inline-block font-normal text-skin-base">InfoSlips | SaaS Startup | PTA, South Africa</small></h4>
+<h4 class="text-lg mt-0 font-bold text-skin-accent">UX Frontend Engineer - Template Team <small class="w-full inline-block font-normal text-skin-base leading-8">InfoSlips | SaaS Startup | PTA, South Africa</small></h4>
 <p class="text-base">InfoSlips is a B2B SaaS that provides a scalable communications platform that helps vendors deliver interactive and personalised digital experiences instead of static correspondence.</p>
         <div class="mb-2">
         <details>
             <summary>Responsibilities</summary>
-            <ul class="!mt-0">
+            <ul class="mt-0!">
                 <li>Collect technical requirements from clients to establish project scope, working closely with project managers.
 </li>
                 <li>Design solutions centred on UX principles using an outcomes-based approach with tools like Balsamiq and Photoshop.
@@ -116,7 +116,7 @@ AngularJS | Gulp | Angular 2-8 | React 16 | Webpack | JavaScript ES6+ | TypeScri
         <div class="mb-2">
         <details>
             <summary>Achievements</summary>
-        <ul class="!mt-0">
+        <ul class="mt-0!">
             <li>Significantly enhanced maintainability and productivity for our template developers by creating:</li>
             <li>A HTML/Sass/Bootstrap base template with best practices learned from past clients.</li>
             <li>A base HTML email template that’s optimised for all email clients.</li>
@@ -136,12 +136,12 @@ HTML | CSS3 | Photoshop | Bootstrap | AngularJS | Gulp | JavaScript | jQuery | K
 <li class="mb-10 ml-4">
 <div class="absolute w-3 h-3 bg-skin-accent rounded-full mt-2 -left-1.5 border border-skin-accent"></div>
 <time class="mb-0 text-sm font-normal leading-none opacity-80">Jan 2009</time>
-<h4 class="text-lg mt-0 font-bold !text-skin-accent">Creative/Technical Director <small class="w-full inline-block font-normal text-skin-base">CAS Web Design Studios | JHB, South Africa</small></h4>
+<h4 class="text-lg mt-0 font-bold text-skin-accent">Creative/Technical Director <small class="w-full inline-block font-normal text-skin-base leading-8">CAS Web Design Studios | JHB, South Africa</small></h4>
 <p class="text-base">CAS was a digital agency that serviced SMBs with creative, online marketing solutions.</p>
         <div class="mb-2">
         <details>
             <summary>Responsibilities</summary>
-            <ul class="!mt-0">
+            <ul class="mt-0!">
                 <li>Created client proposals.</li>
                 <li>Attended local small business meetings and ran presentations on how to build online businesses.</li>
                 <li>Managed strategy sessions with new clients.</li>
