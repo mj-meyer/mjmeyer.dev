@@ -109,7 +109,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     </section>
   </Fragment>
   <main
-    class="px-4 pb-12 sm:px-4 md:px-8 lg:px-16 xl:px-32 bg-gradient-to-b to-skin-highlight/20 from-skin-fill"
+    class="px-4 pb-12 sm:px-4 md:px-8 lg:px-16 xl:px-32 bg-linear-to-b/srgb to-skin-highlight/20 from-skin-fill"
   >
     <section
       id="content"
@@ -222,9 +222,9 @@ const socialCount = SOCIALS.filter(social => social.active).length;
             {
               sortedPosts
                 .slice(0, 3)
-                .map(({ data, slug, collection }) => (
+                .map(({ data, id, collection }) => (
                   <NoteSummaryCard
-                    href={slug}
+                    href={id}
                     frontmatter={data as CollectionEntry<"garden">["data"]}
                     cardType={collection as "garden"}
                   />
@@ -267,9 +267,9 @@ const socialCount = SOCIALS.filter(social => social.active).length;
             {
               sortedStreamPosts
                 .slice(0, 3)
-                .map(({ data, slug, collection }) => (
+                .map(({ data, id, collection }) => (
                   <NoteSummaryCard
-                    href={slug}
+                    href={id}
                     frontmatter={data as CollectionEntry<"stream">["data"]}
                     cardType={collection}
                   />

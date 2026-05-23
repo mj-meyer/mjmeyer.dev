@@ -34,9 +34,17 @@ const tags = getUniqueTags(posts);
   </Fragment>
   <ul>
     {
+      /* Astro 6 no longer emits whitespace between mapped siblings the way
+         Astro 4 did. These tags are inline-block and rely on that inter-tag
+         space for their horizontal rhythm/wrapping, so re-add it explicitly to
+         keep the layout identical to the previous build. */
       tags.map(tag => {
         const { slug, display } = transformTag(tag);
-        return <Tag name={slug} display={display} size="lg" />;
+        return (
+          <>
+            <Tag name={slug} display={display} size="lg" />{" "}
+          </>
+        );
       })
     }
   </ul>

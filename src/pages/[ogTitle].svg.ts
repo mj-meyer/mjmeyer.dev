@@ -24,9 +24,9 @@ const posts = collections.flatMap(collection =>
 export function getStaticPaths() {
   return posts
     .filter(({ data }) => !data.ogImage)
-    .map(({ data, slug }) => ({
+    .map(({ data, id }) => ({
       params: {
-        ogTitle: slug,
+        ogTitle: id,
       },
       props: {
         postTitle: data.title,

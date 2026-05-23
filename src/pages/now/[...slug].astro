@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import DetailLayout from "@layouts/DetailLayout.astro";
 import Header from "@components/Header.astro";
 import NowPagination from "@components/NowPagination.astro";
@@ -7,10 +7,10 @@ import LinkButton from "@components/LinkButton.astro";
 
 export async function getStaticPaths() {
   const nowPosts = await getCollection("now");
-  const sortedPosts = nowPosts.sort((a, b) => b.slug.localeCompare(a.slug));
+  const sortedPosts = nowPosts.sort((a, b) => b.id.localeCompare(a.id));
 
   return sortedPosts.map((post, index) => {
-    const [year, month] = post.slug.split("-");
+    const [year, month] = post.id.split("-");
     return {
       params: { slug: `${year}/${month.toLowerCase()}` },
       props: {
@@ -24,12 +24,12 @@ export async function getStaticPaths() {
 }
 
 const { post, prevPost, nextPost } = Astro.props;
-const [year, month, day] = post.slug.split("-");
+const [year, month, day] = post.id.split("-");
 const monthFormatted = new Intl.DateTimeFormat("en-US", {
   month: "long",
 }).format(new Date(`${year}-${month}-${day}`));
 
-const { Content } = await post.render();
+const { Content } = await render(post);
 ---
 
 <DetailLayout
@@ -95,6 +95,7 @@ const { Content } = await post.render();
 </DetailLayout>
 
 <style>
+  @reference "../../styles/base.css";
   .post-list {
     @apply mt-12;
   }

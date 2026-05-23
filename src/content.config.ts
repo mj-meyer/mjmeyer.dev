@@ -1,4 +1,5 @@
 import { z, defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
 
 const baseSchema = z.object({
   title: z.string(),
@@ -20,7 +21,7 @@ const linkFields = {
 };
 
 const gardenCollection = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/garden" }),
   schema: baseSchema.extend({
     ...aliasField,
     ...linkFields,
@@ -29,7 +30,7 @@ const gardenCollection = defineCollection({
 });
 
 const streamCollection = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/stream" }),
   schema: baseSchema.extend({
     ...aliasField,
     ...linkFields,
@@ -49,7 +50,7 @@ const streamCollection = defineCollection({
 });
 
 const nowCollection = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/now" }),
   schema: z.object({
     title: z.string(),
     publishDatetime: z.date(),
@@ -60,17 +61,8 @@ const nowCollection = defineCollection({
   }),
 });
 
-const pageCollection = defineCollection({
-  type: "content",
-  schema: baseSchema.extend({
-    ...aliasField,
-    order: z.number().nonnegative(),
-  }),
-});
-
 export const collections = {
   garden: gardenCollection,
   stream: streamCollection,
   now: nowCollection,
-  page: pageCollection,
 };

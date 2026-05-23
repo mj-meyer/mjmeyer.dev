@@ -2,8 +2,8 @@
 import LinkButton from "./LinkButton.astro";
 
 export interface Props {
-  prevPost: { slug: string } | null;
-  nextPost: { slug: string } | null;
+  prevPost: { id: string } | null;
+  nextPost: { id: string } | null;
 }
 
 const { prevPost, nextPost } = Astro.props;
@@ -19,10 +19,10 @@ function formatSlugToDisplay(slug: string) {
   return date.toLocaleDateString("en-US", { year: "numeric", month: "short" });
 }
 
-const prevUrl = prevPost ? formatSlugToUrl(prevPost.slug) : null;
-const nextUrl = nextPost ? formatSlugToUrl(nextPost.slug) : null;
-const prevDisplay = prevPost ? formatSlugToDisplay(prevPost.slug) : null;
-const nextDisplay = nextPost ? formatSlugToDisplay(nextPost.slug) : null;
+const prevUrl = prevPost ? formatSlugToUrl(prevPost.id) : null;
+const nextUrl = nextPost ? formatSlugToUrl(nextPost.id) : null;
+const prevDisplay = prevPost ? formatSlugToDisplay(prevPost.id) : null;
+const nextDisplay = nextPost ? formatSlugToDisplay(nextPost.id) : null;
 
 // Only show pagination if there's a next or previous post
 const showPagination = prevUrl || nextUrl;
@@ -76,6 +76,7 @@ const showPagination = prevUrl || nextUrl;
 }
 
 <style>
+  @reference "../styles/base.css";
   .pagination-wrapper {
     @apply mb-8 mt-auto flex gap-8 justify-center;
   }

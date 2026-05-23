@@ -85,9 +85,9 @@ if (tagPosts.length === 0) {
         <>
           <h3 class="text-2xl font-bold">Garden Notes</h3>
           <ul class="flex flex-col gap-24 max-lg:px-8">
-            {gardenTagNotes.map(({ collection, data, slug }) => (
+            {gardenTagNotes.map(({ collection, data, id }) => (
               <NoteSummaryCard
-                href={`/${slug}`}
+                href={`/${id}`}
                 frontmatter={data}
                 cardType={collection}
               />
@@ -101,9 +101,9 @@ if (tagPosts.length === 0) {
         <>
           <h3 class="text-2xl font-bold">Stream Notes</h3>
           <ul class="flex flex-col gap-24 max-lg:px-8">
-            {streamTagNotes.map(({ collection, data, slug }) => (
+            {streamTagNotes.map(({ collection, data, id }) => (
               <NoteSummaryCard
-                href={`/${slug}`}
+                href={`/${id}`}
                 frontmatter={data}
                 cardType={collection}
               />

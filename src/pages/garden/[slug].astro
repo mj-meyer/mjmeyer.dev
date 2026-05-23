@@ -153,9 +153,9 @@ const isSlugNumber = !isNaN(Number(slug));
   </div>
   <ul class="flex flex-col gap-24 max-lg:px-8">
     {
-      paginatedPosts.map(({ data, slug }) => (
+      paginatedPosts.map(({ data, id }) => (
         <NoteSummaryCard
-          href={`/${slug}`}
+          href={`/${id}`}
           frontmatter={data as CollectionEntry<"garden">["data"]}
           cardType={"garden"}
           expanded

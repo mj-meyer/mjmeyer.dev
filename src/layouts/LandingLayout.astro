@@ -7,7 +7,7 @@ import MarketingHeader from "@components/MarketingHeader.astro";
 import Footer from "@components/Footer.astro";
 import TailwindIndicator from "@components/TailwindIndicator.astro";
 import PostHog from "../components/posthog.astro";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
 export interface Props {
@@ -54,7 +54,7 @@ const isDev = import.meta.env.DEV;
     <meta name="description" content={description} />
     <meta name="author" content={SITE.author} />
 
-    <ViewTransitions />
+    <ClientRouter />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title} />
@@ -95,7 +95,7 @@ const isDev = import.meta.env.DEV;
   </head>
   <body>
     <div
-      class={`header bg-gradient-to-br to-skin-fill from-skin-fill via-40% via-skin-highlight w-full relative ${hasWaveSeparator ? "pb-20 max-sm:pb-10" : "pb-4"}`}
+      class={`header bg-linear-to-br/srgb to-skin-fill from-skin-fill via-40% via-skin-highlight w-full relative ${hasWaveSeparator ? "pb-20 max-sm:pb-10" : "pb-4"}`}
     >
       <div class="-top-12 max-md:-top-8 flex w-full absolute z-10">
         <WaveSeparator noMargin />
@@ -122,7 +122,7 @@ const isDev = import.meta.env.DEV;
     {hasWaveSeparator && <WaveSeparator />}
 
     <main
-      class="flex flex-col flex-1 min-h-96 bg-gradient-to-b to-skin-highlight/20 from-skin-fill"
+      class="flex flex-col flex-1 min-h-96 bg-linear-to-b/srgb to-skin-highlight/20 from-skin-fill"
     >
       <section
         id="content"
