@@ -25,3 +25,9 @@ pnpm-debug.log*
 # ignore Jampack cache files
 .jampack/
 .vercel
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+.beads/proxieddb/
