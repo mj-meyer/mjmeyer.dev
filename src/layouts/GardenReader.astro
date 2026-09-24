@@ -1,0 +1,193 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronRight,
+  Leaf,
+  List,
+  Map,
+  Radio,
+  Sprout,
+} from "lucide-react";
+import GardenLayout from "./GardenLayout.astro";
+import Connections from "@components/garden/Connections.astro";
+import ReaderLink from "@components/garden/ReaderLink.astro";
+import { getPublicCatalogue } from "../lib/public-catalogue";
+import { entryPointDescription } from "../lib/entry-points";
+interface Props {
+  post: CollectionEntry<"garden"> | CollectionEntry<"stream">;
+}
+const { post } = Astro.props;
+const isStream = post.collection === "stream";
+const collectionPath = isStream ? "/stream" : "/garden";
+const collectionLabel = isStream ? "stream" : "garden";
+const catalogue = await getPublicCatalogue();
+const note = catalogue.byId.get(post.id);
+if (!note) throw new Error(`Public catalogue is missing ${post.id}`);
+const { Content, headings: renderedHeadings } = await render(post);
+const headings = renderedHeadings.filter(heading => heading.depth <= 3);
+const otherEntries = catalogue.entryPoints.filter(item => item.id !== note.id);
+const socialImage =
+  post.data.ogImage ?? `/assets/${post.id.replaceAll("-", "")}.png`;
+const previewData = catalogue.items.map(item => ({
+  id: item.id,
+  title: item.title,
+  description: item.description,
+  kind: item.isEntryPoint
+    ? "Entry point"
+    : item.kind === "garden"
+      ? "Garden note"
+      : "Stream",
+  state: item.state ?? item.streamType ?? "",
+}));
+---
+
+<GardenLayout
+  title={note.title}
+  description={note.description}
+  ogImage={socialImage}
+  pageType="reader"
+  active={isStream ? "stream" : "garden"}
+  appendSiteTitle={false}
+>
+  <nav class="reader-mobile-nav" aria-label="Reading navigation">
+    <a href={collectionPath}
+      ><ArrowLeft size={14} aria-hidden="true" />
+      {isStream ? "Stream" : "Garden"}</a
+    >
+    {
+      headings.length > 0 && (
+        <details>
+          <>
+            <summary>
+              <List size={15} aria-hidden="true" /> On this page
+            </summary>
+            <div>
+              {headings.map(heading => (
+                <a href={`#${heading.slug}`}>{heading.text}</a>
+              ))}
+            </div>
+          </>
+        </details>
+      )
+    }
+    <a href="#connections"
+      >Connections <span
+        >{note.incomingIds.length + note.outgoingIds.length}</span
+      ></a
+    >
+  </nav>
+  <main
+    id="main-content"
+    class="reader-detail"
+    transition:animate="none"
+    tabindex="-1"
+  >
+    <a class="reader-back" href={collectionPath}
+      ><ArrowLeft size={16} aria-hidden="true" /> All {collectionLabel} notes</a
+    >
+    {
+      headings.length > 0 && (
+        <aside class="reader-toc-rail">
+          <details class="reader-toc" id="reader-desktop-toc" open>
+            <>
+              <summary>
+                <>
+                  <List size={16} aria-hidden="true" />
+                  <span>On this page</span>
+                  <ChevronRight size={14} aria-hidden="true" />
+                </>
+              </summary>
+              <nav aria-label="Article contents">
+                {headings.map(heading => (
+                  <a
+                    href={`#${heading.slug}`}
+                    class:list={{ "reader-subheading": heading.depth === 3 }}
+                  >
+                    {heading.text}
+                  </a>
+                ))}
+                <a href="#connections">Connected notes</a>
+              </nav>
+            </>
+          </details>
+        </aside>
+      )
+    }
+    <div class="reader-heading" id="reader-intro">
+      <header>
+        <div class="reader-note-kind">
+          {
+            isStream ? (
+              <Radio size={17} aria-hidden="true" />
+            ) : note.isEntryPoint ? (
+              <Map size={17} aria-hidden="true" />
+            ) : (
+              <Leaf size={17} aria-hidden="true" />
+            )
+          }{
+            isStream
+              ? "Stream note"
+              : note.isEntryPoint
+                ? "Entry point"
+                : "Garden note"
+          }
+        </div>
+        <h1>{note.title}</h1>
+        <p class="reader-description">{note.description}</p>
+        <div class="reader-note-meta">
+          <span>
+            {
+              isStream ? (
+                <Radio size={16} aria-hidden="true" />
+              ) : (
+                <Sprout size={16} aria-hidden="true" />
+              )
+            }
+            {isStream ? note.streamType : note.state}
+          </span><span
+            >Updated <time datetime={note.updateDatetime.toISOString()}
+              >{note.updateDate}</time
+            ></span
+          >
+        </div>
+      </header>
+    </div>
+    <div class="reader-columns">
+      <article class="reader-prose" id="reader-prose" data-note-id={note.id}>
+        <Content components={{ a: ReaderLink }} />
+      </article>
+    </div>
+    <p class="reader-published">
+      First published <time datetime={note.publishDatetime.toISOString()}
+        >{note.publishDate}</time
+      >.
+    </p>
+    <Connections note={note} catalogue={catalogue} />
+    {
+      note.isEntryPoint && (
+        <section class="reader-other-paths">
+          <>
+            <h2>Other starting points</h2>
+            <div>
+              {otherEntries.map(item => (
+                <a class="reader-entry-link garden-glow-card" href={item.url}>
+                  <h3>{item.title}</h3>
+                  <p>{entryPointDescription(item.id, item.description)}</p>
+                  <ArrowRight size={18} aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+          </>
+        </section>
+      )
+    }
+  </main>
+  <script
+    is:inline
+    type="application/json"
+    id="garden-preview-data"
+    set:html={JSON.stringify(previewData).replace(/</g, "\\u003c")}
+  />
+</GardenLayout>

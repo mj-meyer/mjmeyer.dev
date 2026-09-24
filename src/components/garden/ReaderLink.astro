@@ -1,0 +1,29 @@
+---
+import { ArrowUpRight } from "lucide-react";
+import {
+  getPublicCatalogue,
+  resolveCatalogueHref,
+} from "../../lib/public-catalogue";
+const { href = "", class: authoredClass, ...attributes } = Astro.props;
+const className = String(authoredClass ?? "")
+  .split(/\s+/)
+  .filter(name => name && name !== "unpublished-link")
+  .join(" ");
+const external = /^https?:\/\//.test(href);
+const unpublished = href.startsWith("/unpublished");
+const catalogue = await getPublicCatalogue();
+const { destination, item } = resolveCatalogueHref(href, catalogue.byId);
+---
+
+<a
+  {...attributes}
+  class={className || undefined}
+  href={destination}
+  data-unpublished={unpublished || undefined}
+  data-preview-note={item?.id}
+  title={unpublished ? "This note is not published yet" : attributes.title}
+>
+  <slot />{
+    external && <ArrowUpRight size={13} strokeWidth={1.6} aria-hidden="true" />
+  }
+</a>

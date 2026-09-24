@@ -1,0 +1,56 @@
+---
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import type {
+  PublicCatalogue,
+  PublicContentItem,
+} from "../../lib/public-catalogue";
+import ConnectionList from "./ConnectionList.astro";
+interface Props {
+  note: PublicContentItem;
+  catalogue: PublicCatalogue;
+}
+const { note, catalogue } = Astro.props;
+const incoming = note.incomingIds.flatMap(id => catalogue.byId.get(id) ?? []);
+const outgoing = note.outgoingIds.flatMap(id => catalogue.byId.get(id) ?? []);
+---
+
+<section
+  class="reader-connections"
+  id="connections"
+  aria-labelledby="connections-heading"
+>
+  <h2 id="connections-heading">Connected notes</h2>
+  <p>Follow an idea in either direction.</p>
+  <div class="reader-connection-columns">
+    <section aria-labelledby="incoming-heading">
+      <h3 id="incoming-heading">
+        <ArrowLeft size={17} aria-hidden="true" /> Linking here <span
+          >{incoming.length}</span
+        >
+      </h3>{
+        incoming.length ? (
+          <ConnectionList notes={incoming} />
+        ) : (
+          <p class="reader-empty-connections">
+            No published garden notes link here yet.
+          </p>
+        )
+      }
+    </section>
+    <section aria-labelledby="outgoing-heading">
+      <h3 id="outgoing-heading">
+        <ArrowRight size={17} aria-hidden="true" /> Linked from here <span
+          >{outgoing.length}</span
+        >
+      </h3>{
+        outgoing.length ? (
+          <ConnectionList notes={outgoing} />
+        ) : (
+          <p class="reader-empty-connections">
+            No linked garden notes yet. Sources are linked in the text.
+          </p>
+        )
+      }
+    </section>
+  </div>
+</section>

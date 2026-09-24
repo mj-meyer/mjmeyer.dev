@@ -1,0 +1,244 @@
+---
+import { Search } from "lucide-react";
+import GardenLayout from "../../layouts/GardenLayout.astro";
+import type { PublicContentItem } from "../../lib/public-catalogue";
+import DiscoveryCard from "./DiscoveryCard.astro";
+import DiscoverySidebar from "./DiscoverySidebar.astro";
+
+interface FilterOption {
+  value: string;
+  label: string;
+}
+interface PaginationData {
+  current?: number;
+  total: number;
+  basePath: "/garden" | "/stream";
+  label?: string;
+}
+interface Props {
+  title: string;
+  heading: string;
+  description: string;
+  items: readonly PublicContentItem[];
+  allItems: readonly PublicContentItem[];
+  active?: "garden" | "stream";
+  sidebar: "garden" | "stream" | "topics" | "search";
+  itemNoun: string;
+  itemPlural: string;
+  publishedTotal: number;
+  initialVisibleCount?: number;
+  filterLabel?: string;
+  filterParam?: "stage" | "type" | "kind";
+  filterOptions?: readonly FilterOption[];
+  defaultFilter?: string;
+  contextNote?: string;
+  pagination?: PaginationData;
+  emptyTitle?: string;
+  emptyDescription?: string;
+  emptyBrowseHref?: string;
+  emptyBrowseLabel?: string;
+}
+const {
+  title,
+  heading,
+  description,
+  items,
+  allItems,
+  active,
+  sidebar,
+  itemNoun,
+  itemPlural,
+  publishedTotal,
+  initialVisibleCount = items.length,
+  filterLabel,
+  filterParam,
+  filterOptions = [],
+  defaultFilter = "all",
+  contextNote,
+  pagination,
+  emptyTitle = `No matching ${itemPlural}`,
+  emptyDescription = "Try another phrase or filter.",
+  emptyBrowseHref = "/garden",
+  emptyBrowseLabel = "Browse all garden notes",
+} = Astro.props;
+const previewData = allItems.map(item => ({
+  id: item.id,
+  title: item.title,
+  description: item.description,
+  kind: item.isEntryPoint
+    ? "Entry point"
+    : item.kind === "garden"
+      ? "Garden note"
+      : "Stream",
+  state: item.state ?? item.streamType ?? "",
+}));
+const pageCountLabel = `${initialVisibleCount} ${initialVisibleCount === 1 ? itemNoun : itemPlural}`;
+---
+
+<GardenLayout
+  title={title}
+  description={description}
+  pageType="discovery"
+  active={active}
+>
+  <main id="main-content" tabindex="-1">
+    <header class="discovery-intro">
+      <h1>{heading}</h1>
+      <p>{description}</p>
+      {contextNote && <p class="discovery-context">{contextNote}</p>}
+    </header>
+
+    <div class="discovery-layout">
+      <section
+        aria-labelledby="discovery-browse-heading"
+        data-discovery-root
+        data-default-filter={defaultFilter}
+        data-filter-param={filterParam}
+        data-singular={itemNoun}
+        data-plural={itemPlural}
+      >
+        <div class="discovery-browse-heading">
+          <h2 id="discovery-browse-heading">Browse the {itemPlural}</h2>
+          <span>
+            {
+              pagination?.current
+                ? `${pageCountLabel} on this page`
+                : `${publishedTotal} published ${publishedTotal === 1 ? itemNoun : itemPlural}`
+            }
+          </span>
+        </div>
+
+        <form
+          class="discovery-find"
+          role="search"
+          method="get"
+          action={Astro.url.pathname}
+        >
+          <div class="discovery-search-field">
+            <label for="discovery-search"
+              >Find {
+                itemNoun === "result" ? "anything" : `a ${itemNoun}`
+              }</label
+            >
+            <div>
+              <Search size={18} aria-hidden="true" />
+              <input
+                id="discovery-search"
+                name="q"
+                type="search"
+                placeholder="A title, idea, or topic…"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          {
+            filterParam && filterLabel && (
+              <div>
+                <label for="discovery-filter">{filterLabel}</label>
+                <select id="discovery-filter" name={filterParam}>
+                  <option value="all" selected={defaultFilter === "all"}>
+                    All
+                  </option>
+                  {filterOptions.map(option => (
+                    <option
+                      value={option.value}
+                      selected={defaultFilter === option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )
+          }
+          <div>
+            <label for="discovery-sort">Order</label>
+            <select id="discovery-sort" name="sort">
+              <option value="updated">Last changed</option>
+              <option value="title">Title A to Z</option>
+            </select>
+          </div>
+        </form>
+
+        <noscript>
+          <p class="discovery-noscript">
+            Live search and sorting need JavaScript. Every published item for
+            this page remains available below, and the collection links work
+            normally.
+          </p>
+        </noscript>
+
+        <div class="discovery-catalog" data-discovery-list>
+          {
+            items.map(item => {
+              const filterValue =
+                filterParam === "kind"
+                  ? item.kind
+                  : (item.state ?? item.streamType ?? item.kind);
+              return (
+                <DiscoveryCard
+                  item={item}
+                  filterValue={filterValue}
+                  initiallyHidden={
+                    defaultFilter !== "all" && filterValue !== defaultFilter
+                  }
+                />
+              );
+            })
+          }
+        </div>
+        <div
+          class="discovery-empty"
+          data-discovery-empty
+          hidden={initialVisibleCount > 0}
+        >
+          <h3>{emptyTitle}</h3>
+          <p>{emptyDescription}</p>
+          <button type="button" data-discovery-reset>Clear filters</button>
+          <a href={emptyBrowseHref}>{emptyBrowseLabel}</a>
+        </div>
+        <p
+          class="discovery-result-count"
+          data-discovery-status
+          role="status"
+          aria-live="polite"
+        >
+          {pageCountLabel}
+        </p>
+
+        {
+          pagination &&
+            (pagination.total > 1 || pagination.current === undefined) && (
+              <nav class="discovery-pagination" aria-label={`${heading} pages`}>
+                {pagination.label && <span>{pagination.label}</span>}
+                {Array.from(
+                  { length: pagination.total },
+                  (_, index) => index + 1
+                ).map(page => (
+                  <a
+                    href={`${pagination.basePath}/${page}`}
+                    aria-current={
+                      page === pagination.current ? "page" : undefined
+                    }
+                    aria-label={`Page ${page}`}
+                  >
+                    {page}
+                  </a>
+                ))}
+              </nav>
+            )
+        }
+      </section>
+      <DiscoverySidebar
+        variant={sidebar}
+        entryPoints={allItems.filter(item => item.isEntryPoint)}
+      />
+    </div>
+  </main>
+  <script
+    is:inline
+    id="garden-preview-data"
+    type="application/json"
+    set:html={JSON.stringify(previewData).replace(/</g, "\\u003c")}
+  />
+</GardenLayout>

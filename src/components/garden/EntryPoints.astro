@@ -1,0 +1,54 @@
+---
+import { ArrowRight, Code2, Compass, Lightbulb, Target } from "lucide-react";
+import type { PublicContentItem } from "../../lib/public-catalogue";
+import { entryPointDescription } from "../../lib/entry-points";
+interface Props {
+  entries: readonly PublicContentItem[];
+  compact?: boolean;
+}
+const { entries, compact = false } = Astro.props;
+const icons = {
+  "software-engineering-excellence": Code2,
+  "chasing-big-goals": Target,
+  "creating-something-new": Lightbulb,
+  "navigating-lifes-seasons": Compass,
+};
+---
+
+<nav
+  class:list={["garden-paths", { "garden-paths-compact": compact }]}
+  aria-label="Four garden entry points"
+>
+  {!compact && <h2>Explore the garden</h2>}
+  <div>
+    {
+      entries.map(entry => {
+        const Icon = icons[entry.id as keyof typeof icons] ?? Compass;
+        return (
+          <a
+            href={entry.url}
+            title={entryPointDescription(entry.id, entry.description)}
+            data-entry-id={entry.id}
+          >
+            <Icon
+              size={compact ? 18 : 25}
+              strokeWidth={1.5}
+              aria-hidden="true"
+            />
+            <span>
+              <strong>{entry.title}</strong>
+              {!compact && (
+                <small>
+                  {entryPointDescription(entry.id, entry.description)}
+                </small>
+              )}
+            </span>
+            {compact && (
+              <ArrowRight size={14} strokeWidth={1.5} aria-hidden="true" />
+            )}
+          </a>
+        );
+      })
+    }
+  </div>
+</nav>

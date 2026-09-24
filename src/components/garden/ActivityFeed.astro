@@ -1,0 +1,124 @@
+---
+import {
+  ArrowRight,
+  BookOpen,
+  Code2,
+  FileText,
+  Globe,
+  GraduationCap,
+  Headphones,
+  Leaf,
+  Link2,
+  Map,
+  MessageSquare,
+  SquarePlay,
+  Wrench,
+} from "lucide-react";
+import type { PublicContentItem, StreamType } from "../../lib/public-catalogue";
+interface Props {
+  items: readonly PublicContentItem[];
+}
+const { items } = Astro.props;
+const streamFormats = {
+  article: { label: "Article", Icon: FileText },
+  code: { label: "Code", Icon: Code2 },
+  video: { label: "Video", Icon: SquarePlay },
+  podcast: { label: "Podcast", Icon: Headphones },
+  book: { label: "Book", Icon: BookOpen },
+  course: { label: "Course", Icon: GraduationCap },
+  tool: { label: "Tool", Icon: Wrench },
+  service: { label: "Service", Icon: Globe },
+  twitter: { label: "X post", Icon: MessageSquare },
+  other: { label: "Link", Icon: Link2 },
+} satisfies Record<StreamType, { label: string; Icon: typeof Leaf }>;
+function format(item: PublicContentItem) {
+  if (item.kind === "stream") {
+    const format = streamFormats[item.streamType ?? "other"];
+    return { label: `Stream · ${format.label}`, Icon: format.Icon };
+  }
+  return item.isEntryPoint
+    ? { label: "Garden · Guide", Icon: Map }
+    : { label: "Garden note", Icon: Leaf };
+}
+const displayTitle = (item: PublicContentItem) =>
+  item.id === "shadcn-taxonomy-taillwind-indicator"
+    ? "Tailwind breakpoint indicator"
+    : item.title;
+---
+
+<section
+  class="garden-activity"
+  data-activity-feed
+  aria-labelledby="latest-changes-title"
+>
+  <div class="garden-feed-heading">
+    <h2 id="latest-changes-title">Latest changes</h2><a href="/rss.xml"
+      >RSS <ArrowRight size={13} aria-hidden="true" /></a
+    >
+  </div>
+  <div
+    class="garden-feed-filters"
+    role="group"
+    aria-label="Filter garden activity"
+  >
+    <button type="button" data-feed-filter="all" aria-pressed="true">All</button
+    >
+    <button type="button" data-feed-filter="garden" aria-pressed="false"
+      >Garden</button
+    >
+    <button type="button" data-feed-filter="stream" aria-pressed="false"
+      >Stream</button
+    >
+  </div>
+  <div class="garden-feed-items">
+    {
+      items.map(item => {
+        const { label, Icon } = format(item);
+        return (
+          <article
+            class="garden-feed-item"
+            data-feed-kind={item.kind}
+            data-content-id={item.id}
+          >
+            <a href={item.url}>
+              <div class="garden-feed-body">
+                <>
+                  <h3>
+                    <>
+                      <span>{displayTitle(item)}</span>
+                      <ArrowRight
+                        size={17}
+                        strokeWidth={1.5}
+                        aria-hidden="true"
+                      />
+                    </>
+                  </h3>
+                  <p>{item.description}</p>
+                </>
+              </div>
+              <div class="garden-feed-footer">
+                <>
+                  <time datetime={item.updateDatetime.toISOString()}>
+                    {item.updateDate}
+                  </time>
+                  <span>
+                    <>
+                      <span>{label}</span>
+                      <Icon size={21} strokeWidth={1.5} aria-hidden="true" />
+                    </>
+                  </span>
+                </>
+              </div>
+            </a>
+          </article>
+        );
+      })
+    }
+  </div>
+  <p class="garden-feed-status" aria-live="polite" aria-atomic="true">
+    {items.length} entries
+  </p>
+  <a class="garden-inline-link" href="/garden"
+    >Browse all garden notes <ArrowRight size={15} aria-hidden="true" /></a
+  >
+</section>

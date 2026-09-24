@@ -10,13 +10,6 @@ export const SITE: Site = {
   postPerPage: 3,
 };
 
-export const LOGO_IMAGE = {
-  enable: true,
-  svg: true,
-  width: 525,
-  height: 140.38,
-};
-
 export const SOCIALS: SocialObjects = [
   {
     name: "Twitter",

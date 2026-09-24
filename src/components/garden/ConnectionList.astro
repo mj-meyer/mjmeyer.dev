@@ -1,0 +1,58 @@
+---
+import { ArrowRight } from "lucide-react";
+import type { PublicContentItem } from "../../lib/public-catalogue";
+interface Props {
+  notes: readonly PublicContentItem[];
+}
+const { notes } = Astro.props;
+const limit = 6;
+---
+
+<ul class="reader-related-list">
+  {
+    notes.slice(0, limit).map(note => (
+      <li>
+        <a
+          class="reader-related-link"
+          href={note.url}
+          data-preview-note={note.id}
+        >
+          <>
+            <span>{note.title}</span>
+            <ArrowRight size={14} aria-hidden="true" />
+          </>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+{
+  notes.length > limit && (
+    <details class="reader-more-connections">
+      <>
+        <summary>
+          <>
+            <span class="reader-more-label">
+              Show {notes.length - limit} more
+            </span>
+            <span class="reader-less-label">Show fewer</span>
+          </>
+        </summary>
+        <ul class="reader-related-list">
+          {notes.slice(limit).map(note => (
+            <li>
+              <a
+                class="reader-related-link"
+                href={note.url}
+                data-preview-note={note.id}
+              >
+                <span>{note.title}</span>
+                <ArrowRight size={14} aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </>
+    </details>
+  )
+}

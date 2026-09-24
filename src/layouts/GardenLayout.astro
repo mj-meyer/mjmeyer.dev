@@ -1,0 +1,124 @@
+---
+import { ClientRouter } from "astro:transitions";
+import { SITE } from "@config";
+import PostHog from "@components/posthog.astro";
+import SiteFooter from "@components/garden/SiteFooter.astro";
+import SiteHeader from "@components/garden/SiteHeader.astro";
+import "@styles/garden-production.css";
+import "@styles/garden-preview.css";
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  pageType:
+    | "home"
+    | "reader"
+    | "discovery"
+    | "personal"
+    | "utility"
+    | "fixture";
+  active?: "garden" | "stream" | "about";
+  appendSiteTitle?: boolean;
+}
+const {
+  title = SITE.title,
+  description = SITE.desc,
+  ogImage = SITE.ogImage,
+  pageType,
+  active,
+  appendSiteTitle = true,
+} = Astro.props;
+const pageTitle =
+  title === SITE.title || !appendSiteTitle ? title : `${title} | ${SITE.title}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const formattedURL = canonicalURL.href.replace(/\/$/, "");
+const socialImageURL = new URL(ogImage, Astro.url.origin).href;
+---
+
+<!doctype html>
+<html lang="en" class="garden-dark" data-theme="dark" data-garden-site>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="canonical" href={formattedURL} />
+    <link
+      rel="preload"
+      href="/garden/fonts/space-grotesk-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/garden/fonts/source-sans-3-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <title>{pageTitle}</title>
+    <meta name="title" content={pageTitle} />
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.author} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={formattedURL} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={formattedURL} />
+    <meta property="twitter:title" content={pageTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={socialImageURL} />
+    <script is:inline>
+      (() => {
+        let theme = "dark";
+        try {
+          const saved = localStorage.getItem("garden-theme:v1");
+          theme = saved === "light" || saved === "dark" ? saved : "dark";
+        } catch {
+          /* Storage can be unavailable during privacy-restricted loads. */
+        }
+        const root = document.documentElement;
+        root.dataset.theme = theme;
+        root.classList.toggle("garden-dark", theme === "dark");
+        root.classList.toggle("garden-light", theme === "light");
+      })();
+    </script>
+    <ClientRouter />
+    {import.meta.env.PROD && <PostHog />}
+  </head>
+  <body>
+    <a class="garden-skip-link" href="#main-content">Skip to content</a>
+    <div class="garden-page" data-garden-page={pageType}>
+      <div class="garden-shell">
+        <SiteHeader active={active} />
+        <slot />
+        <SiteFooter />
+      </div>
+    </div>
+    <dialog
+      id="garden-unpublished-dialog"
+      class="garden-dialog"
+      aria-labelledby="garden-unpublished-title"
+    >
+      <button
+        type="button"
+        class="garden-dialog-close"
+        data-dialog-close
+        aria-label="Close unpublished note notice">×</button
+      >
+      <h2 id="garden-unpublished-title">Not published yet</h2>
+      <p>
+        This link points to an unwritten or unpublished note in the garden.
+        There isn’t a public page for it yet.
+      </p>
+      <button type="button" class="garden-dialog-return" data-dialog-close
+        >Back to reading</button
+      >
+    </dialog>
+    <script>
+      import "../scripts/garden-lifecycle";
+    </script>
+  </body>
+</html>

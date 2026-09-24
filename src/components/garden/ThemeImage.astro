@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from "astro/types";
+interface Props extends HTMLAttributes<"img"> {
+  dark: string;
+  light: string;
+  alt: string;
+}
+const { dark, light, ...attributes } = Astro.props;
+---
+
+<img
+  {...attributes}
+  class:list={[attributes.class, "garden-dark-image"]}
+  src={dark}
+/>
+<img
+  {...attributes}
+  class:list={[attributes.class, "garden-light-image"]}
+  src={light}
+/>

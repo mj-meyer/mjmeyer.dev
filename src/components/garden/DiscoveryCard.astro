@@ -1,0 +1,58 @@
+---
+import { ArrowRight, Leaf, Map, Radio } from "lucide-react";
+import type { PublicContentItem } from "../../lib/public-catalogue";
+interface Props {
+  item: PublicContentItem;
+  filterValue?: string;
+  initiallyHidden?: boolean;
+}
+const {
+  item,
+  filterValue = item.state ?? item.streamType ?? item.kind,
+  initiallyHidden = false,
+} = Astro.props;
+const KindIcon =
+  item.kind === "stream" ? Radio : item.isEntryPoint ? Map : Leaf;
+const kindLabel = item.isEntryPoint
+  ? "Entry point"
+  : item.kind === "garden"
+    ? "Garden note"
+    : "Stream note";
+const subtype = item.state ?? item.streamType;
+const linkCount = item.incomingIds.length + item.outgoingIds.length;
+---
+
+<article
+  data-discovery-item
+  data-content-id={item.id}
+  data-filter-value={filterValue}
+  data-title={item.title}
+  data-search={`${item.title} ${item.description} ${item.tags.join(" ")}`}
+  data-updated={item.updateDatetime.getTime()}
+  hidden={initiallyHidden}
+>
+  <a href={item.url} data-preview-note={item.id}>
+    <div class="discovery-card-title">
+      <h3>{item.title}</h3>
+      <ArrowRight size={18} strokeWidth={1.5} aria-hidden="true" />
+    </div>
+    <p>{item.description}</p>
+    <div class="discovery-card-meta">
+      <span>
+        <KindIcon size={15} strokeWidth={1.6} aria-hidden="true" />
+        {kindLabel}
+        {subtype && <span class="discovery-subtype">{subtype}</span>}
+      </span>
+      <time datetime={item.updateDatetime.toISOString()}>{item.updateDate}</time
+      >
+    </div>
+    {
+      linkCount > 0 && (
+        <span class="discovery-link-count">
+          {item.incomingIds.length} linking here / {item.outgoingIds.length}{" "}
+          linked from here
+        </span>
+      )
+    }
+  </a>
+</article>

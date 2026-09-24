@@ -1,6 +1,9 @@
-# build output
+# build and test output
 dist/
 .output/
+.vite/
+test-results/
+playwright-report/
 
 # dependencies
 node_modules/
