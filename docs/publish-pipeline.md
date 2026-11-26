@@ -41,8 +41,20 @@ In **mjmeyer.dev** → Settings → Secrets and variables → Actions:
 | Secret | `VERCEL_TOKEN` | Vercel → Account Settings → Tokens |
 | Secret | `VERCEL_ORG_ID` | `orgId` from `.vercel/project.json` after `vercel link` |
 | Secret | `VERCEL_PROJECT_ID` | `projectId` from the same file |
-| Variable | `GARDEN_PROCESSOR_REF` | Processor branch to run, such as `feat/vault-conventions`; defaults to `main` |
+| Variable | `GARDEN_PROCESSOR_REF` | Processor branch to run; defaults to `main`. See below |
 | Variable | `PUBLISH_ENABLED` | `true` to deploy; anything else builds and gates without deploying |
+
+### Which garden-processor ref
+
+The workflow runs either processor: with a `bun.lock` it runs `bun run src/main.ts`, otherwise `pnpm install`, `pnpm build`, and `node dist/main.js`. Both gave byte-identical processed notes and built site on the vault at f63fd71.
+
+| What is merged into garden-processor `main` | `GARDEN_PROCESSOR_REF` |
+| --- | --- |
+| Nothing yet | `feat/vault-conventions` (Bun), or `ratstack/15-format-everything` (Node, the top of the rat-stack PRs) |
+| Only PR #1 | Unset (`main`, Bun) |
+| PR #1 and the whole rat-stack stack, #2 to #16 | Unset (`main`, Node) |
+
+Leave it unset only once PR #1 is merged: today's `main` predates the vault's conventions. A ref in the middle of the rat-stack stack is untested.
 
 In **notes-backup**:
 
