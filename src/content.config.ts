@@ -47,6 +47,7 @@ const streamCollection = defineCollection({
       "tool",
       "service",
       "twitter",
+      "x",
       "person",
       "framework",
       "quote",

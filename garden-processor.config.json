@@ -13,7 +13,10 @@
       "Sources/"
     ]
   },
-  "target": { "type": "local-astro", "contentDir": "src/content" },
+  "target": {
+    "type": "local-astro",
+    "contentDir": "src/content"
+  },
   "collections": [
     {
       "id": "stream",
@@ -25,6 +28,7 @@
         "podcast",
         "book",
         "twitter",
+        "x",
         "person",
         "tool",
         "framework",
