@@ -11,6 +11,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "sync": "astro sync",
+    "content:sync": "bun run \"${GARDEN_PROCESSOR_DIR:-../repos/garden-processor}/src/main.ts\"",
     "astro": "astro",
     "format:check": "prettier --plugin-search-dir=. --check .",
     "format": "prettier --plugin-search-dir=. --write .",

@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   ArrowRight,
   ChevronRight,
+  ExternalLink,
   Leaf,
   List,
   Map,
@@ -26,6 +27,13 @@ const catalogue = await getPublicCatalogue();
 const note = catalogue.byId.get(post.id);
 if (!note) throw new Error(`Public catalogue is missing ${post.id}`);
 const { Content, headings: renderedHeadings } = await render(post);
+const externalSource =
+  post.collection === "stream" && post.data.source
+    ? {
+        url: post.data.source,
+        label: post.data.author ?? new URL(post.data.source).hostname,
+      }
+    : undefined;
 const headings = renderedHeadings.filter(heading => heading.depth <= 3);
 const otherEntries = catalogue.entryPoints.filter(item => item.id !== note.id);
 const socialImage =
@@ -151,6 +159,14 @@ const previewData = catalogue.items.map(item => ({
               >{note.updateDate}</time
             ></span
           >
+          {
+            externalSource && (
+              <a class="reader-source" href={externalSource.url}>
+                <ExternalLink size={14} aria-hidden="true" />
+                {externalSource.label}
+              </a>
+            )
+          }
         </div>
       </header>
     </div>

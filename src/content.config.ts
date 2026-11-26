@@ -10,6 +10,8 @@ const baseSchema = z.object({
   description: z.string(),
   draft: z.boolean().optional(),
   ogImage: z.string().optional(),
+  // Second privacy gate: only notes the processor marked public may build.
+  publish: z.literal(true),
 });
 
 const aliasField = {
@@ -45,8 +47,13 @@ const streamCollection = defineCollection({
       "tool",
       "service",
       "twitter",
+      "person",
+      "framework",
+      "quote",
       "other",
     ]),
+    source: z.url().optional(),
+    author: z.string().optional(),
   }),
 });
 
@@ -59,6 +66,7 @@ const nowCollection = defineCollection({
     description: z.string(),
     draft: z.boolean().optional(),
     ogImage: z.string().optional(),
+    publish: z.literal(true),
   }),
 });
 

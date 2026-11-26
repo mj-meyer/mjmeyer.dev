@@ -10,8 +10,11 @@ import {
   Leaf,
   Link2,
   Map,
+  Layers,
   MessageSquare,
+  Quote,
   SquarePlay,
+  User,
   Wrench,
 } from "lucide-react";
 import type { PublicContentItem, StreamType } from "../../lib/public-catalogue";
@@ -29,6 +32,9 @@ const streamFormats = {
   tool: { label: "Tool", Icon: Wrench },
   service: { label: "Service", Icon: Globe },
   twitter: { label: "X post", Icon: MessageSquare },
+  person: { label: "Person", Icon: User },
+  framework: { label: "Framework", Icon: Layers },
+  quote: { label: "Quote", Icon: Quote },
   other: { label: "Link", Icon: Link2 },
 } satisfies Record<StreamType, { label: string; Icon: typeof Leaf }>;
 function format(item: PublicContentItem) {
