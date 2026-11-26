@@ -1,0 +1,122 @@
+# Notes push -> garden-processor -> privacy gate -> site build -> Vercel.
+#
+# Processed notes are never committed: this public repository holds only the
+# site, and each run builds the vault's published notes into the deploy.
+# Setup, secrets, and the vault-side trigger: docs/publish-pipeline.md.
+#
+# Logs of this repository are public, so no step prints vault paths or note
+# text: the processor's log goes to a file, and the privacy gate names private
+# notes only by a hash.
+
+name: Publish
+
+on:
+  # Sent by notes-backup's notify-site workflow on every vault push.
+  repository_dispatch:
+    types: [notes-updated]
+  # Site code changes need the vault's notes too.
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Deploy the build to production
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # The processor's config expects the vault and processor beside the site.
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - name: Check out site
+        uses: actions/checkout@v4
+        with:
+          path: site
+
+      - name: Check out vault
+        uses: actions/checkout@v4
+        with:
+          repository: mj-meyer/notes-backup
+          ref: ${{ github.event.client_payload.sha || 'main' }}
+          token: ${{ secrets.NOTES_READ_TOKEN }}
+          path: repos/notes-backup
+          persist-credentials: false
+
+      - name: Check out garden-processor
+        uses: actions/checkout@v4
+        with:
+          repository: mj-meyer/garden-processor
+          ref: ${{ vars.GARDEN_PROCESSOR_REF || 'main' }}
+          token: ${{ secrets.NOTES_READ_TOKEN }}
+          path: repos/garden-processor
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: site/.nvmrc
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install site
+        run: pnpm install --frozen-lockfile
+
+      - name: Test the privacy gate
+        run: node --test tests/contracts/privacy-gate.test.mjs
+
+      # Bun runs the processor today; its rat-stack branches run on Node.
+      - name: Process the vault
+        run: |
+          processor=../repos/garden-processor
+          if [ -f "$processor/bun.lock" ]; then
+            (cd "$processor" && bun install --frozen-lockfile) >/dev/null
+            run() { bun run "$processor/src/main.ts"; }
+          else
+            (cd "$processor" && pnpm install --frozen-lockfile && pnpm run build) >/dev/null
+            run() { node "$processor/dist/main.js"; }
+          fi
+          if ! run >"$RUNNER_TEMP/processor.log" 2>&1; then
+            echo "::error::garden-processor failed. Its log names vault notes, so it is not shown here; run 'pnpm content:sync' locally to see it."
+            exit 1
+          fi
+          echo "Processor wrote $(find src/content/stream -name '*.md*' | wc -l) note(s) and $(find src/content/stream/assets -type f 2>/dev/null | wc -l) asset(s)"
+
+      - name: Privacy gate (processed notes)
+        run: node scripts/privacy-gate.mjs --vault ../repos/notes-backup
+
+      - name: Build site
+        run: pnpm build
+
+      - name: Privacy gate (built site)
+        run: node scripts/privacy-gate.mjs --vault ../repos/notes-backup --dist dist
+
+      # Off until MJ sets the PUBLISH_ENABLED repository variable to true.
+      - name: Deploy to Vercel
+        if: >-
+          vars.PUBLISH_ENABLED == 'true' &&
+          github.ref == 'refs/heads/main' &&
+          (github.event_name != 'workflow_dispatch' || inputs.deploy)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          pnpm dlx vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
+          pnpm dlx vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy skipped
+        if: vars.PUBLISH_ENABLED != 'true'
+        run: echo "::notice::Built and gated, not deployed. Set the PUBLISH_ENABLED repository variable to true to deploy."

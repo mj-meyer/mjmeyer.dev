@@ -34,3 +34,6 @@ pnpm-debug.log*
 *.db
 .beads-credential-key
 .beads/proxieddb/
+
+# processed vault notes: built at deploy time, never committed (publishing)
+/src/content/stream/
