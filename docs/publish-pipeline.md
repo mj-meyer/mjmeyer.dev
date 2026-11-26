@@ -35,15 +35,15 @@ pnpm build && node scripts/privacy-gate.mjs --vault ../repos/notes-backup --dist
 
 `alchemy.run.ts` declares the deploy, stage `v2`:
 
-- **V2Access**: a Cloudflare Access application on `v2.mjmeyer.dev` that lets in only `hello@mjmeyer.dev`, by a one-time PIN. It covers the hostname and the Worker itself.
-- **Site**: an assets-only Worker serving `dist` on `v2.mjmeyer.dev`, with no `workers.dev` or preview URLs. No Worker code runs. Paths drop their trailing slash, as `vercel.json` did, and unknown paths get `404.html`.
+- **V2Access**: the Cloudflare Access application on `v2.mjmeyer.dev` that lets in only `hello@mjmeyer.dev`, by a one-time PIN. It was created before anything was served there; `applicationId` takes it over.
+- **Site**: the assets-only Worker `mjmeyer-dev-v2` serving `dist` on `v2.mjmeyer.dev`, with no `workers.dev` or preview URLs. No Worker code runs. Paths drop their trailing slash, as `vercel.json` did, and unknown paths get `404.html`.
 
-Alchemy keeps its state in a state-store Worker on the account (`Cloudflare.state()`). CI fails rather than create it, so bootstrap it once, with the credentials below, by `CI=true pnpm exec alchemy state bootstrap`.
+Both already exist: the first v2 deploy was made through the Cloudflare API, so the workflow passes `--adopt` and Alchemy takes them over instead of creating copies. Alchemy keeps its state in a state-store Worker on the account (`Cloudflare.state()`). CI fails rather than create it, so bootstrap it once, with the credentials below, by `CI=true pnpm exec alchemy state bootstrap`.
 
 To deploy by hand, after the gates pass on a fresh `dist`:
 
 ```sh
-CLOUDFLARE_API_TOKEN=... CLOUDFLARE_ACCOUNT_ID=... pnpm exec alchemy deploy --stage v2
+CLOUDFLARE_API_TOKEN=... CLOUDFLARE_ACCOUNT_ID=... pnpm exec alchemy deploy --stage v2 --adopt
 ```
 
 ### API token
