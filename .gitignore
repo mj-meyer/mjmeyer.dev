@@ -28,6 +28,7 @@ pnpm-debug.log*
 # ignore Jampack cache files
 .jampack/
 .vercel
+.alchemy
 
 # Beads / Dolt files (added by bd init)
 .dolt/

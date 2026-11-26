@@ -5,7 +5,6 @@ import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 import tokyoNight from "./shiki-themes/tokyo-night-theme.json";
-import vercel from "@astrojs/vercel";
 import rehypeExternalLinks from "rehype-external-links";
 import mdx from "@astrojs/mdx";
 import embeds from "astro-embed/integration";
@@ -62,7 +61,4 @@ export default defineConfig({
     },
   },
   output: "static",
-  adapter: vercel({
-    webAnalytics: { enabled: true },
-  }),
 });

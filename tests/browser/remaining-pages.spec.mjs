@@ -60,12 +60,6 @@ const notes = [
   },
 ];
 
-test.beforeEach(async ({ page }) => {
-  await page.route("**/_vercel/insights/script.js", route =>
-    route.fulfill({ contentType: "text/javascript", body: "" })
-  );
-});
-
 async function goto(page, url) {
   return page.goto(url, { waitUntil: "domcontentloaded" });
 }
@@ -111,9 +105,6 @@ async function clientClick(page, locator, path) {
 
 for (const note of notes) {
   test(`root reader preserves ${note.id} content and metadata`, async ({ page }) => {
-    await page.route("**/_vercel/insights/script.js", route =>
-      route.fulfill({ contentType: "text/javascript", body: "" })
-    );
     await goto(page, `/${note.id}`);
     await waitForGarden(page);
     await expect(page.getByRole("heading", { level: 1, name: note.title })).toBeVisible();
@@ -284,9 +275,6 @@ test("unavailable query and built 404 are safe, useful utility pages", async ({ 
 });
 
 test("new page families survive ClientRouter Back and Forward with bounded roots", async ({ page }) => {
-  await page.route("**/_vercel/insights/script.js", route =>
-    route.fulfill({ contentType: "text/javascript", body: "" })
-  );
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
   page.on("console", message => {

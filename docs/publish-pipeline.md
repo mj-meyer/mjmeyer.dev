@@ -6,11 +6,11 @@ A push to the vault rebuilds the site with its published notes:
 2. `.github/workflows/publish.yml` checks out this site, the vault, and garden-processor side by side.
 3. garden-processor writes the vault's `publish: true` Stream notes to `src/content/stream`.
 4. `scripts/privacy-gate.mjs` checks that output against the vault, then `pnpm build` builds the site, and the gate checks `dist` too.
-5. The build deploys to Vercel production, once `PUBLISH_ENABLED` is set.
+5. Alchemy uploads that gated `dist` to Cloudflare at `v2.mjmeyer.dev`, behind Cloudflare Access, once `PUBLISH_ENABLED` is set. It never rebuilds the site.
 
 Pushes to `main` and manual runs (Actions → Publish → Run workflow) do the same.
 
-Processed notes are never committed. This repository is public, so committing them would publish them; `src/content/stream/` is gitignored, and each run builds them into the deploy instead. Vercel's own Git builds of `main` are off (`vercel.json`), because they cannot see the vault. Branch previews still build, without vault notes.
+Processed notes are never committed. This repository is public, so committing them would publish them; `src/content/stream/` is gitignored, and each run builds them into the deploy instead. Vercel's own Git builds of `main` stay off (`vercel.json`), because they cannot see the vault, so the Vercel site at `mjmeyer.dev` keeps its last deploy until the apex moves.
 
 ## Privacy gates
 
@@ -31,6 +31,36 @@ node scripts/privacy-gate.mjs --vault ../repos/notes-backup --reveal
 pnpm build && node scripts/privacy-gate.mjs --vault ../repos/notes-backup --dist dist --reveal
 ```
 
+## Cloudflare
+
+`alchemy.run.ts` declares the deploy, stage `v2`:
+
+- **V2Access**: a Cloudflare Access application on `v2.mjmeyer.dev` that lets in only `hello@mjmeyer.dev`, by a one-time PIN. It covers the hostname and the Worker itself.
+- **Site**: an assets-only Worker serving `dist` on `v2.mjmeyer.dev`, with no `workers.dev` or preview URLs. No Worker code runs. Paths drop their trailing slash, as `vercel.json` did, and unknown paths get `404.html`.
+
+Alchemy keeps its state in a state-store Worker on the account (`Cloudflare.state()`). CI fails rather than create it, so bootstrap it once, with the credentials below, by `CI=true pnpm exec alchemy state bootstrap`.
+
+To deploy by hand, after the gates pass on a fresh `dist`:
+
+```sh
+CLOUDFLARE_API_TOKEN=... CLOUDFLARE_ACCOUNT_ID=... pnpm exec alchemy deploy --stage v2
+```
+
+### API token
+
+Cloudflare → My Profile (or Manage Account) → API Tokens → Create Token → Custom token:
+
+| Scope | Permission |
+| --- | --- |
+| Account | Workers Scripts: Edit |
+| Account | Secrets Store: Edit (Alchemy's state store) |
+| Account | Access: Apps and Policies: Edit |
+| Account | Account Settings: Read |
+| Zone `mjmeyer.dev` | Zone: Read |
+| Zone `mjmeyer.dev` | DNS: Read |
+
+Access needs Zero Trust on the account (Zero Trust → choose a team name, Free plan). One-time PIN login is on by default.
+
 ## Setup
 
 In **mjmeyer.dev** → Settings → Secrets and variables → Actions:
@@ -38,9 +68,8 @@ In **mjmeyer.dev** → Settings → Secrets and variables → Actions:
 | Kind | Name | Value |
 | --- | --- | --- |
 | Secret | `NOTES_READ_TOKEN` | Fine-grained token with **Contents: Read** on `mj-meyer/notes-backup` and `mj-meyer/garden-processor` |
-| Secret | `VERCEL_TOKEN` | Vercel → Account Settings → Tokens |
-| Secret | `VERCEL_ORG_ID` | `orgId` from `.vercel/project.json` after `vercel link` |
-| Secret | `VERCEL_PROJECT_ID` | `projectId` from the same file |
+| Secret | `CLOUDFLARE_API_TOKEN` | The token above |
+| Secret | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard → Account home → Account ID |
 | Variable | `GARDEN_PROCESSOR_REF` | Processor branch to run; defaults to `main`. See below |
 | Variable | `PUBLISH_ENABLED` | `true` to deploy; anything else builds and gates without deploying |
 
