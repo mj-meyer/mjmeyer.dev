@@ -6,11 +6,11 @@ A push to the vault rebuilds the site with its published notes:
 2. `.github/workflows/publish.yml` checks out this site, the vault, and garden-processor side by side.
 3. garden-processor writes the vault's `publish: true` Stream notes to `src/content/stream`.
 4. `scripts/privacy-gate.mjs` checks that output against the vault, then `pnpm build` builds the site, and the gate checks `dist` too.
-5. The build deploys to Vercel production, once `PUBLISH_ENABLED` is set.
+5. Alchemy uploads that gated `dist` to Cloudflare at `v2.mjmeyer.dev`, behind Cloudflare Access, once `PUBLISH_ENABLED` is set. It never rebuilds the site.
 
 Pushes to `main` and manual runs (Actions → Publish → Run workflow) do the same.
 
-Processed notes are never committed. This repository is public, so committing them would publish them; `src/content/stream/` is gitignored, and each run builds them into the deploy instead. Vercel's own Git builds of `main` are off (`vercel.json`), because they cannot see the vault. Branch previews still build, without vault notes.
+Processed notes are never committed. This repository is public, so committing them would publish them; `src/content/stream/` is gitignored, and each run builds them into the deploy instead. Vercel's own Git builds of `main` stay off (`vercel.json`), because they cannot see the vault, so the Vercel site at `mjmeyer.dev` keeps its last deploy until the apex moves.
 
 ## Privacy gates
 
@@ -31,6 +31,33 @@ node scripts/privacy-gate.mjs --vault ../repos/notes-backup --reveal
 pnpm build && node scripts/privacy-gate.mjs --vault ../repos/notes-backup --dist dist --reveal
 ```
 
+## Cloudflare
+
+`alchemy.run.ts` declares the deploy, stage `v2`: the assets-only Worker `mjmeyer-dev-v2` serving `dist` on `v2.mjmeyer.dev`, with no `workers.dev` or preview URLs. No Worker code runs. Paths drop their trailing slash, as `vercel.json` did, and unknown paths get `404.html`.
+
+The Cloudflare Access application "v2.mjmeyer.dev" (Zero Trust → Access → Applications) lets in only `hello@mjmeyer.dev`, by a one-time PIN. It protects the hostname, so it covers whatever the Worker serves. It is managed in the dashboard, not by Alchemy, so no deploy can change or remove it, and the deploy token needs no Access permission. It was created before anything was served on v2.
+
+Alchemy keeps its state in the account's `alchemy-state-store` Worker (`Cloudflare.state()`), shared with other Alchemy projects on the account. CI fails rather than create it; it was bootstrapped once with `CI=true pnpm exec alchemy state bootstrap`. The Worker was first deployed through the Cloudflare API, so the workflow passes `--adopt`; that is harmless now that the state records it.
+
+To deploy by hand, after the gates pass on a fresh `dist`:
+
+```sh
+CLOUDFLARE_API_TOKEN=... CLOUDFLARE_ACCOUNT_ID=... pnpm exec alchemy deploy --stage v2 --adopt
+```
+
+### API token
+
+Cloudflare → Manage Account → Account API Tokens → Create Token → Custom token:
+
+| Scope | Permission |
+| --- | --- |
+| Account | Workers Scripts: Edit |
+| Account | Secrets Store: Edit (Alchemy's state store) |
+| Account | Account Settings: Read |
+| Zone `mjmeyer.dev` | Zone: Read |
+| Zone `mjmeyer.dev` | DNS: Read |
+
+
 ## Setup
 
 In **mjmeyer.dev** → Settings → Secrets and variables → Actions:
@@ -38,9 +65,8 @@ In **mjmeyer.dev** → Settings → Secrets and variables → Actions:
 | Kind | Name | Value |
 | --- | --- | --- |
 | Secret | `NOTES_READ_TOKEN` | Fine-grained token with **Contents: Read** on `mj-meyer/notes-backup` and `mj-meyer/garden-processor` |
-| Secret | `VERCEL_TOKEN` | Vercel → Account Settings → Tokens |
-| Secret | `VERCEL_ORG_ID` | `orgId` from `.vercel/project.json` after `vercel link` |
-| Secret | `VERCEL_PROJECT_ID` | `projectId` from the same file |
+| Secret | `CLOUDFLARE_API_TOKEN` | The token above |
+| Secret | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard → Account home → Account ID |
 | Variable | `GARDEN_PROCESSOR_REF` | Processor branch to run; defaults to `main`. See below |
 | Variable | `PUBLISH_ENABLED` | `true` to deploy; anything else builds and gates without deploying |
 

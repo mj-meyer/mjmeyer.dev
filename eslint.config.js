@@ -14,6 +14,7 @@ export default tseslint.config(
       "dist/",
       ".astro/",
       ".vercel/",
+      ".alchemy/",
       "src/components/posthog.astro", // vendored PostHog snippet
     ],
   },

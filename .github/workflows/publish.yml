@@ -1,4 +1,4 @@
-# Notes push -> garden-processor -> privacy gate -> site build -> Vercel.
+# Notes push -> garden-processor -> privacy gate -> site build -> Cloudflare.
 #
 # Processed notes are never committed: this public repository holds only the
 # site, and each run builds the vault's published notes into the deploy.
@@ -104,18 +104,17 @@ jobs:
         run: node scripts/privacy-gate.mjs --vault ../repos/notes-backup --dist dist
 
       # Off until MJ sets the PUBLISH_ENABLED repository variable to true.
-      - name: Deploy to Vercel
+      # Uploads the dist the gate just checked to v2.mjmeyer.dev, behind
+      # Cloudflare Access (alchemy.run.ts).
+      - name: Deploy to Cloudflare
         if: >-
           vars.PUBLISH_ENABLED == 'true' &&
           github.ref == 'refs/heads/main' &&
           (github.event_name != 'workflow_dispatch' || inputs.deploy)
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          pnpm dlx vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
-          pnpm dlx vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm exec alchemy deploy --stage v2 --adopt --yes --no-input
 
       - name: Deploy skipped
         if: vars.PUBLISH_ENABLED != 'true'
