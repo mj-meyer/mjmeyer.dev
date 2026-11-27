@@ -28,9 +28,13 @@ pnpm-debug.log*
 # ignore Jampack cache files
 .jampack/
 .vercel
+.alchemy
 
 # Beads / Dolt files (added by bd init)
 .dolt/
 *.db
 .beads-credential-key
 .beads/proxieddb/
+
+# processed vault notes: built at deploy time, never committed (publishing)
+/src/content/stream/
