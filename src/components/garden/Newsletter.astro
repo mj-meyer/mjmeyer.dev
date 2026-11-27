@@ -1,0 +1,56 @@
+---
+import { ArrowRight, Terminal } from "lucide-react";
+interface Props {
+  latestTitle?: string;
+  latestUrl?: string;
+  latestDescription?: string;
+}
+const { latestTitle, latestUrl, latestDescription } = Astro.props;
+---
+
+<section class="garden-newsletter" aria-label="Terminally Curious newsletter">
+  <Terminal size={23} strokeWidth={1.5} aria-hidden="true" />
+  <h2>Terminally<br /> Curious</h2>
+  <p class="garden-newsletter-promise">
+    Developer tools, AI experiments, and ideas worth revisiting.
+  </p>
+  <p>
+    A weekly selection of what I’m reading, learning, and updating in the
+    garden.
+  </p>
+  <button type="button" data-newsletter-open aria-haspopup="dialog"
+    >Preview the newsletter <ArrowRight size={15} aria-hidden="true" /></button
+  >
+  <small>Concept preview. Signup isn’t connected.</small>
+</section>
+<dialog
+  id="garden-newsletter-dialog"
+  class="garden-dialog"
+  aria-labelledby="garden-newsletter-title"
+>
+  <form method="dialog">
+    <button class="garden-dialog-close" aria-label="Close newsletter preview"
+      >×</button
+    >
+  </form>
+  <p class="garden-dialog-kicker">Concept preview</p>
+  <h2 id="garden-newsletter-title">Terminally Curious</h2>
+  <p class="garden-dialog-promise">
+    Developer tools, AI experiments, and ideas worth revisiting.
+  </p>
+  <p>
+    This is an honest preview of a possible weekly letter. There is no signup or
+    email collection yet.
+  </p>
+  {
+    latestTitle && latestUrl && (
+      <section class="garden-issue-preview">
+        <a href={latestUrl}>{latestTitle}</a>
+        {latestDescription && <p>{latestDescription}</p>}
+      </section>
+    )
+  }
+  <a class="garden-rss-link" href="/rss.xml"
+    >Follow the garden with RSS <ArrowRight size={14} aria-hidden="true" /></a
+  >
+</dialog>

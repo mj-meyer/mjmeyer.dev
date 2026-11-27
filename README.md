@@ -1,153 +1,99 @@
-# AstroPaper 📄
+# mjmeyer.dev
 
-![AstroPaper](public/astropaper-og.jpg)
-![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![GitHub](https://img.shields.io/github/license/satnaing/astro-paper?color=%232F3741&style=for-the-badge)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white&style=for-the-badge)](https://conventionalcommits.org)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
+MJ Meyer’s digital garden, built with Astro. The site publishes garden notes, stream items, dated Now snapshots, discovery pages, and a small set of personal pages through one shared production presentation system.
 
-AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro blog theme. This theme is designed and crafted based on [my personal blog](https://satnaing.dev/blog).
+## Requirements
 
-This theme follows best practices and provides accessibility out of the box. Light and dark mode are supported by default. Moreover, additional color schemes can also be configured.
+- Node.js 24
+- pnpm
 
-This theme is self-documented \_ which means articles/posts in this theme can also be considered as documentations. Read [the blog posts](https://astro-paper.pages.dev/posts/) or check [the README Documentation Section](#-documentation) for more info.
+## Setup
 
-## 🔥 Features
-
-- [x] type-safe markdown
-- [x] super fast performance
-- [x] accessible (Keyboard/VoiceOver)
-- [x] responsive (mobile ~ desktops)
-- [x] SEO-friendly
-- [x] light & dark mode
-- [x] fuzzy search
-- [x] draft posts & pagination
-- [x] sitemap & rss feed
-- [x] followed best practices
-- [x] highly customizable
-- [x] dynamic OG image generation for blog posts [#15](https://github.com/satnaing/astro-paper/pull/15) ([Blog Post](https://astro-paper.pages.dev/posts/dynamic-og-image-generation-in-astropaper-blog-posts/))
-
-_Note: I've tested screen-reader accessibility of AstroPaper using **VoiceOver** on Mac and **TalkBack** on Android. I couldn't test all other screen-readers out there. However, accessibility enhancements in AstroPaper should be working fine on others as well._
-
-## ✅ Lighthouse Score
-
-<p align="center">
-  <a href="https://pagespeed.web.dev/report?url=https%3A%2F%2Fastro-paper.pages.dev%2F&form_factor=desktop">
-    <img width="710" alt="AstroPaper Lighthouse Score" src="AstroPaper-lighthouse-score.svg">
-  <a>
-</p>
-
-## 🚀 Project Structure
-
-Inside of AstroPaper, you'll see the following folders and files:
-
-```bash
-/
-├── public/
-│   ├── assets/
-│   │   └── logo.svg
-│   │   └── logo.png
-│   └── favicon.svg
-│   └── astropaper-og.jpg
-│   └── robots.txt
-│   └── toggle-theme.js
-├── src/
-│   ├── assets/
-│   │   └── socialIcons.ts
-│   ├── components/
-│   ├── content/
-│   │   |  blog/
-│   │   |    └── some-blog-posts.md
-│   │   └── _schemas.ts
-│   │   └── config.ts
-│   ├── layouts/
-│   └── pages/
-│   └── styles/
-│   └── utils/
-│   └── config.ts
-│   └── types.ts
-└── package.json
+```sh
+pnpm install --frozen-lockfile
+pnpm start
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+The development server uses Astro’s default local address unless host or port flags are supplied.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Commands
 
-All blog posts are stored in `src/content/blog` directory.
+| Command                 | Purpose                                                                         |
+| ----------------------- | ------------------------------------------------------------------------------- |
+| `pnpm start`            | Start the Astro development server                                              |
+| `pnpm build`            | Build the static site into `dist`                                               |
+| `pnpm lint`             | Run ESLint                                                                      |
+| `pnpm exec astro check` | Run Astro and TypeScript diagnostics                                            |
+| `pnpm test:contracts`   | Check content, catalogue, URL, RSS, and OG contracts                            |
+| `pnpm test:journey`     | Run the Playwright browser suite                                                |
+| `pnpm test:migration`   | Run contracts, a production build, and browser tests                            |
+| `pnpm og:test`          | Build and validate the nine SVG OG endpoints without mutating source PNG assets |
+| `pnpm format:check`     | Check repository formatting                                                     |
+| `pnpm format`           | Format supported files                                                          |
 
-## 📖 Documentation
+## Architecture
 
-Documentation can be read in two formats\_ _markdown_ & _blog post_.
+### Content and catalogue
 
-- Configuration - [markdown](src/content/blog/how-to-configure-astropaper-theme.md) | [blog post](https://astro-paper.pages.dev/posts/how-to-configure-astropaper-theme/)
-- Add Posts - [markdown](src/content/blog/adding-new-post.md) | [blog post](https://astro-paper.pages.dev/posts/adding-new-posts-in-astropaper-theme/)
-- Customize Color Schemes - [markdown](src/content/blog/customizing-astropaper-theme-color-schemes.md) | [blog post](https://astro-paper.pages.dev/posts/customizing-astropaper-theme-color-schemes/)
-- Predefined Color Schemes - [markdown](src/content/blog/predefined-color-schemes.md) | [blog post](https://astro-paper.pages.dev/posts/predefined-color-schemes/)
+Published content lives in Astro content collections:
 
-> For AstroPaper v1, check out [this branch](https://github.com/satnaing/astro-paper/tree/astro-paper-v1) and this [live URL](https://astro-paper-v1.astro-paper.pages.dev/)
+- `src/content/garden` — durable garden notes with growth stages and explicit note links
+- `src/content/stream` — short resources with a stream type
+- `src/content/now` — dated snapshots
 
-## 💻 Tech Stack
+`src/lib/public-catalogue.ts` adapts Astro collections into the typed, build-time catalogue implemented in `src/lib/public-catalogue-core.ts`. Draft entries are excluded. Garden and Stream details publish at root-level `/{slug}` URLs. Topics are discovery tags only; relationships come from explicit outgoing note links, with backlinks derived at build time.
 
-**Main Framework** - [Astro](https://astro.build/)  
-**Type Checking** - [TypeScript](https://www.typescriptlang.org/)  
-**Component Framework** - [ReactJS](https://reactjs.org/)  
-**Styling** - [TailwindCSS](https://tailwindcss.com/)  
-**UI/UX** - [Figma](https://figma.com)  
-**Fuzzy Search** - [FuseJS](https://fusejs.io/)  
-**Icons** - [Boxicons](https://boxicons.com/) | [Tablers](https://tabler-icons.io/)  
-**Code Formatting** - [Prettier](https://prettier.io/)  
-**Deployment** - [Cloudflare Pages](https://pages.cloudflare.com/)  
-**Illustration in About Page** - [https://freesvgillustration.com](https://freesvgillustration.com/)  
-**Linting** - [ESLint](https://eslint.org)
+The older files under `src/content/blog` are preserved source material but are not registered public catalogue inputs.
 
-## 👨🏻‍💻 Running Locally
+### Routes and layouts
 
-The easiest way to run this project locally is to run the following command in your desired directory.
+- `src/layouts/GardenLayout.astro` owns the shared shell, metadata, theme-before-paint behavior, ClientRouter integration, header, and footer.
+- `src/layouts/GardenReader.astro` renders every Garden and Stream detail page.
+- `src/components/garden/DiscoveryIndex.astro` supports Garden, Stream, topic, and Search discovery while retaining server-rendered no-JavaScript listings.
+- `src/components/garden/NowSnapshot.astro` owns latest and archived Now pages.
+- `src/layouts/AboutLayout.astro` presents About, Uses, and the historical `nowold` page without rewriting their Markdown.
+- `src/scripts/garden-lifecycle.ts` owns abortable route setup and teardown for filters, dialogs, theme controls, callouts, contents navigation, previews, footnotes, and optional effects.
 
-```bash
-# npm 6.x
-npm create astro@latest --template satnaing/astro-paper
+Client-side enhancements do not replace native links or server-rendered content. URL-backed discovery state uses replacement history rather than one history entry per keystroke.
 
-# npm 7+, extra double-dash is needed:
-npm create astro@latest -- --template satnaing/astro-paper
+### Visual effects and fallbacks
 
-# yarn
-yarn create astro --template satnaing/astro-paper
-```
+The production shell uses local Space Grotesk and Source Sans 3 fonts from `public/garden/fonts`. Optional React enhancements are mounted lazily and disposed on ClientRouter transitions:
 
-## Google Site Verification (optional)
+- reduced-motion and compact views keep static pixel fallbacks;
+- WebGL is restricted to capable larger viewports and suspends when hidden or offscreen;
+- typing remains pausable;
+- note previews are supplementary to native anchors.
 
-You can easily add your [Google Site Verification HTML tag](https://support.google.com/webmasters/answer/9008080#meta_tag_verification&zippy=%2Chtml-tag) in AstroPaper using environment variable. This step is optional. If you don't add the following env variable, the google-site-verification tag won't appear in the html `<head>` section.
+Source and adaptation notices are retained beside the production components under `src/components/garden/effects` and `src/components/garden/ui`.
 
-```bash
-# in your environment variable file (.env)
-PUBLIC_GOOGLE_SITE_VERIFICATION=your-google-site-verification-value
-```
+### RSS and social images
 
-## 🧞 Commands
+`/rss.xml` emits slashless public links. Existing collection-prefixed GUID strings remain opaque, non-permalink subscriber identifiers.
 
-All commands are run from the root of the project, from a terminal:
+The nine `/{id}.svg` routes render 1200×630 SVG cards in memory. They do not write into `public/assets`; existing PNG metadata images there are authoritative static assets.
 
-| Command                | Action                                                                                                                           |
-| :--------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
-| `npm install`          | Installs dependencies                                                                                                            |
-| `npm run dev`          | Starts local dev server at `localhost:3000`                                                                                      |
-| `npm run build`        | Build your production site to `./dist/`                                                                                          |
-| `npm run preview`      | Preview your build locally, before deploying                                                                                     |
-| `npm run format:check` | Check code format with Prettier                                                                                                  |
-| `npm run format`       | Format codes with Prettier                                                                                                       |
-| `npm run sync`         | Generates TypeScript types for all Astro modules. [Learn more](https://docs.astro.build/en/reference/cli-reference/#astro-sync). |
-| `npm run cz`           | Commit code changes with commitizen                                                                                              |
-| `npm run lint`         | Lint with ESLint                                                                                                                 |
+## Publishing conventions
 
-## ✨ Feedback & Suggestions
+1. Add or update an entry in the appropriate content collection.
+2. Keep authored dates, draft state, stage/type, tags, and explicit note links accurate.
+3. Run `pnpm test:migration` before publishing.
+4. Review and publish through the project’s normal manual hosting workflow.
 
-If you have any suggestions/feedback, you can contact me via [my email](mailto:contact@satnaing.dev). Alternatively, feel free to open an issue if you find bugs or want to request new features.
+This repository does not claim an automated private-vault import or newsletter delivery pipeline.
 
-## 📜 License
+## Build-network caveats
 
-Licensed under the MIT License, Copyright © 2023
+- OG SVG generation currently fetches Montserrat font files during the build.
+- `astro-embed` may require network access while generating supported embed fallbacks.
+- The optional Three.js effect produces the largest lazy client chunk; it is intentionally not loaded for compact or reduced-motion pixel rendering.
 
----
+## Licensing
 
-Made with 🤍 by [Sat Naing](https://satnaing.dev) 👨🏻‍💻
+Repository code is covered by [LICENSE](./LICENSE). Third-party adaptations and local fonts retain their own notices:
+
+- React Bits-derived effects: `src/components/garden/effects/LICENSE.md` and `PROVENANCE.md`
+- Base UI/shadcn preview composition: `src/components/garden/ui/LICENSE.md` and `PROVENANCE.md`
+- Local font licenses: `public/garden/fonts/*-OFL.txt`
+
+Those component-specific terms and notices remain applicable; they are not replaced by the repository-level license.

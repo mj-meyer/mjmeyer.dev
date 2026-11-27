@@ -3,8 +3,19 @@ import { getCollection } from "astro:content";
 import getSortedPosts from "@utils/getSortedPosts";
 import { SITE } from "@config";
 import type { CollectionEntry } from "astro:content";
+import {
+  absolutePublicUrl,
+  publicContentPath,
+  stableRssGuid,
+} from "../lib/public-urls";
 
 type ContentItem = CollectionEntry<"garden" | "stream" | "now">;
+
+const escapeXmlText = (value: string) =>
+  value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 
 export const GET = async () => {
   // Get all collections
@@ -37,11 +48,13 @@ export const GET = async () => {
     title: SITE.title,
     description: SITE.desc,
     site: SITE.website,
-    items: sortedPosts.map((post) => ({
-      link: `/${post.collection}/${post.id}`,
+    trailingSlash: false,
+    items: sortedPosts.map(post => ({
+      link: absolutePublicUrl(publicContentPath(post.collection, post.id)),
       title: post.data.title,
       description: getItemDescription(post),
       pubDate: new Date(post.data.publishDatetime),
+      customData: `<guid isPermaLink="false">${escapeXmlText(stableRssGuid(post.collection, post.id))}</guid>`,
     })),
   });
 };

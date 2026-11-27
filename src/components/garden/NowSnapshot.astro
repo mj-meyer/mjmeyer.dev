@@ -1,0 +1,156 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import GardenLayout from "@layouts/GardenLayout.astro";
+import ReaderLink from "./ReaderLink.astro";
+import ThemeImage from "./ThemeImage.astro";
+import { nowArchivePath } from "../../lib/public-urls";
+
+interface Props {
+  post: CollectionEntry<"now">;
+  archive: CollectionEntry<"now">[];
+  isLatest?: boolean;
+}
+
+const { post, archive, isLatest = false } = Astro.props;
+const { Content } = await render(post);
+const sorted = archive.toSorted(
+  (a, b) => b.data.publishDatetime.getTime() - a.data.publishDatetime.getTime()
+);
+const index = sorted.findIndex(item => item.id === post.id);
+const newer = index > 0 ? sorted[index - 1] : undefined;
+const older =
+  index >= 0 && index < sorted.length - 1 ? sorted[index + 1] : undefined;
+const routeFor = (entry: CollectionEntry<"now">) => nowArchivePath(entry.id);
+const monthLabel = (entry: CollectionEntry<"now">) =>
+  new Intl.DateTimeFormat("en-GB", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(entry.data.publishDatetime);
+const publishedLabel = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  timeZone: "UTC",
+}).format(post.data.publishDatetime);
+const snapshotLabel = monthLabel(post);
+const pageTitle = isLatest ? "Now" : `Now — ${snapshotLabel}`;
+const pageDescription = isLatest
+  ? "Now page showing what's going on at this point in my life"
+  : `Now page from ${snapshotLabel}`;
+---
+
+<GardenLayout
+  title={pageTitle}
+  description={pageDescription}
+  ogImage={post.data.ogImage}
+  pageType="personal"
+  active="about"
+>
+  <main
+    id="main-content"
+    class="now-page"
+    transition:animate="none"
+    tabindex="-1"
+  >
+    <header class="personal-intro now-intro">
+      <h1>Now</h1>
+      <p>A snapshot of what I’m focused on in work and life.</p>
+      <a class="personal-text-link" href="https://nownownow.com/about">
+        What’s a Now page? <ArrowUpRight size={15} aria-hidden="true" />
+      </a>
+    </header>
+
+    <div class="now-layout">
+      <section class="now-snapshot" aria-labelledby="snapshot-title">
+        <div class="now-snapshot-heading">
+          <span
+            >{
+              isLatest ? "Latest published snapshot" : "Archived snapshot"
+            }</span
+          >
+          <h2 id="snapshot-title">{snapshotLabel}</h2>
+          <p>An older update, not a current status report.</p>
+        </div>
+        <article class="personal-prose now-prose">
+          <Content components={{ a: ReaderLink }} />
+        </article>
+        <p class="personal-published">
+          Published <time datetime={post.data.publishDatetime.toISOString()}
+            >{publishedLabel}</time
+          >.
+        </p>
+        {
+          !isLatest && (
+            <a class="personal-text-link" href="/now">
+              <ArrowLeft size={15} aria-hidden="true" /> Latest Now page
+            </a>
+          )
+        }
+        {
+          (newer || older) && (
+            <nav
+              class="now-pagination"
+              aria-label="Snapshot archive navigation"
+            >
+              {newer ? (
+                <a href={routeFor(newer)}>
+                  <ArrowLeft size={15} aria-hidden="true" /> Newer:{" "}
+                  {monthLabel(newer)}
+                </a>
+              ) : (
+                <span />
+              )}
+              {older && (
+                <a href={routeFor(older)}>
+                  Older: {monthLabel(older)}{" "}
+                  <ArrowRight size={15} aria-hidden="true" />
+                </a>
+              )}
+            </nav>
+          )
+        }
+      </section>
+
+      <aside class="now-rail" aria-label="About this snapshot">
+        <div class="now-person">
+          <ThemeImage
+            dark="/profile-dark.png"
+            light="/profile-light.png"
+            alt="MJ Meyer"
+            width={100}
+            height={106}
+          />
+          <div>
+            <h2>MJ Meyer</h2>
+            <p>Product engineer</p>
+          </div>
+        </div>
+        <a class="personal-text-link" href="/about">
+          About &amp; experience <ArrowRight size={15} aria-hidden="true" />
+        </a>
+        <section class="now-archive">
+          <h2>Snapshot archive</h2>
+          {
+            sorted.map(item => (
+              <a
+                href={routeFor(item)}
+                aria-current={item.id === post.id ? "page" : undefined}
+              >
+                {monthLabel(item)} <ArrowRight size={15} aria-hidden="true" />
+              </a>
+            ))
+          }
+        </section>
+      </aside>
+    </div>
+
+    <section class="now-next" aria-labelledby="now-next-title">
+      <h2 id="now-next-title">Back in the garden</h2>
+      <a class="personal-text-link" href="/garden">
+        Find something to read <ArrowRight size={17} aria-hidden="true" />
+      </a>
+    </section>
+  </main>
+</GardenLayout>

@@ -1,0 +1,74 @@
+---
+import { Moon, Pause, Play, Search, Sun } from "lucide-react";
+import ThemeImage from "./ThemeImage.astro";
+interface Props {
+  active?: "garden" | "stream" | "about";
+}
+const { active } = Astro.props;
+---
+
+<header class="garden-nav">
+  <a class="garden-brand" href="/" aria-label="MJ Meyer, homepage">
+    <ThemeImage
+      dark="/garden/brand/monogram-dark.svg"
+      light="/garden/brand/monogram-light.svg"
+      alt=""
+      width={32}
+      height={35}
+    />
+    <span>MJ Meyer<span>.dev</span></span>
+  </a>
+  <nav aria-label="Main navigation">
+    <a href="/garden" aria-current={active === "garden" ? "page" : undefined}
+      >Garden</a
+    >
+    <a href="/stream" aria-current={active === "stream" ? "page" : undefined}
+      >Stream</a
+    >
+    <a href="/about" aria-current={active === "about" ? "page" : undefined}
+      >About</a
+    >
+    <a
+      class="garden-icon-button garden-search"
+      href="/search"
+      aria-label="Search the site"><Search size={19} strokeWidth={1.6} /></a
+    >
+    <button
+      class="garden-icon-button garden-motion-toggle"
+      type="button"
+      aria-label="Pause background and heading motion"
+      aria-pressed="false"
+    >
+      <Pause
+        className="garden-pause-icon"
+        size={18}
+        strokeWidth={1.6}
+        aria-hidden="true"
+      />
+      <Play
+        className="garden-play-icon"
+        size={18}
+        strokeWidth={1.6}
+        aria-hidden="true"
+      />
+    </button>
+    <button
+      class="garden-icon-button garden-theme-toggle"
+      type="button"
+      aria-label="Switch to light theme"
+    >
+      <Sun
+        className="garden-dark-image"
+        size={19}
+        strokeWidth={1.6}
+        aria-hidden="true"
+      />
+      <Moon
+        className="garden-light-image"
+        size={19}
+        strokeWidth={1.6}
+        aria-hidden="true"
+      />
+    </button>
+  </nav>
+</header>

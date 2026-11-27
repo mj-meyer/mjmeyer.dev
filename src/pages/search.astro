@@ -1,33 +1,30 @@
 ---
-import { getCollection } from "astro:content";
-import { SITE } from "@config";
-import Layout from "@layouts/Layout.astro";
-import Main from "@layouts/Main.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import SearchBar from "@components/Search";
+import DiscoveryIndex from "@components/garden/DiscoveryIndex.astro";
+import { getPublicCatalogue } from "../lib/public-catalogue";
 
-// Retrieve all articles
-const gardenNotes = await getCollection("garden", ({ data }) => !data.draft);
-const streamNotes = await getCollection("stream", ({ data }) => !data.draft);
-const posts = [...gardenNotes, ...streamNotes];
-
-// List of items to search in
-const searchList = posts.map(({ data, id }) => ({
-  slug: id,
-  title: data.title,
-  description: data.description,
-  data,
-}));
+const catalogue = await getPublicCatalogue();
+const kinds = [
+  { value: "garden", label: "Garden notes" },
+  { value: "stream", label: "Stream notes" },
+] as const;
 ---
 
-<Layout title={`Search | ${SITE.title}`} hasWaveSeparator={false}>
-  <Fragment slot="header">
-    <Header activeNav="search" />
-  </Fragment>
-
-  <Main pageTitle="Search" pageDesc="Search any article ...">
-    <SearchBar client:load searchList={searchList} />
-  </Main>
-  <Footer />
-</Layout>
+<DiscoveryIndex
+  title="Search"
+  heading="Search"
+  description="Search published garden and stream notes by title, description, or topic."
+  items={catalogue.items}
+  allItems={catalogue.items}
+  sidebar="search"
+  itemNoun="result"
+  itemPlural="results"
+  publishedTotal={catalogue.items.length}
+  filterLabel="Collection"
+  filterParam="kind"
+  filterOptions={kinds}
+  defaultFilter="all"
+  emptyTitle="No matching published notes"
+  emptyDescription="Try a broader phrase or clear the collection filter."
+  emptyBrowseHref="/garden"
+  emptyBrowseLabel="Browse the garden"
+/>

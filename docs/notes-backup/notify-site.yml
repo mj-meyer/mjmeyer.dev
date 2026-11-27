@@ -1,0 +1,22 @@
+# Copy to notes-backup as .github/workflows/notify-site.yml.
+# Tells mjmeyer.dev to rebuild the site from the vault on every push.
+# Needs the SITE_DISPATCH_TOKEN secret in notes-backup: docs/publish-pipeline.md.
+name: Notify site
+
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch notes-updated to mjmeyer.dev
+        env:
+          GH_TOKEN: ${{ secrets.SITE_DISPATCH_TOKEN }}
+        run: >-
+          gh api repos/mj-meyer/mjmeyer.dev/dispatches
+          -f event_type=notes-updated
+          -f "client_payload[sha]=$GITHUB_SHA"

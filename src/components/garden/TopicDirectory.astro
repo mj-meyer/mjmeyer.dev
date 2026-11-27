@@ -1,0 +1,113 @@
+---
+import { ArrowRight, Search } from "lucide-react";
+import GardenLayout from "../../layouts/GardenLayout.astro";
+import type { PublicContentItem } from "../../lib/public-catalogue";
+import DiscoverySidebar from "./DiscoverySidebar.astro";
+interface TopicSummary {
+  slug: string;
+  display: string;
+  count: number;
+  gardenCount: number;
+  streamCount: number;
+}
+interface Props {
+  topics: readonly TopicSummary[];
+  allItems: readonly PublicContentItem[];
+}
+const { topics, allItems } = Astro.props;
+---
+
+<GardenLayout
+  title="Topics"
+  description="Topics found across published garden and stream notes."
+  pageType="discovery"
+  active="garden"
+>
+  <main id="main-content" tabindex="-1">
+    <header class="discovery-intro">
+      <h1>Topics</h1>
+      <p>Browse topics across the garden and stream.</p>
+    </header>
+    <div class="discovery-layout">
+      <section
+        aria-labelledby="topic-directory-heading"
+        data-discovery-root
+        data-default-filter="all"
+        data-singular="topic"
+        data-plural="topics"
+      >
+        <div class="discovery-browse-heading">
+          <h2 id="topic-directory-heading">Browse topics</h2>
+          <span>{topics.length} published topics</span>
+        </div>
+        <form
+          class="discovery-find discovery-find-simple"
+          role="search"
+          method="get"
+          action="/topics"
+        >
+          <div class="discovery-search-field">
+            <label for="discovery-search">Find a topic</label>
+            <div>
+              <Search size={18} aria-hidden="true" />
+              <input
+                id="discovery-search"
+                name="q"
+                type="search"
+                placeholder="A topic…"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </form>
+        <noscript>
+          <p class="discovery-noscript">
+            Live filtering needs JavaScript. Every topic link remains available
+            below.
+          </p>
+        </noscript>
+        <div class="topic-directory" data-discovery-list>
+          {
+            topics.map(topic => (
+              <article
+                data-discovery-item
+                data-title={topic.display}
+                data-search={`${topic.display} ${topic.slug}`}
+                data-filter-value="all"
+                data-updated="0"
+              >
+                <a href={`/topics/${topic.slug}`}>
+                  <div>
+                    <h3>{topic.display}</h3>
+                    <p>
+                      {topic.count} {topic.count === 1 ? "note" : "notes"} ·{" "}
+                      {topic.gardenCount} garden · {topic.streamCount} stream
+                    </p>
+                  </div>
+                  <ArrowRight size={17} strokeWidth={1.5} aria-hidden="true" />
+                </a>
+              </article>
+            ))
+          }
+        </div>
+        <div class="discovery-empty" data-discovery-empty hidden>
+          <h3>No matching topics</h3>
+          <p>Try another phrase.</p>
+          <button type="button" data-discovery-reset>Clear search</button>
+        </div>
+        <p
+          class="discovery-result-count"
+          data-discovery-status
+          role="status"
+          aria-live="polite"
+        >
+          {topics.length} topics
+        </p>
+      </section>
+      <DiscoverySidebar
+        variant="topics"
+        entryPoints={allItems.filter(item => item.isEntryPoint)}
+      />
+    </div>
+  </main>
+</GardenLayout>

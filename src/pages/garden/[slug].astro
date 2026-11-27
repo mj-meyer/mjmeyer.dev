@@ -1,172 +1,91 @@
 ---
-import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
-import getSortedPosts from "@utils/getSortedPosts";
-import getPageNumbers from "@utils/getPageNumbers";
+import DiscoveryIndex from "@components/garden/DiscoveryIndex.astro";
+import {
+  getPublicCatalogue,
+  type GardenState,
+} from "../../lib/public-catalogue";
 import { SITE } from "@config";
-import Header from "@components/Header.astro";
-import NoteSummaryCard from "@components/NoteSummaryCard.astro";
-import DetailLayout from "@layouts/DetailLayout.astro";
-import Pagination from "@components/Pagination.astro";
 
-export interface Props {
-  post: CollectionEntry<"garden">;
-}
-
-type NoteType = CollectionEntry<"garden">["data"]["noteState"];
+const stages = [
+  { value: "seedling", label: "Seedling" },
+  { value: "budding", label: "Budding" },
+  { value: "evergreen", label: "Evergreen" },
+] as const;
+const stageDescriptions: Record<GardenState, string> = {
+  seedling:
+    "Early thoughts and useful atomic notes that may evolve quickly as they take root.",
+  budding:
+    "Developing notes supported by other ideas, open to revision as their context grows.",
+  evergreen:
+    "Durable notes held with confidence and still open to careful growth over time.",
+};
 
 export async function getStaticPaths() {
-  const posts = await getCollection("garden", ({ data }) => !data.draft);
-  const sortedPosts = getSortedPosts(posts);
-  const noteTypes = ["seedling", "budding", "evergreen"];
-  const pagePaths = getPageNumbers(sortedPosts.length).map(pageNum => ({
-    params: { slug: String(pageNum) },
-  }));
-  const filterPaths = noteTypes.map(noteType => ({
-    params: { slug: noteType },
-  }));
-  return [...pagePaths, ...filterPaths];
+  const catalogue = await getPublicCatalogue();
+  const pageCount = Math.ceil(catalogue.garden.length / SITE.postPerPage);
+  const stageValues = ["seedling", "budding", "evergreen"];
+  return [
+    ...Array.from({ length: pageCount }, (_, index) => ({
+      params: { slug: String(index + 1) },
+    })),
+    ...stageValues.map(stage => ({ params: { slug: stage } })),
+  ];
 }
 
-const { slug } = Astro.params;
-const posts = (await getCollection("garden")) as CollectionEntry<"garden">[];
-const sortedPosts = getSortedPosts(posts) as CollectionEntry<"garden">[];
-const totalPages = getPageNumbers(sortedPosts.length);
-
-const noteTypes = ["seedling", "budding", "evergreen"] as const;
-let currentPage: number;
-let paginatedPosts: CollectionEntry<"garden">[];
-let totalPageCount = 1;
-
-if (noteTypes.includes(slug as NoteType) && isNaN(Number(slug))) {
-  // Filter by note type without pagination
-  const filteredPosts = sortedPosts.filter(post => post.data.noteState === slug);
-  paginatedPosts = filteredPosts;
-  currentPage = 1;
-} else {
-  // Paginate
-  currentPage =
-    slug && !isNaN(Number(slug)) && totalPages.includes(Number(slug))
-      ? Number(slug)
-      : 1;
-  const lastPost = currentPage * SITE.postPerPage;
-  const startPost = lastPost - SITE.postPerPage;
-  paginatedPosts = sortedPosts.slice(startPost, lastPost);
-  totalPageCount = totalPages.length;
-}
-
-const isSlugNumber = !isNaN(Number(slug));
+const catalogue = await getPublicCatalogue();
+const slug = Astro.params.slug ?? "1";
+const stage = stages.some(option => option.value === slug)
+  ? (slug as GardenState)
+  : undefined;
+const totalPages = Math.ceil(catalogue.garden.length / SITE.postPerPage);
+const page = stage ? undefined : Number(slug);
+if (
+  !stage &&
+  (!Number.isInteger(page) || !page || page < 1 || page > totalPages)
+)
+  return Astro.redirect("/404");
+const stageItems = stage
+  ? catalogue.garden.filter(item => item.state === stage)
+  : undefined;
+const items = stage
+  ? catalogue.garden
+  : catalogue.garden.slice(
+      ((page ?? 1) - 1) * SITE.postPerPage,
+      (page ?? 1) * SITE.postPerPage
+    );
+const heading = stage
+  ? `${stages.find(option => option.value === stage)?.label} notes`
+  : "Garden";
+const description = stage
+  ? stageDescriptions[stage]
+  : "My always growing and evolving thoughts, notes and ideas.";
+const contextNote = stage ? undefined : `Page ${page} of ${totalPages}.`;
 ---
 
-<DetailLayout
-  title="Digital Garden Notes"
-  description="My always growing and evolving thoughts, notes and ideas."
->
-  <Fragment slot="header">
-    <Header activeNav="garden" />
-  </Fragment>
-  <Fragment slot="pageTitle">
-    <div class="flex flex-col gap-4 text-3xl">
-      <h1
-        class="text-4xl flex z-20 flex-col md:text-5xl lg:text-6xl font-black mb-4 relative text-balance"
-      >
-        <span
-          class="absolute -z-10 text-skin-hightlight -left-24 -top-7 text-5xl opacity-40 sm:text-7xl sm:-top-12 max-sm:-left-6 max-lg:-left-8 md:-top-12 md:text-7xl lg:-top-20 lg:text-9xl"
-          >Notes</span
-        >
-        Digital Garden
-      </h1>
-      <div class="flex flex-col gap-4 font-light">
-        {
-          slug === "seedling" && (
-            <>
-              <p>
-                <strong>Seedling</strong> thoughts, ideas and notes that will
-                probably evolve and grow rapidly as they take root.
-              </p>
-
-              <p>
-                Some seedlings may never grow or evolve because they are atomic
-                and are meant to support other notes.
-              </p>
-            </>
-          )
-        }
-        {
-          slug === "budding" && (
-            <>
-              <p>
-                <strong>Budding</strong> thoughts, ideas and notes that are
-                supported by other notes.
-              </p>
-              <p>
-                They are more likely to be interesting observations that may
-                change or express an alternative view point as opposed to
-                stongly held opinions or beliefs.
-              </p>
-            </>
-          )
-        }
-        {
-          slug === "evergreen" && (
-            <>
-              <p>
-                <strong>Evergreen</strong> thoughts, ideas and notes that I hold
-                strongly.
-              </p>
-              <p>
-                They rarely change other than growing more as I branch out more
-                thoughts or grow their roots with more supporting notes.
-              </p>
-            </>
-          )
-        }
-        {
-          isSlugNumber && (
-            <>
-              <p>My always growing and evolving thoughts, notes and ideas.</p>
-            </>
-          )
-        }
-      </div>
-    </div>
-  </Fragment>
-  <div
-    class="flex flex-wrap justify-center font-medium font-montserrat uppercase text-sm gap-4 my-16"
-  >
-    <a
-      href="/garden"
-      class={`px-6 h-8 flex border items-center rounded-3xl bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60`}
-      >All</a
-    >
-    {
-      noteTypes.map(type => (
-        <a
-          href={`/garden/${type}`}
-          class={`px-4 h-8 flex border items-center rounded-3xl ${slug === type ? "bg-skin-card border-skin-fill/30 text-skin-inverted" : "bg-skin-card/15 border-skin-accent/15 hover:bg-skin-card/50 hover:border-skin-accent/60"}`}
-        >
-          {type}
-        </a>
-      ))
-    }
-  </div>
-  <ul class="flex flex-col gap-24 max-lg:px-8">
-    {
-      paginatedPosts.map(({ data, id }) => (
-        <NoteSummaryCard
-          href={`/${id}`}
-          frontmatter={data as CollectionEntry<"garden">["data"]}
-          cardType={"garden"}
-          expanded
-        />
-      ))
-    }
-  </ul>
-  <Fragment slot="pagination">
-    <Pagination
-      pageNum={currentPage}
-      totalPages={totalPageCount}
-      collectionType={"garden"}
-    />
-  </Fragment>
-</DetailLayout>
+<DiscoveryIndex
+  title={stage
+    ? `${heading} | Digital Garden`
+    : `Digital Garden Notes — Page ${page}`}
+  heading={heading}
+  description={description}
+  items={items}
+  allItems={catalogue.items}
+  active="garden"
+  sidebar="garden"
+  itemNoun="note"
+  itemPlural="notes"
+  publishedTotal={stageItems?.length ?? catalogue.garden.length}
+  initialVisibleCount={stageItems?.length ?? items.length}
+  filterLabel="Growth stage"
+  filterParam="stage"
+  filterOptions={stages}
+  defaultFilter={stage ?? "all"}
+  contextNote={contextNote}
+  pagination={page
+    ? { current: page, total: totalPages, basePath: "/garden" }
+    : undefined}
+  emptyTitle={stage === "evergreen" ? "No evergreen notes yet" : undefined}
+  emptyDescription={stage === "evergreen"
+    ? "This stage is intentionally empty until a published note reaches it."
+    : undefined}
+/>

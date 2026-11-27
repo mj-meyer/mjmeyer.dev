@@ -1,302 +1,96 @@
 ---
-import { getCollection } from "astro:content";
-import Layout from "@layouts/Layout.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import LinkButton from "@components/LinkButton.astro";
-import Socials from "@components/Socials.astro";
-import getSortedPosts from "@utils/getSortedPosts";
+import { ArrowRight, Mail } from "lucide-react";
+import GardenLayout from "@layouts/GardenLayout.astro";
+import ActivityFeed from "@components/garden/ActivityFeed.astro";
+import EntryPoints from "@components/garden/EntryPoints.astro";
+import Newsletter from "@components/garden/Newsletter.astro";
+import ThemeImage from "@components/garden/ThemeImage.astro";
 import { SOCIALS } from "@config";
-import type { CollectionEntry } from "astro:content";
-import NoteSummaryCard from "@components/NoteSummaryCard.astro";
-
-const posts = await getCollection("garden");
-const sortedPosts = getSortedPosts(posts) as CollectionEntry<"garden">[];
-
-const streamPosts = await getCollection("stream");
-const sortedStreamPosts = getSortedPosts(
-  streamPosts
-) as CollectionEntry<"stream">[];
-
-const socialCount = SOCIALS.filter(social => social.active).length;
+import { getPublicCatalogue } from "../lib/public-catalogue";
+const catalogue = await getPublicCatalogue();
+const contact =
+  SOCIALS.find(social => social.name === "Mail")?.href ?? "/about";
+const latest = catalogue.activity[0];
 ---
 
-<Layout>
-  <Fragment slot="header">
-    <Header />
-
-    <section
-      id="hero"
-      class="mb-16 pt-44 max-md:pt-0 max-lg:pt-16 z-50 relative max-xl:pl-12 max-sm:pl-0 max-sm:pr-0"
-    >
-      <div
-        class="flex flex-col-reverse md:flex-row items-center gap-8 justify-between"
+<GardenLayout pageType="home">
+  <header class="garden-home-intro">
+    <h1 data-typing-heading>Notes on software and life.</h1>
+    <p>
+      I’m MJ, a product engineer with about twenty years building for the web.<br
+        class="garden-desktop-break"
+      /> Exploring AI without losing the craft.
+    </p>
+    <div class="garden-mobile-contact">
+      <a href="/about">About &amp; experience</a><a href={contact}
+        >Get in touch</a
       >
-        <div
-          class="lg:w-3/5 mt-8 max-md:mt-4 md:mt-0 flex flex-col font-light gap-4"
-        >
-          <div class="flex items-center justify-center gap-8 max-sm:pl-4">
-            <h1
-              class="text-4xl max-sm:w-2/3 max-sm:text-2xl max-sm:pl-8 flex flex-col start-0 md:text-5xl lg:text-7xl font-black mb-4 relative text-balance"
-            >
-              <span
-                class="absolute max-sm:-left-0 max-sm:text-4xl -left-16 -top-10 text-6xl opacity-10 sm:text-7xl max-sm:-top-6 sm:-top-12 md:-top-16 md:text-8xl lg:-top-24 lg:text-9xl"
-                >Hello.</span
-              >
-              I'm MJ Meyer <span
-                class="text-2xl max-sm:text-sm opacity-80 font-medium uppercase"
-              >
-                AKA the Dadalorian
-              </span>
-            </h1>
-            <img
-              class="block lg:hidden dark:hidden w-1/3 start-0 max-sm:pr-8"
-              src="./profile-light.png"
-              alt="MJ Meyer Profile Image Light"
-            />
-            <img
-              class="lg:dark:hidden dark:block hidden w-1/3 start-0 max-sm:pr-10"
-              src="./profile-dark.png"
-              alt="MJ Meyer Profile Image Dark"
-            />
-          </div>
-          <p class="text-2xl max-sm:text-xl max-lg:px-12 mb-6">
-            In a galaxy plagued by bad software, bugs, atrocious UX, and legacy
-            UI, I've dedicated the last 15 years to <strong
-              >crafting stellar digital experiences as a fullstack engineer
-              specializing in JavaScript and TypeScript</strong
-            >.
-          </p>
-          <p class="text-2xl max-sm:text-xl max-lg:px-12">
-            This is where I cultivate my <LinkButton
-              href="/what-is-a-digital-garden"
-              className="text-skin-accent underline underline-offset-4 decoration-dashed"
-              >digital garden</LinkButton
-            >— start exploring below 👇
-          </p>
-          <div
-            class="lg:hidden text-center flex justify-start flex-col items-center pt-12 max-md:pt-4"
-          >
-            <span
-              class="text-sm opacity-60 font-montserrat font-semibold uppercase text-skin-heading"
-              >Connect with me:</span
-            >
-            {socialCount > 0 && <Socials centered />}
-          </div>
-        </div>
-        <div
-          class="max-lg:hidden lg:w-2/5 -mt-16 flex flex-col gap-8 items-center"
-        >
-          <img
-            class="block dark:hidden"
-            src="./profile-light.png"
-            alt="MJ Meyer Profile Image Light"
-          />
-          <img
-            class="dark:block hidden"
-            src="./profile-dark.png"
-            alt="MJ Meyer Profile Image Dark"
-          />
-          <div class="text-left flex justify-start flex-col items-center gap-4">
-            <span
-              class="text-sm opacity-60 font-montserrat font-semibold uppercase text-skin-heading"
-              >Connect with me:</span
-            >
-            {socialCount > 0 && <Socials centered />}
-          </div>
-        </div>
-      </div>
-    </section>
-  </Fragment>
+    </div>
+  </header>
+  <div class="garden-mobile-paths">
+    <span>Explore the garden</span>
+    <EntryPoints entries={catalogue.entryPoints} compact />
+    <button type="button" data-newsletter-open aria-haspopup="dialog"
+      ><strong>Terminally Curious</strong><small>The garden, by email</small
+      ><ArrowRight size={13} aria-hidden="true" /></button
+    >
+  </div>
   <main
-    class="px-4 pb-12 sm:px-4 md:px-8 lg:px-16 xl:px-32 bg-linear-to-b/srgb to-skin-highlight/20 from-skin-fill"
+    id="main-content"
+    class="garden-home-layout"
+    transition:animate="none"
+    tabindex="-1"
   >
-    <section
-      id="content"
-      class="flex gap-24 max-md:gap-16 w-full flex-col pt-16 max-sm:pt-8 md:flex-row overflow-hidden"
+    <div class="garden-home-reading">
+      <section class="garden-home-start" aria-labelledby="garden-start-title">
+        <h2 id="garden-start-title">Start here</h2>
+        <p>
+          Four broad themes connect my notes: what I’m learning, working toward,
+          and thinking about.
+        </p>
+        <EntryPoints entries={catalogue.entryPoints} />
+      </section>
+      <ActivityFeed items={catalogue.activity} />
+    </div>
+    <aside
+      class="garden-home-rail"
+      aria-label="Author, garden entry points and newsletter"
     >
-      <div
-        id="curated-links"
-        class="flex flex-col md:mb-16 md:w-3/5 gap-6 text-2xl font-light"
-      >
-        <h2
-          class="text-6xl max-lg:text-5xl max-sm:text-3xl z-10 font-black relative"
-        >
-          <span
-            class="absolute font-extrabold -left-4 -top-12 opacity-60 -z-10 text-skin-hightlight text-7xl max-lg:text-6xl max-lg:-top-9 max-sm:text-4xl max-sm:-top-6"
-            >The Pursuit of</span
-          >Excellence
-        </h2>
-        <p>
-          This digital garden is a reflection of my ongoing journey—a pursuit of
-          growth, curiosity, and balance in work, life, and faith. It’s not
-          about arriving at perfection but about making progress, one
-          intentional step at a time.
-        </p>
-        <p class="font-bold">Here are a few of the pathways you can explore:</p>
-
-        <ul class="space-y-6 pl-6 list-disc">
-          <li class="flex flex-col gap-2">
-            <LinkButton
-              href="/software-engineering-excellence"
-              className="text-skin-accent underline underline-offset-4 decoration-dashed"
-              >Software Engineering Excellence</LinkButton
-            ><p class="text-xl">
-              From identifying skill gaps to mastering architecture, managing
-              projects, and exploring cutting-edge technologies, this is where I
-              dive into the craft and share what I learn along the way.
-            </p>
-          </li>
-          <li class="flex flex-col gap-2">
-            <LinkButton
-              href="/chasing-big-goals"
-              className="text-skin-accent underline underline-offset-4 decoration-dashed"
-              >Chasing Big Goals</LinkButton
-            >
-            <p class="text-xl">
-              With tools like goal setting, digital gardening, and feedback
-              loops, I map out the steps to make progress—in both my craft and
-              personal life.
-            </p>
-          </li>
-          <li class="flex flex-col gap-2">
-            <LinkButton
-              href="/navigating-lifes-seasons"
-              className="text-skin-accent underline underline-offset-4 decoration-dashed"
-              >Navigating Life's Seasons</LinkButton
-            >
-            <p class="text-xl">
-              From family and faith to personal ambitions, this is where I
-              reflect on the challenges and joys of finding purpose and balance.
-            </p>
-          </li>
-          <li class="flex flex-col gap-2">
-            <LinkButton
-              href="/creating-something-new"
-              className="text-skin-accent underline underline-offset-4 decoration-dashed"
-              >Creating Something New</LinkButton
-            >
-            <p class="text-xl">
-              Every idea starts as a seed. This is where I document my indie
-              hacking journey, side projects, and the big ideas I’m turning into
-              reality.
-            </p>
-          </li>
-        </ul>
-
-        <p>
-          You can also learn more <LinkButton
-            href="/about"
-            className="text-skin-accent underline underline-offset-4 decoration-dashed"
-            >about me</LinkButton
-          >, explore what tools I <LinkButton
-            href="/uses"
-            className="text-skin-accent underline underline-offset-4 decoration-dashed"
-            >use</LinkButton
-          >, or follow what I'm up to <LinkButton
-            href="/now"
-            className="text-skin-accent underline underline-offset-4 decoration-dashed"
-            >now</LinkButton
-          >.
-        </p>
+      <div class="garden-person">
+        <ThemeImage
+          dark="/profile-dark.png"
+          light="/profile-light.png"
+          alt="Illustrated portrait of MJ Meyer"
+          width={70}
+          height={74}
+        /><div><h2>MJ Meyer</h2><p>Product engineer</p></div>
       </div>
-
-      <div
-        class="recent md:w-2/5 text-lg flex md:flex-col max-sm:flex-col gap-8 font-light"
-      >
-        <div
-          id="recent-garden"
-          class="mb-16 flex flex-col gap-4 max-md:w-1/2 max-sm:w-full max-md:pl-2"
+      <div class="garden-person-links">
+        <a href="/about"
+          >About &amp; experience <ArrowRight
+            size={13}
+            strokeWidth={1.5}
+            aria-hidden="true"
+          /></a
+        ><a href={contact}
+          >Get in touch <Mail
+            size={14}
+            strokeWidth={1.5}
+            aria-hidden="true"
+          /></a
         >
-          <h2 class="text-2xl font-black relative z-10 max-lg:font-extrabold">
-            <span
-              class="absolute font-extrabold -left-4 -top-10 opacity-60 -z-10 text-skin-hightlight text-6xl max-lg:text-4xl max-lg:-top-6"
-              >Recent</span
-            >From The Garden
-          </h2>
-          <p>
-            My own thoughts, notes and ideas that have recently grown, changed,
-            or formed new connections with each other.
-          </p>
-          <ul class="my-8 space-y-12 pt-2">
-            {
-              sortedPosts
-                .slice(0, 3)
-                .map(({ data, id, collection }) => (
-                  <NoteSummaryCard
-                    href={id}
-                    frontmatter={data as CollectionEntry<"garden">["data"]}
-                    cardType={collection as "garden"}
-                  />
-                ))
-            }
-          </ul>
-          <LinkButton
-            className="flex border-b border-skin-card items-center text-sm font-bold uppercase justify-center"
-            href="/garden"
-          >
-            <span
-              class="bg-skin-card py-1 text-skin-fill flex group-hover:text-skin-base items-center -mb-4 pl-6 pr-4 rounded-2xl"
-              >All Garden Notes
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 ml-1 fill-skin-fill group-hover:fill-skin-base"
-              >
-                <path
-                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-                ></path>
-              </svg>
-            </span>
-          </LinkButton>
-        </div>
-        <div
-          id="stream"
-          class="mb-16 gap-4 flex flex-col text-lg max-md:w-1/2 max-sm:w-full max-md:pl-2"
-        >
-          <h2 class="text-2xl font-black relative z-10 max-lg:font-extrabold">
-            <span
-              class="absolute font-extrabold -left-4 -top-10 opacity-60 -z-10 text-skin-hightlight text-6xl max-lg:text-4xl max-lg:-top-6"
-              >Recent</span
-            >From The Stream
-          </h2>
-          <p>
-            Raw resources from across the WWW that I've woven into my stream of
-            knowledge, forming the foundation of my notes.
-          </p>
-          <ul class="my-8 space-y-12 pt-2">
-            {
-              sortedStreamPosts
-                .slice(0, 3)
-                .map(({ data, id, collection }) => (
-                  <NoteSummaryCard
-                    href={id}
-                    frontmatter={data as CollectionEntry<"stream">["data"]}
-                    cardType={collection}
-                  />
-                ))
-            }
-          </ul>
-
-          <LinkButton
-            className="flex border-b border-skin-card items-center text-sm font-bold uppercase justify-center"
-            href="/stream"
-          >
-            <span
-              class="bg-skin-card text-skin-fill group-hover:text-skin-base py-1 flex items-center justify-center -mb-4 pl-6 pr-4 rounded-2xl"
-              >All Stream Notes
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 ml-1 fill-skin-fill group-hover:fill-skin-base"
-              >
-                <path
-                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-                ></path>
-              </svg>
-            </span>
-          </LinkButton>
-        </div>
       </div>
-    </section>
+      <section class="garden-rail-paths">
+        <h2>Explore the garden</h2><EntryPoints
+          entries={catalogue.entryPoints}
+          compact
+        />
+      </section>
+      <Newsletter
+        latestTitle={latest?.title}
+        latestUrl={latest?.url}
+        latestDescription={latest?.description}
+      />
+    </aside>
   </main>
-  <Footer />
-</Layout>
+</GardenLayout>

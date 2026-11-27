@@ -1,0 +1,111 @@
+---
+import {
+  ArrowRight,
+  Code2,
+  Compass,
+  Leaf,
+  Lightbulb,
+  Radio,
+  Target,
+  Search,
+} from "lucide-react";
+import type { PublicContentItem } from "../../lib/public-catalogue";
+import { ENTRY_POINT_IDS } from "../../lib/public-catalogue-core";
+interface Props {
+  variant: "garden" | "stream" | "topics" | "search";
+  entryPoints: readonly PublicContentItem[];
+}
+const { variant, entryPoints } = Astro.props;
+const entryPointById = new Map(entryPoints.map(item => [item.id, item]));
+const orderedEntryPoints = ENTRY_POINT_IDS.flatMap(id => {
+  const item = entryPointById.get(id);
+  return item ? [item] : [];
+});
+const entryPointPresentation = {
+  "software-engineering-excellence": { icon: Code2, name: "code-2" },
+  "chasing-big-goals": { icon: Target, name: "target" },
+  "creating-something-new": { icon: Lightbulb, name: "lightbulb" },
+  "navigating-lifes-seasons": { icon: Compass, name: "compass" },
+} as const;
+---
+
+<aside class="discovery-rail" aria-label="More ways to explore">
+  {
+    variant === "garden" ? (
+      <>
+        <section class="discovery-entry-nav">
+          <h2>Start with a broad theme</h2>
+          <p>
+            Four paths into the notes. They overlap without becoming categories.
+          </p>
+          {orderedEntryPoints.map(item => {
+            const presentation =
+              entryPointPresentation[
+                item.id as keyof typeof entryPointPresentation
+              ];
+            const Icon = presentation.icon;
+            return (
+              <a
+                href={item.url}
+                data-preview-note={item.id}
+                data-entry-point-id={item.id}
+                data-entry-point-icon={presentation.name}
+              >
+                <Icon size={18} strokeWidth={1.6} aria-hidden="true" />
+                <span>{item.title}</span>
+                <ArrowRight size={14} strokeWidth={1.5} aria-hidden="true" />
+              </a>
+            );
+          })}
+        </section>
+        <section class="discovery-rail-note">
+          <h2>Room to grow</h2>
+          <p>
+            Seedling, budding, evergreen. A note’s stage can change; none of
+            these means it has to stop growing.
+          </p>
+          <a
+            href="/what-is-a-digital-garden"
+            data-preview-note="what-is-a-digital-garden"
+          >
+            What is a digital garden?{" "}
+            <ArrowRight size={16} aria-hidden="true" />
+          </a>
+        </section>
+      </>
+    ) : (
+      <>
+        <section class="discovery-entry-nav">
+          <h2>
+            {variant === "stream" ? "Follow another path" : "Keep exploring"}
+          </h2>
+          <p>
+            {variant === "stream"
+              ? "The stream collects useful things from elsewhere; the garden holds notes that keep growing."
+              : "Browse another part of the garden."}
+          </p>
+          <a href="/garden">
+            <Leaf size={18} strokeWidth={1.6} aria-hidden="true" />
+            <span>Browse the garden</span>
+            <ArrowRight size={14} strokeWidth={1.5} aria-hidden="true" />
+          </a>
+          <a href="/stream">
+            <Radio size={18} strokeWidth={1.6} aria-hidden="true" />
+            <span>Browse the stream</span>
+            <ArrowRight size={14} strokeWidth={1.5} aria-hidden="true" />
+          </a>
+          <a href="/topics">
+            <Compass size={18} strokeWidth={1.6} aria-hidden="true" />
+            <span>Explore topics</span>
+            <ArrowRight size={14} strokeWidth={1.5} aria-hidden="true" />
+          </a>
+          <a href="/search">
+            <Search size={18} strokeWidth={1.6} aria-hidden="true" />
+            <span>Search published notes</span>
+            <ArrowRight size={14} strokeWidth={1.5} aria-hidden="true" />
+          </a>
+        </section>
+      </>
+    )
+  }
+</aside>
