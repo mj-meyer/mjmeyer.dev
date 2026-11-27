@@ -1149,6 +1149,13 @@
 .reader-note-meta > span:first-child {
   text-transform: capitalize;
 }
+.reader-note-meta > .reader-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: inherit;
+  text-underline-offset: 3px;
+}
 .reader-toc-rail {
   position: absolute;
   right: calc(100% + var(--reader-margin-gap));

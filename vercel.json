@@ -1,4 +1,9 @@
 {
+  "git": {
+    "deploymentEnabled": {
+      "main": false
+    }
+  },
   "trailingSlash": false,
   "redirects": [
     {
@@ -7,4 +12,4 @@
       "permanent": true
     }
   ]
-} 
+}

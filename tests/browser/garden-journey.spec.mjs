@@ -61,7 +61,6 @@ function contrastRatio(foreground, background) {
 }
 
 test("first-slice journey preserves native navigation and bounded ClientRouter lifecycle", async ({ page }) => {
-  await page.route("**/_vercel/insights/script.js", route => route.fulfill({ contentType: "text/javascript", body: "" }));
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
   page.on("console", message => { if (message.type() === "error") errors.push(message.text()); });

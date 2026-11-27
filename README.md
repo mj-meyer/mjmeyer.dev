@@ -21,7 +21,7 @@ The development server uses Astro’s default local address unless host or port 
 | Command                 | Purpose                                                                         |
 | ----------------------- | ------------------------------------------------------------------------------- |
 | `pnpm start`            | Start the Astro development server                                              |
-| `pnpm build`            | Build the static site and Vercel output                                         |
+| `pnpm build`            | Build the static site into `dist`                                               |
 | `pnpm lint`             | Run ESLint                                                                      |
 | `pnpm exec astro check` | Run Astro and TypeScript diagnostics                                            |
 | `pnpm test:contracts`   | Check content, catalogue, URL, RSS, and OG contracts                            |

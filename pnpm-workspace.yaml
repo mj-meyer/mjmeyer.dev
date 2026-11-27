@@ -1,0 +1,10 @@
+packages:
+  - "."
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: false
+
+minimumReleaseAgeExclude:
+  - effect@4.1.6
