@@ -1,0 +1,46 @@
+{
+  "source": {
+    "type": "fs",
+    "vaultPath": "../repos/notes-backup",
+    "ignore": [
+      "Archive/",
+      "Calendar/",
+      "Efforts/",
+      "Extras/",
+      "Journal/",
+      "Principles/",
+      "Reference/",
+      "Sources/"
+    ]
+  },
+  "target": {
+    "type": "local-astro",
+    "contentDir": "src/content"
+  },
+  "collections": [
+    {
+      "id": "stream",
+      "archetype": "stream",
+      "name": "Stream",
+      "types": [
+        "article",
+        "video",
+        "podcast",
+        "book",
+        "twitter",
+        "x",
+        "person",
+        "tool",
+        "framework",
+        "quote"
+      ]
+    }
+  ],
+  "properties": {
+    "publish": "publish",
+    "collection": "type",
+    "state": "stage",
+    "type": "subtype"
+  },
+  "publicTagPrefix": "public/"
+}
